@@ -49,7 +49,11 @@ export interface Module {
 export interface GlossaryTerm {
   term: string;
   definition: string;
-  category: string;
+  hebrewDefinition?: string;
+  category: string; // e.g., 'Protocol', 'Hardware', 'Security'
+  tags?: string[]; // e.g., ['Layer 2', 'Routing']
+  relatedTerms?: string[];
+  visualType?: 'arp-table' | 'none'; // For specific visualizations
 }
 
 export interface UserProgress {

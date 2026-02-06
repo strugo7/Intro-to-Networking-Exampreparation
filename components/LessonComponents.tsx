@@ -2,7 +2,7 @@ import React from 'react';
 import { Play, Cloud, Laptop, Printer, Router, FileText, ExternalLink, CheckCircle, Info, ChevronRight, ArrowRight, Lightbulb, User } from 'lucide-react';
 
 // --- Video Player Placeholder ---
-export const VideoPlayer = ({ title }: { title: string }) => (
+export const VideoPlayer: React.FC<{ title: string }> = ({ title }) => (
   <div className="relative w-full aspect-video bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden shadow-lg group cursor-pointer mb-8">
     <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
     
@@ -31,7 +31,7 @@ export const VideoPlayer = ({ title }: { title: string }) => (
 );
 
 // --- Info Block (Why use a layered model?) ---
-export const InfoBlock = ({ title, items }: { title: string, items: {label: string, text: string}[] }) => (
+export const InfoBlock: React.FC<{ title: string, items: {label: string, text: string}[] }> = ({ title, items }) => (
   <div className="my-8">
     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">{title}</h3>
     <div className="grid gap-4">
@@ -53,7 +53,7 @@ export const InfoBlock = ({ title, items }: { title: string, items: {label: stri
 );
 
 // --- Terminal / Code Block ---
-export const TerminalBlock = ({ code, title }: { code: string, title?: string }) => (
+export const TerminalBlock: React.FC<{ code: string, title?: string }> = ({ code, title }) => (
   <div className="my-8 rounded-xl overflow-hidden bg-[#1e293b] shadow-xl border border-slate-700 font-mono text-sm">
     <div className="bg-[#0f172a] px-4 py-2 flex items-center gap-2 border-b border-slate-700">
       <div className="flex gap-1.5">
@@ -70,7 +70,7 @@ export const TerminalBlock = ({ code, title }: { code: string, title?: string })
 );
 
 // --- Router Diagram (Visualizing Router Function) ---
-export const RouterDiagram = ({ isRTL }: { isRTL: boolean }) => (
+export const RouterDiagram: React.FC<{ isRTL: boolean }> = ({ isRTL }) => (
   <div className="my-8 bg-slate-50 dark:bg-card-dark border border-slate-200 dark:border-card-border rounded-xl p-8 relative overflow-hidden">
     <div className="flex items-center justify-between max-w-2xl mx-auto relative z-10">
       
@@ -122,7 +122,7 @@ export const RouterDiagram = ({ isRTL }: { isRTL: boolean }) => (
 );
 
 // --- Routing Table Component ---
-export const RoutingTable = ({ data, isRTL }: { data: any, isRTL: boolean }) => (
+export const RoutingTable: React.FC<{ data: any, isRTL: boolean }> = ({ data, isRTL }) => (
   <div className="my-8 rounded-xl border border-slate-200 dark:border-card-border overflow-hidden bg-white dark:bg-card-dark shadow-sm">
       <div className="bg-slate-50 dark:bg-[#1e293b] px-4 py-3 border-b border-slate-200 dark:border-card-border flex justify-between items-center">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Routing Table View</span>
@@ -167,7 +167,7 @@ export const RoutingTable = ({ data, isRTL }: { data: any, isRTL: boolean }) => 
 );
 
 // --- Encapsulation Diagram ---
-export const EncapsulationDiagram = ({ isRTL }: { isRTL: boolean }) => {
+export const EncapsulationDiagram: React.FC<{ isRTL: boolean }> = ({ isRTL }) => {
     const Arrow = () => (
         <div className={`text-slate-300 dark:text-slate-600 ${isRTL ? 'rotate-180' : ''}`}>
              <ChevronRight size={24} />
@@ -235,7 +235,7 @@ export const EncapsulationDiagram = ({ isRTL }: { isRTL: boolean }) => {
 }
 
 // --- List Block ---
-export const ListBlock = ({ items }: { items: string[] }) => (
+export const ListBlock: React.FC<{ items: string[] }> = ({ items }) => (
     <ul className="list-disc list-outside ml-6 space-y-2 text-slate-700 dark:text-slate-300 leading-relaxed mb-6">
         {items.map((item, i) => (
             <li key={i}>{item}</li>
@@ -244,7 +244,7 @@ export const ListBlock = ({ items }: { items: string[] }) => (
 );
 
 // --- OSI Table (Detailed 7-Layer Table) ---
-export const OSITable = ({ isRTL }: { isRTL: boolean }) => (
+export const OSITable: React.FC<{ isRTL: boolean }> = ({ isRTL }) => (
   <div className="my-8 overflow-x-auto rounded-xl border border-slate-200 dark:border-card-border shadow-sm">
     <table className="w-full text-sm text-right min-w-[600px]">
       <thead className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold">
@@ -318,7 +318,7 @@ export const OSITable = ({ isRTL }: { isRTL: boolean }) => (
   </div>
 );
 
-export const MnemonicBlock = ({ title, content }: { title: string, content: string }) => (
+export const MnemonicBlock: React.FC<{ title: string, content: string }> = ({ title, content }) => (
   <div className="my-8 bg-gradient-to-r from-blue-50 to-white dark:from-card-dark dark:to-background-dark border-r-4 border-blue-500 shadow-sm rounded-l-lg p-6 flex gap-4">
      <div className="shrink-0 mt-1">
          <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400">
@@ -332,7 +332,7 @@ export const MnemonicBlock = ({ title, content }: { title: string, content: stri
   </div>
 );
 
-export const ScenarioBlock = () => (
+export const ScenarioBlock: React.FC = () => (
     <div className="my-8 py-8 border-y border-dashed border-slate-200 dark:border-slate-700 flex flex-col items-center">
         <div className="flex items-center gap-8 md:gap-16 text-slate-600 dark:text-slate-400">
              <div className="flex flex-col items-center gap-2">

@@ -9,6 +9,7 @@ import { Language, Module, UserProgress, ContentBlock } from './types';
 import TopologyVisualizer from './components/TopologyVisualizer';
 import Quiz from './components/Quiz';
 import BinaryPractice from './components/BinaryPractice'; 
+import { GlossaryView } from './components/GlossaryView';
 import { VideoPlayer, InfoBlock, TerminalBlock, RouterDiagram, RoutingTable, EncapsulationDiagram, ListBlock, OSITable, MnemonicBlock, ScenarioBlock } from './components/LessonComponents';
 import { getAIExplanation } from './services/geminiService';
 
@@ -177,54 +178,6 @@ const App = () => {
     );
   };
 
-  const GlossaryView = () => {
-    const [filter, setFilter] = useState('');
-    const filteredGlossary = GLOSSARY.filter(item => 
-        item.term.toLowerCase().includes(filter.toLowerCase()) || 
-        item.definition.toLowerCase().includes(filter.toLowerCase())
-    );
-
-    return (
-        <div className="max-w-4xl mx-auto px-4 py-8 h-full grow" dir={isRTL ? 'rtl' : 'ltr'}>
-            <button 
-              onClick={() => setView('dashboard')}
-              className="flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white mb-6 font-medium"
-            >
-               <ArrowLeft size={18} className={isRTL ? "rotate-180" : ""} />
-               {t.back}
-            </button>
-            
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-6">{t.glossary}</h1>
-            
-            <div className="relative mb-8">
-                <Icons.Search className={`absolute top-3.5 text-gray-400 w-5 h-5 ${isRTL ? 'right-4' : 'left-4'}`} />
-                <input 
-                  type="text"
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value)}
-                  placeholder="Search terms..."
-                  className={`w-full bg-white dark:bg-card-dark border border-gray-200 dark:border-card-border rounded-xl py-3 px-12 focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm outline-none ${isRTL ? 'text-right' : 'text-left'} text-slate-900 dark:text-white`}
-                />
-            </div>
-
-            <div className="grid gap-4">
-                {filteredGlossary.map((item, idx) => (
-                    <div key={idx} className="bg-white dark:bg-card-dark p-6 rounded-xl shadow-sm border border-gray-100 dark:border-card-border hover:border-blue-200 dark:hover:border-primary/50 transition-colors">
-                        <div className="flex justify-between items-start mb-2">
-                           <h3 className="text-lg font-bold text-primary">{item.term}</h3>
-                           <span className="text-xs font-semibold bg-gray-100 dark:bg-card-border text-gray-600 dark:text-slate-300 px-2 py-1 rounded">{item.category}</span>
-                        </div>
-                        <p className="text-gray-600 dark:text-slate-400 leading-relaxed">{item.definition}</p>
-                    </div>
-                ))}
-                {filteredGlossary.length === 0 && (
-                    <div className="text-center py-12 text-gray-400">No terms found.</div>
-                )}
-            </div>
-        </div>
-    )
-};
-
   const ModuleView = () => {
     if (!activeModule) return null;
     
@@ -354,12 +307,7 @@ const App = () => {
             {/* Main Content Scroll Area */}
             <main className="flex-1 overflow-y-auto relative scroll-smooth">
                 {activeTab === 'quiz' ? (
-                    <div className="max-w-4xl mx-auto p-8">
-                         <button onClick={() => setActiveTab('learn')} className="mb-6 flex items-center gap-2 text-sm font-bold text-primary hover:underline">
-                            <ArrowLeft size={16} className={isRTL ? 'rotate-180' : ''} /> Back to Content
-                         </button>
-                         <Quiz questions={activeModule.questions} onComplete={handleQuizComplete} language={lang} />
-                    </div>
+                     <Quiz questions={activeModule.questions} onComplete={handleQuizComplete} language={lang} />
                 ) : (
                     <div className="max-w-4xl mx-auto px-6 py-10 md:px-12 md:py-14">
                         {/* Title Section */}
@@ -447,7 +395,7 @@ const App = () => {
       <main className="flex-1 flex flex-col">
         {view === 'dashboard' && <Dashboard />}
         {view === 'module' && <ModuleView />}
-        {view === 'glossary' && <GlossaryView />}
+        {view === 'glossary' && <GlossaryView language={lang} onBack={() => setView('dashboard')} />}
         {view === 'practice' && (
              <div className="flex flex-col grow">
                 <div className="max-w-7xl mx-auto px-4 py-4 w-full">

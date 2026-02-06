@@ -149,15 +149,76 @@ const RAW_MODULE_DATA = [
       blocks: [], questions: [], resources: []
     },
     he: {
-      title: 'מודל OSI',
-      description: 'מודל ה-OSI מתאר שבע שכבות שמערכות מחשב משתמשות כדי לתקשר ברשת.',
+      title: 'מודל OSI ותהליך ה-Encapsulation',
+      description: 'למד את היסודות של מודל ה-OSI, תהליך הכימוס (Encapsulation) וההבדל בין תיאוריה למציאות.',
       blocks: [
-        { type: 'text', id: 'intro', title: 'הבנת מודל ה-OSI', content: 'בשיעור זה נסביר מהו מודל ה-OSI בצורה פשוטה וקלה להבנה. זהו אחד המושגים החשובים ביותר בתקשורת נתונים.' },
-        { type: 'text', id: 'encap', title: 'מהי כמוסה (Encapsulation)?', content: 'כדי להבין את מודל ה-OSI, עלינו להבין קודם מהי כמוסת נתונים.' },
-        { type: 'scenario', id: 'scen1' },
-        { type: 'text', id: 'layers_intro', title: '7 השכבות של מודל ה-OSI', content: 'מודל ה-OSI (Open Systems Interconnection) הוא מסגרת המחלקת את תהליך תקשורת הנתונים ל-7 שכבות נפרדות.' },
-        { type: 'osi-table', id: 'osi_tab' },
-        { type: 'mnemonic', id: 'mnem', title: 'טיפ לזיכרון (Mnemonic)', content: 'כדי לזכור את סדר השכבות מלמעלה למטה באנגלית (A-P-S-T-N-D-P):\n"All People Seem To Need Data Processing"' }
+        { 
+            type: 'text', 
+            id: 'encap_prob', 
+            title: '1. הבעיה: איך שולחים מידע בלי שהוא יאבד?', 
+            content: `לפני שנכנסים לשכבות, המאמר מסביר עיקרון קריטי שנקרא Encapsulation (כימוס/עטיפה). תחשבו על זה ככה: אתם רוצים לשלוח מכתב לחבר שמזמין אותו לחתונה.
+
+תרחיש א': כתבתם את המכתב וזרקתם אותו לתיבת הדואר כמו שהוא – דף נייר פתוח, בלי מעטפה, בלי כתובת ובלי בול.
+התוצאה: הדוור לא יידע למי זה שייך. המכתב לא יגיע.
+
+תרחיש ב': הכנסתם את המכתב למעטפה. על המעטפה כתבתם כתובת שולח, כתובת נמען, מיקוד ושמתם בול.
+התוצאה: שירות הדואר יודע בדיוק לאן להעביר את זה.
+
+במחשבים זה אותו דבר: אי אפשר סתם "לזרוק" מידע (כמו הודעת פייסבוק) לכבל הרשת. המחשב חייב לעטוף את המידע הזה ב"מעטפות" דיגיטליות שנקראות Headers (כותרות). תהליך הוספת הכותרות האלו נקרא Encapsulation.` 
+        },
+        {
+            type: 'image',
+            id: 'encap_img',
+            title: 'המחשה: מידע גולמי מול מעטפה (Raw vs Encapsulated)',
+            content: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDAqShFT-htP3v6o7GrPYSBvYy8dGoN_ilk_sUqTTv0ElSUYzT12FzB5f34aMZue1UgNJhIvtZffQ82spgEev26iY0FvMjoeCLkRGykihJnCZHTgmgxlg10wQaxjuKjuyikB9kky0cNriFUhpJ6KXGvglcNfXPGNVN4Qpa86gABOxXx7bMG7bS3yFcU1gJjl98L9LWAdbzv2s-_UkhEheLlumgIJxI0uQxXxn1AdC-ZXN0GsiJ9Nk7PCi5yYBGMY2D0GUeJfXlGkKs'
+        },
+        { 
+            type: 'text', 
+            id: 'why_osi', 
+            title: '2. למה המציאו את מודל OSI?', 
+            content: 'בעבר, כל חברה בנתה ציוד תקשורת משלה עם "שפה" משלה. ציוד של חברה א\' לא יכל לדבר עם ציוד של חברה ב\' כי הם ארזו את המידע בצורה שונה. מודל ה-OSI נוצר כדי ליצור שפה משותפת שכולם – ממתכנתי אפליקציות ועד יצרני כבלים – יוכלו לעבוד לפיה.' 
+        },
+        { 
+            type: 'text', 
+            id: 'layers_7', 
+            title: '3. שבע השכבות (The 7 Layers)', 
+            content: `המודל מחלק את התקשורת ל-7 שכבות. כל שכבה מוסיפה את ה"מעטפה" (Header) שלה ומעבירה הלאה.
+            
+• שכבות 7, 6, 5 (השכבות הגבוהות): האפליקציה, התצוגה והשיחה (Application, Presentation, Session). אלו אחראיות על התוכנה והמידע עצמו.
+
+• שכבה 4 (Transport): אחראית על העברת המידע (למשל פרוטוקול TCP).
+שם היחידה בשכבה זו: Segment.
+
+• שכבה 3 (Network): אחראית על כתובות לוגיות (IP) וניתוב (כאן עובדים ראוטרים).
+שם היחידה בשכבה זו: Packet.
+
+• שכבה 2 (Data Link): אחראית על כתובות פיזיות (MAC) ומעבר בין רכיבים סמוכים (כאן עובדים מתגים/Switches).
+שם היחידה בשכבה זו: Frame.
+
+• שכבה 1 (Physical): הכבלים והאותות החשמליים עצמם.` 
+        },
+        {
+            type: 'osi-table',
+            id: 'osi_table_visual'
+        },
+        { 
+            type: 'text', 
+            id: 'osi_tcp', 
+            title: '4. המציאות מול התיאוריה (OSI vs TCP/IP)', 
+            content: 'מודל ה-OSI הוא מודל תיאורטי מצוין ללימוד, אבל בפועל האינטרנט עובד לפי מודל שנקרא TCP/IP. במודל TCP/IP המודרני יש רק 5 שכבות (הוא מאחד את שכבות 5, 6 ו-7 לשכבה אחת גדולה של "אפליקציה"). עם זאת, אנשי רשת עדיין משתמשים במונחי OSI (למשל: "בעיה ב-Layer 2").' 
+        },
+        { 
+            type: 'info', 
+            id: 'summary', 
+            title: 'סיכום למבחן (נקודות זהב)', 
+            data: [
+                { label: 'Encapsulation', text: 'התהליך שבו מידע נעטף ב-Headers (כותרות) כדי שהרשת תדע לאן לשלוח אותו.' },
+                { label: 'תפקיד המודל', text: 'ליצור סטנדרט אחיד (Interoperability) כדי שמכשירים שונים יוכלו לדבר זה עם זה.' },
+                { label: 'שכבה 4 (PDU)', text: 'Segment' },
+                { label: 'שכבה 3 (PDU)', text: 'Packet (כאן עובד Router)' },
+                { label: 'שכבה 2 (PDU)', text: 'Frame (כאן עובד Switch)' }
+            ] 
+        }
       ],
       resources: [],
       questions: []
@@ -255,12 +316,97 @@ export const getModules = (language: Language): Module[] => {
 
 export const MODULES = getModules(Language.EN);
 export const GLOSSARY: GlossaryTerm[] = [
-    { term: "Bandwidth", definition: "The maximum amount of data transmitted over an internet connection in a given amount of time.", category: "Performance" },
-    { term: "IP Address", definition: "A unique string of numbers separated by periods that identifies each computer using the Internet Protocol to communicate over a network.", category: "Addressing" },
-    { term: "Latency", definition: "The time it takes for data to pass from one point on a network to another.", category: "Performance" },
-    { term: "Router", definition: "A device that forwards data packets between computer networks.", category: "Hardware" },
-    { term: "Switch", definition: "A device that connects devices within a network (LAN) and uses MAC addresses to forward data.", category: "Hardware" },
-    { term: "Protocol", definition: "A set of rules governing the exchange or transmission of data between devices.", category: "Fundamentals" },
-    { term: "Firewall", definition: "A network security device that monitors and filters incoming and outgoing network traffic.", category: "Security" },
-    { term: "DNS", definition: "Domain Name System. Translates domain names (like google.com) to IP addresses.", category: "Application" }
+    { 
+        term: "ACL", 
+        definition: "Access Control List. A set of rules that filters network traffic.",
+        hebrewDefinition: "רשימת בקרת גישה. סט של חוקים המסנן תעבורת רשת.",
+        category: "Security",
+        tags: []
+    },
+    { 
+        term: "ARP", 
+        definition: "A communication protocol used for discovering the link layer address, such as a MAC address, associated with a given internet layer address, typically an IPv4 address.", 
+        hebrewDefinition: "פרוטוקול המיפוי (ARP) הוא פרוטוקול תקשורת המשמש לגילוי כתובת שכבת הקישור, כגון כתובת MAC, המשוייכת לכתובת שכבת האינטרנט נתונה, בדרך כלל כתובת IPv4.",
+        category: "Protocol",
+        tags: ["Layer 2/3"],
+        relatedTerms: ["IP Address", "MAC Address", "RARP"],
+        visualType: "arp-table"
+    },
+    { 
+        term: "BGP", 
+        definition: "Border Gateway Protocol. A standardized exterior gateway protocol designed to exchange routing and reachability information among autonomous systems (AS) on the Internet.",
+        hebrewDefinition: "פרוטוקול שער גבול. פרוטוקול ניתוב חיצוני שנועד להחליף מידע ניתוב והגעה בין מערכות אוטונומיות (AS) באינטרנט.",
+        category: "Routing",
+        tags: ["Layer 3"]
+    },
+    { 
+        term: "Bandwidth", 
+        definition: "The maximum amount of data transmitted over an internet connection in a given amount of time.", 
+        hebrewDefinition: "כמות הנתונים המקסימלית המועברת בחיבור אינטרנט בפרק זמן נתון.",
+        category: "General",
+        tags: ["Performance"]
+    },
+    { 
+        term: "CIDR", 
+        definition: "Classless Inter-Domain Routing. A method for allocating IP addresses and for IP routing.",
+        hebrewDefinition: "שיטה להקצאת כתובות IP וניתוב IP.",
+        category: "Addressing",
+        tags: ["Layer 3"]
+    },
+    { 
+        term: "DHCP", 
+        definition: "Dynamic Host Configuration Protocol. A client/server protocol that automatically provides an Internet Protocol (IP) host with its IP address and other related configuration information.",
+        hebrewDefinition: "פרוטוקול תצורת מארח דינמי. פרוטוקול לקוח/שרת המספק אוטומטית למארח IP את כתובת ה-IP שלו ומידע תצורה אחר.",
+        category: "Protocol",
+        tags: ["Layer 7"]
+    },
+    {
+        term: "DNS",
+        definition: "Domain Name System. Translates domain names to IP addresses so browsers can load Internet resources.",
+        hebrewDefinition: "מערכת שמות מתחם. מתרגמת שמות תחום לכתובות IP כדי שדפדפנים יוכלו לטעון משאבי אינטרנט.",
+        category: "Protocol",
+        tags: ["Layer 7"]
+    },
+    { 
+        term: "IP Address", 
+        definition: "A unique string of numbers separated by periods that identifies each computer using the Internet Protocol to communicate over a network.", 
+        hebrewDefinition: "מחרוזת ייחודית של מספרים המופרדים בנקודות המזהה כל מחשב המשתמש בפרוטוקול האינטרנט לתקשורת ברשת.",
+        category: "Addressing",
+        tags: ["Layer 3"]
+    },
+    { 
+        term: "Latency", 
+        definition: "The time it takes for data to pass from one point on a network to another.", 
+        hebrewDefinition: "הזמן שלוקח לנתונים לעבור מנקודה אחת ברשת לאחרת.",
+        category: "Performance",
+        tags: []
+    },
+    { 
+        term: "MAC Address", 
+        definition: "A unique identifier assigned to a network interface controller (NIC) for use as a network address in communications within a network segment.", 
+        hebrewDefinition: "מזהה ייחודי המוקצה לבקר ממשק רשת (NIC) לשימוש ככתובת רשת בתקשורת בתוך מקטע רשת.",
+        category: "Hardware",
+        tags: ["Layer 2"]
+    },
+    { 
+        term: "Router", 
+        definition: "A device that forwards data packets between computer networks.", 
+        hebrewDefinition: "מכשיר המעביר חבילות נתונים בין רשתות מחשבים.",
+        category: "Hardware",
+        tags: ["Layer 3"]
+    },
+    { 
+        term: "Switch", 
+        definition: "A device that connects devices within a network (LAN) and uses MAC addresses to forward data.", 
+        hebrewDefinition: "מכשיר המחבר מכשירים בתוך רשת (LAN) ומשתמש בכתובות MAC להעברת נתונים.",
+        category: "Hardware",
+        tags: ["Layer 2"]
+    },
+    { 
+        term: "Firewall", 
+        definition: "A network security device that monitors and filters incoming and outgoing network traffic.", 
+        hebrewDefinition: "מכשיר אבטחת רשת המנטר ומסנן תעבורת רשת נכנסת ויוצאת.",
+        category: "Security",
+        tags: []
+    }
 ];
