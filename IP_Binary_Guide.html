@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering IP Addresses & Binary</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .neon-text {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        .bit-switch {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bit-on {
+            background-color: #10b981;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
+            border-color: #34d399;
+        }
+
+        .bit-off {
+            background-color: #1e293b;
+            border-color: #475569;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Force LTR for binary sections and IP addresses */
+        .force-ltr {
+            direction: ltr;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- ICONS ---
+        const IconBase = ({ children, size = 24, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+        );
+        const CalculatorIcon = (props) => <IconBase {...props}><rect x="4" y="2" width="16" height="20" rx="2" /><line x1="8" x2="16" y1="6" y2="6" /><line x1="16" x2="16" y1="14" y2="18" /><path d="M16 10h.01" /><path d="M12 10h.01" /><path d="M8 10h.01" /><path d="M12 14h.01" /><path d="M8 14h.01" /><path d="M12 18h.01" /><path d="M8 18h.01" /></IconBase>;
+        const CheckCircle = (props) => <IconBase {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></IconBase>;
+        const XCircle = (props) => <IconBase {...props}><circle cx="12" cy="12" r="10" /><line x1="15" x2="9" y1="9" y2="15" /><line x1="9" x2="15" y1="9" y2="15" /></IconBase>;
+        const InfoIcon = (props) => <IconBase {...props}><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></IconBase>;
+        const ArrowRight = (props) => <IconBase {...props}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></IconBase>;
+        const BoxIcon = (props) => <IconBase {...props}><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></IconBase>;
+
+        // --- COMPONENTS ---
+
+        // 1. New: IP Foundations (Interactive Explainer)
+        const IPFoundations = () => {
+            const [step, setStep] = useState(0);
+
+            const steps = [
+                {
+                    title: "האטום של המחשב: הביט (Bit)",
+                    content: (
+                        <div className="text-center">
+                            <p className="text-lg text-slate-300 mb-6">
+                                מחשבים לא מבינים מספרים כמו 192 או 168. הם מבינים רק שני מצבים:<br />
+                                <span className="text-green-400 font-bold">יש חשמל (1)</span> או <span className="text-slate-500 font-bold">אין חשמל (0)</span>.
+                                <br />דבר זה נקרא <strong>Bit</strong> (Binary Digit).
+                            </p>
+                            <div className="flex justify-center gap-8 items-center bg-slate-900/50 p-8 rounded-xl border border-slate-700 max-w-md mx-auto">
+                                <div className="text-center">
+                                    <div className="w-16 h-16 rounded-full bg-slate-800 border-4 border-slate-600 flex items-center justify-center text-2xl font-mono text-slate-500 mb-2 shadow-inner">0</div>
+                                    <span className="text-sm text-slate-500">OFF</span>
+                                </div>
+                                <div className="text-2xl text-slate-500">vs</div>
+                                <div className="text-center">
+                                    <div className="w-16 h-16 rounded-full bg-green-500 border-4 border-green-300 flex items-center justify-center text-2xl font-mono text-white mb-2 shadow-[0_0_20px_rgba(34,197,94,0.6)]">1</div>
+                                    <span className="text-sm text-green-400">ON</span>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                },
+                {
+                    title: "האוקטטה (Octet)",
+                    content: (
+                        <div className="text-center">
+                            <p className="text-lg text-slate-300 mb-6">
+                                ביט אחד לא מספיק כדי לייצג הרבה מידע. לכן, אנחנו מקבצים אותם.<br />
+                                בתקשורת, אנחנו משתמשים בקבוצה של <strong>8 ביטים</strong> שנקראת <strong>אוקטטה</strong> (או Byte).
+                            </p>
+                            {/* Force LTR for binary representation */}
+                            <div className="force-ltr flex justify-center gap-2 mb-4">
+                                {[1, 1, 1, 1, 1, 1, 1, 1].map((b, i) => (
+                                    <div key={i} className="w-10 h-12 bg-slate-800 border border-slate-600 rounded flex items-center justify-center font-mono text-slate-400">
+                                        ?
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-yellow-300 text-sm bg-yellow-900/20 p-2 rounded inline-block">
+                                אוקטטה אחת יכולה להכיל ערך שבין 0 ל-255.
+                            </p>
+                        </div>
+                    )
+                },
+                {
+                    title: "כתובת IP שלמה",
+                    content: (
+                        <div className="text-center">
+                            <p className="text-lg text-slate-300 mb-6">
+                                כתובת IPv4 מורכבת מ-<strong>4 אוקטטות</strong> המופרדות בנקודה.<br />
+                                סה"כ: 32 ביטים (4 כפול 8).
+                            </p>
+
+                            {/* LTR Wrapper for IP visualization */}
+                            <div className="force-ltr inline-block">
+                                <div className="flex flex-col md:flex-row items-center justify-center gap-4 bg-slate-900 p-6 rounded-xl border border-slate-700">
+                                    <div className="flex gap-1 items-center">
+                                        <div className="bg-blue-600 px-3 py-2 rounded text-white font-mono">192</div>
+                                        <div className="text-white font-bold">.</div>
+                                        <div className="bg-blue-600 px-3 py-2 rounded text-white font-mono">168</div>
+                                        <div className="text-white font-bold">.</div>
+                                        <div className="bg-blue-600 px-3 py-2 rounded text-white font-mono">1</div>
+                                        <div className="text-white font-bold">.</div>
+                                        <div className="bg-blue-600 px-3 py-2 rounded text-white font-mono">10</div>
+                                    </div>
+                                    <div className="text-slate-500 text-2xl hidden md:block">=</div>
+                                    <div className="text-xs md:text-sm font-mono text-emerald-400 tracking-widest break-all">
+                                        11000000.10101000.00000001.00001010
+                                    </div>
+                                </div>
+                                <div className="mt-4 grid grid-cols-4 gap-2 text-xs text-slate-500 max-w-md mx-auto">
+                                    <div>Octet 1</div>
+                                    <div>Octet 2</div>
+                                    <div>Octet 3</div>
+                                    <div>Octet 4</div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
+            ];
+
+            return (
+                <div className="glass-panel p-8 rounded-2xl mb-12 border-t-4 border-blue-500">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="bg-blue-500/20 p-3 rounded-xl text-blue-400">
+                            <InfoIcon size={32} />
+                        </div>
+                        <h2 className="text-2xl font-bold text-white">איך כתובת נולדת? (יסודות)</h2>
+                    </div>
+
+                    <div className="min-h-[250px] flex items-center justify-center animate-fade-in key={step}">
+                        {steps[step].content}
+                    </div>
+
+                    <div className="flex justify-between mt-8 border-t border-slate-700 pt-4 relative">
+                        {/* Title positioned absolutely to center it relative to container, handling RTL */}
+                        <div className="text-xl font-bold text-white mb-2 absolute top-4 left-1/2 -translate-x-1/2 hidden md:block">
+                            {steps[step].title}
+                        </div>
+
+                        <button
+                            onClick={() => setStep(Math.max(0, step - 1))}
+                            disabled={step === 0}
+                            className="px-4 py-2 rounded text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400"
+                        >
+                            הקודם
+                        </button>
+
+                        <div className="flex gap-2 items-center md:hidden">
+                            {steps.map((_, i) => (
+                                <div key={i} className={`w-2 h-2 rounded-full ${i === step ? 'bg-blue-500' : 'bg-slate-700'}`}></div>
+                            ))}
+                        </div>
+
+                        <button
+                            onClick={() => setStep(Math.min(steps.length - 1, step + 1))}
+                            disabled={step === steps.length - 1}
+                            className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-500 disabled:opacity-30 disabled:bg-slate-700"
+                        >
+                            הבא
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        // 2. The Binary Lab (Updated LTR)
+        const BinaryLab = () => {
+            const [bits, setBits] = useState([0, 0, 0, 0, 0, 0, 0, 0]); // 8 bits
+
+            const toggleBit = (index) => {
+                const newBits = [...bits];
+                newBits[index] = newBits[index] === 0 ? 1 : 0;
+                setBits(newBits);
+            };
+
+            const calculateDecimal = () => {
+                return bits.reduce((acc, bit, index) => {
+                    const power = 7 - index;
+                    return acc + (bit * Math.pow(2, power));
+                }, 0);
+            };
+
+            const powers = [128, 64, 32, 16, 8, 4, 2, 1];
+
+            return (
+                <div className="glass-panel p-8 rounded-2xl mb-12">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="bg-emerald-500/20 p-3 rounded-xl text-emerald-400">
+                            <CalculatorIcon size={32} />
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-white">המעבדה הבינארית</h2>
+                            <p className="text-slate-400">הדליקו מתגים כדי לראות איך המספר משתנה. שימו לב: 128 תמיד משמאל.</p>
+                        </div>
+                    </div>
+
+                    {/* The Switches - FORCED LTR */}
+                    <div className="force-ltr grid grid-cols-8 gap-2 md:gap-4 mb-8">
+                        {bits.map((bit, index) => (
+                            <div key={index} className="flex flex-col items-center gap-3">
+                                <span className={`text-xs md:text-sm font-bold font-mono ${bit ? 'text-emerald-400' : 'text-slate-600'}`}>
+                                    {powers[index]}
+                                </span>
+                                <button
+                                    onClick={() => toggleBit(index)}
+                                    className={`
+                                        w-8 h-12 md:w-12 md:h-16 rounded-lg border-2 flex items-center justify-center text-xl font-bold font-mono bit-switch
+                                        ${bit ? 'bit-on text-white' : 'bit-off text-slate-500'}
+                                    `}
+                                >
+                                    {bit}
+                                </button>
+                                <span className="text-[10px] text-slate-500 hidden md:block">2^{7 - index}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* The Result */}
+                    <div className="bg-slate-900 rounded-xl p-6 flex flex-col md:flex-row items-center justify-between border border-slate-700">
+                        <div className="text-slate-400 mb-4 md:mb-0 force-ltr text-right md:text-left w-full md:w-auto">
+                            <span className="block text-sm mb-1 text-right md:text-left rtl:text-right">החישוב המתמטי:</span>
+                            <div className="font-mono text-xs md:text-sm text-blue-300">
+                                {bits.map((bit, i) => bit ? powers[i] : null).filter(n => n !== null).join(' + ') || '0'} =
+                            </div>
+                        </div>
+                        <div className="text-center border-t md:border-t-0 md:border-l border-slate-700 pt-4 md:pt-0 md:pl-8 w-full md:w-auto">
+                            <span className="block text-xs text-slate-500 uppercase tracking-widest mb-1">Decimal Value</span>
+                            <span className="text-5xl font-black text-white font-mono">{calculateDecimal()}</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // 3. Practice Arena (Updated LTR)
+        const PracticeArena = () => {
+            const [mode, setMode] = useState('dec2bin'); // 'dec2bin' or 'bin2dec'
+            const [target, setTarget] = useState(0);
+            const [userBits, setUserBits] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
+            const [userDecInput, setUserDecInput] = useState('');
+            const [feedback, setFeedback] = useState(null); // 'correct', 'wrong', null
+            const [streak, setStreak] = useState(0);
+
+            const generateQuestion = () => {
+                const newNum = Math.floor(Math.random() * 256);
+                setTarget(newNum);
+                setUserBits([0, 0, 0, 0, 0, 0, 0, 0]);
+                setUserDecInput('');
+                setFeedback(null);
+            };
+
+            useEffect(() => {
+                generateQuestion();
+            }, []);
+
+            const checkDec2Bin = () => {
+                const currentVal = userBits.reduce((acc, bit, i) => acc + (bit * Math.pow(2, 7 - i)), 0);
+                if (currentVal === target) {
+                    setFeedback('correct');
+                    setStreak(s => s + 1);
+                    setTimeout(generateQuestion, 1500);
+                } else {
+                    setFeedback('wrong');
+                    setStreak(0);
+                }
+            };
+
+            const checkBin2Dec = () => {
+                if (parseInt(userDecInput) === target) {
+                    setFeedback('correct');
+                    setStreak(s => s + 1);
+                    setTimeout(generateQuestion, 1500);
+                } else {
+                    setFeedback('wrong');
+                    setStreak(0);
+                }
+            };
+
+            const toggleUserBit = (index) => {
+                const newBits = [...userBits];
+                newBits[index] = newBits[index] === 0 ? 1 : 0;
+                setUserBits(newBits);
+            };
+
+            const targetBinaryString = target.toString(2).padStart(8, '0');
+
+            return (
+                <div className="glass-panel p-8 rounded-2xl border-t-4 border-purple-500">
+                    <div className="flex justify-between items-start mb-8">
+                        <div>
+                            <h2 className="text-2xl font-bold text-white mb-2">זירת התרגול</h2>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => { setMode('dec2bin'); generateQuestion(); }}
+                                    className={`px-3 py-1 rounded text-sm font-bold transition-colors ${mode === 'dec2bin' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+                                >
+                                    עשרוני לבינארי
+                                </button>
+                                <button
+                                    onClick={() => { setMode('bin2dec'); generateQuestion(); }}
+                                    className={`px-3 py-1 rounded text-sm font-bold transition-colors ${mode === 'bin2dec' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+                                >
+                                    בינארי לעשרוני
+                                </button>
+                            </div>
+                        </div>
+                        <div className="bg-slate-900 px-4 py-2 rounded-lg text-center border border-slate-700">
+                            <span className="text-xs text-slate-500 block">רצף הצלחות</span>
+                            <span className="text-xl font-bold text-yellow-400">{streak} 🔥</span>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col items-center justify-center min-h-[200px]">
+
+                        {/* Question Display */}
+                        <div className="mb-8 text-center">
+                            <span className="text-slate-400 text-sm mb-2 block">המשימה שלך: המר את המספר</span>
+                            <div className="text-5xl font-black text-white font-mono bg-slate-800/50 px-8 py-4 rounded-xl border border-slate-700 force-ltr">
+                                {mode === 'dec2bin' ? target : targetBinaryString}
+                            </div>
+                        </div>
+
+                        {/* Interaction Area */}
+                        {mode === 'dec2bin' ? (
+                            <div className="w-full">
+                                <div className="force-ltr grid grid-cols-8 gap-2 mb-6 max-w-2xl mx-auto">
+                                    {userBits.map((bit, index) => (
+                                        <div key={index} className="flex flex-col items-center gap-1">
+                                            <span className="text-[10px] text-slate-500">{Math.pow(2, 7 - index)}</span>
+                                            <button
+                                                onClick={() => toggleUserBit(index)}
+                                                className={`w-full aspect-square rounded border-2 font-mono font-bold text-lg transition-all ${bit ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-800 border-slate-600 text-slate-500'}`}
+                                            >
+                                                {bit}
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="text-center font-mono text-purple-300 mb-4">
+                                    ערך נוכחי: {userBits.reduce((acc, bit, i) => acc + (bit * Math.pow(2, 7 - i)), 0)}
+                                </div>
+                                <button onClick={checkDec2Bin} className="w-full max-w-xs mx-auto block bg-white text-purple-900 font-bold py-3 rounded-lg hover:bg-purple-50 transition-colors">
+                                    בדיקה
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="w-full max-w-md">
+                                <input
+                                    type="number"
+                                    value={userDecInput}
+                                    onChange={(e) => setUserDecInput(e.target.value)}
+                                    placeholder="הכנס ערך עשרוני..."
+                                    className="w-full bg-slate-900 border border-slate-600 text-white p-4 rounded-lg text-center text-xl font-mono focus:outline-none focus:border-purple-500 mb-4"
+                                    onKeyDown={(e) => e.key === 'Enter' && checkBin2Dec()}
+                                />
+                                <button onClick={checkBin2Dec} className="w-full bg-white text-purple-900 font-bold py-3 rounded-lg hover:bg-purple-50 transition-colors">
+                                    בדיקה
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Feedback */}
+                        {feedback && (
+                            <div className={`mt-6 flex items-center gap-2 text-lg font-bold ${feedback === 'correct' ? 'text-emerald-400' : 'text-red-400'} animate-bounce`}>
+                                {feedback === 'correct' ? <CheckCircle /> : <XCircle />}
+                                {feedback === 'correct' ? 'כל הכבוד! תשובה נכונה' : 'לא בדיוק... נסה שוב!'}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const IPv4Structure = () => (
+            <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-700 mb-8">
+                <h3 className="text-xl font-bold text-white mb-4">מבנה כתובת IPv4</h3>
+                <div className="flex flex-col md:flex-row items-center gap-6 justify-center">
+                    <div className="text-center">
+                        <div className="text-xs text-slate-500 mb-1 uppercase tracking-widest">Human Friendly</div>
+                        {/* LTR for IP address */}
+                        <div className="force-ltr bg-slate-800 px-6 py-3 rounded-lg text-2xl font-mono text-white border-2 border-blue-500/30">
+                            192.168.1.10
+                        </div>
+                    </div>
+                    <div className="text-2xl text-slate-600 hidden md:block">➜</div>
+                    <div className="text-center">
+                        <div className="text-xs text-slate-500 mb-1 uppercase tracking-widest">Machine Reality (32 Bits)</div>
+                        {/* LTR for binary representation */}
+                        <div className="force-ltr bg-slate-800 px-6 py-3 rounded-lg text-sm md:text-lg font-mono text-emerald-400 border-2 border-emerald-500/30">
+                            <span className="text-emerald-200">11000000</span>.
+                            <span className="text-emerald-400">10101000</span>.
+                            <span className="text-emerald-200">00000001</span>.
+                            <span className="text-emerald-400">00001010</span>
+                        </div>
+                    </div>
+                </div>
+                <p className="text-center text-slate-400 text-sm mt-4 max-w-2xl mx-auto">
+                    כל חלק בכתובת (בין הנקודות) נקרא <strong>אוקטטה</strong> (Octet) כי הוא מכיל בדיוק 8 ביטים.
+                    לכן הערך המקסימלי הוא 255 (כאשר כל ה-8 ביטים דולקים).
+                </p>
+            </div>
+        );
+
+        const IPv6Brief = () => (
+            <div className="bg-gradient-to-r from-slate-900 to-slate-800 p-6 rounded-xl border border-slate-700/50 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h3 className="text-xl font-bold text-white mb-2">ומה לגבי IPv6?</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed max-w-lg">
+                        העולם נגמר מכתובות IPv4 (רק 4.3 מיליארד). IPv6 הוא הדור הבא.
+                        במקום 32 ביטים, יש לו <strong>128 ביטים</strong>!
+                        בגלל שזה מספר ענק, אנחנו לא משתמשים בעשרוני אלא בבסיס <strong>הקסדצימלי</strong> (0-9 ו-A-F).
+                    </p>
+                </div>
+                <div className="bg-black/30 p-4 rounded-lg font-mono text-xs text-yellow-200/80 border border-yellow-500/20 whitespace-nowrap force-ltr">
+                    2001:0db8:85a3:0000:0000:8a2e:0370:7334
+                </div>
+            </div>
+        );
+
+        // --- MAIN APP ---
+
+        const App = () => {
+            return (
+                <div className="min-h-screen bg-slate-950 pb-20">
+                    {/* Header */}
+                    <div className="bg-gradient-to-b from-blue-900/20 to-slate-950 pt-20 pb-12 px-6 border-b border-white/5 mb-12">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <div className="inline-block p-2 px-4 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold mb-4">
+                                כלי עזר לסטודנטים
+                            </div>
+                            <h1 className="text-4xl md:text-6xl font-black text-white mb-4 neon-text">
+                                אומנות הבינארית ו-IP
+                            </h1>
+                            <p className="text-xl text-slate-400">
+                                הבסיס לכל תקשורת מחשבים: איך מחשבים מדברים במספרים.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="max-w-5xl mx-auto px-6 space-y-12">
+
+                        {/* New Foundations Section */}
+                        <IPFoundations />
+
+                        <IPv4Structure />
+
+                        {/* Interactive Lab */}
+                        <BinaryLab />
+
+                        <div className="grid md:grid-cols-2 gap-8 items-start">
+                            <div className="space-y-4">
+                                <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                    <span className="bg-emerald-500 w-2 h-8 rounded-full"></span>
+                                    למה 128, 64, 32?
+                                </h3>
+                                <p className="text-slate-300 leading-relaxed">
+                                    מחשבים עובדים בבסיס 2 (חשמל: יש זרם / אין זרם).
+                                    כל ספרה זזה שמאלה מכפילה את הערך פי 2.
+                                    <br />
+                                    זה בדיוק כמו בבסיס 10 שלנו (1, 10, 100), רק שבמחשב זה (1, 2, 4, 8...).
+                                </p>
+                                <ul className="text-slate-400 text-sm space-y-2 font-mono bg-slate-900 p-4 rounded-lg border border-slate-800 force-ltr">
+                                    <li className="flex justify-between border-b border-slate-800 pb-1"><span>2^0</span> <span>1</span></li>
+                                    <li className="flex justify-between border-b border-slate-800 pb-1"><span>2^1</span> <span>2</span></li>
+                                    <li className="flex justify-between border-b border-slate-800 pb-1"><span>2^2</span> <span>4</span></li>
+                                    <li className="flex justify-between border-b border-slate-800 pb-1"><span>2^3</span> <span>8</span></li>
+                                    <li className="flex justify-between border-b border-slate-800 pb-1"><span>2^4</span> <span>16</span></li>
+                                    <li className="flex justify-between border-b border-slate-800 pb-1"><span>2^5</span> <span>32</span></li>
+                                    <li className="flex justify-between border-b border-slate-800 pb-1"><span>2^6</span> <span>64</span></li>
+                                    <li className="flex justify-between"><span>2^7</span> <span>128</span></li>
+                                </ul>
+                            </div>
+                            <PracticeArena />
+                        </div>
+
+                        <IPv6Brief />
+                    </div>
+
+                    <footer className="text-center text-slate-600 py-12 mt-12 text-sm border-t border-slate-900/50 bg-slate-950">
+                        <p>© 2026 Intro to Networking | Binary Mastery Module</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>

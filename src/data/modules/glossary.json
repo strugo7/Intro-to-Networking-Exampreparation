@@ -1,0 +1,201 @@
+[
+    {
+        "term": "Encapsulation",
+        "definition": "The process where data from an upper layer is wrapped with headers (and trailers) of the current layer before being passed down to the next layer. It acts like an envelope for the data.",
+        "hebrewDefinition": "תהליך עטיפת המידע בכותרות (Headers) במעבר משכבה עליונה לתחתונה, בדומה להכנסת מכתב למעטפה.",
+        "category": "Concept",
+        "tags": [
+            "Layer 1-7"
+        ]
+    },
+    {
+        "term": "Router",
+        "definition": "A device that connects different networks and determines the best path for forwarding packets to their destination using routing tables.",
+        "hebrewDefinition": "רכיב תקשורת המחבר בין רשתות שונות ומבצע החלטות ניתוב (Routing) להעברת חבילות ליעדן.",
+        "category": "Hardware",
+        "tags": [
+            "Layer 3"
+        ]
+    },
+    {
+        "term": "Switch",
+        "definition": "A Layer 2 device that connects devices within a LAN. It learns MAC addresses to forward frames only to the specific port where the destination device is connected.",
+        "hebrewDefinition": "מתג: רכיב חכם המחבר מכשירים ברשת מקומית (LAN), לומד כתובות MAC ומעביר מידע רק לפורט הרלוונטי (בניגוד ל-Hub שמציף לכולם).",
+        "category": "Hardware",
+        "tags": [
+            "Layer 2"
+        ]
+    },
+    {
+        "term": "TCP",
+        "definition": "Transmission Control Protocol. A connection-oriented, reliable transport layer protocol that provides flow control, congestion control, and error recovery.",
+        "hebrewDefinition": "פרוטוקול תעבורה אמין ומבוסס חיבור. מבטיח שהמידע יגיע בשלמותו ובסדר הנכון, כולל מנגנוני בקרת זרימה ועומס.",
+        "category": "Protocol",
+        "tags": [
+            "Layer 4"
+        ]
+    },
+    {
+        "term": "UDP",
+        "definition": "User Datagram Protocol. A connectionless, 'best effort' transport layer protocol. It is faster than TCP but unreliable (no guarantee of delivery or order).",
+        "hebrewDefinition": "פרוטוקול תעבורה מהיר אך לא אמין (Best Effort). אינו מבטיח הגעה או סדר של הודעות, משמש לרוב לשיחות וידאו וסטרימינג.",
+        "category": "Protocol",
+        "tags": [
+            "Layer 4"
+        ]
+    },
+    {
+        "term": "IP Address",
+        "definition": "A logical 32-bit address (in IPv4) assigned to a device interface, used to identify the host and the network it belongs to.",
+        "hebrewDefinition": "כתובת לוגית בת 32 ביט (ב-IPv4) המזהה רכיב ברשת ומאפשרת ניתוב מידע אליו. מורכבת מזהה רשת ומזהה מארח.",
+        "category": "Concept",
+        "tags": [
+            "Layer 3"
+        ]
+    },
+    {
+        "term": "MAC Address",
+        "definition": "A 48-bit physical address burned into the network interface card (NIC). It is globally unique for every device.",
+        "hebrewDefinition": "כתובת פיזית ייחודית צרובה בחומרה (כרטיס הרשת), באורך 48 ביט. משמשת לזיהוי בשכבת הערוץ (LAN).",
+        "category": "Hardware",
+        "tags": [
+            "Layer 2"
+        ]
+    },
+    {
+        "term": "ARP",
+        "definition": "Address Resolution Protocol. Used to map a known IP address to a physical MAC address within a local network.",
+        "hebrewDefinition": "פרוטוקול המתרגם כתובת IP (לוגית) לכתובת MAC (פיזית) ברשת המקומית.",
+        "category": "Protocol",
+        "tags": [
+            "Layer 2",
+            "Layer 3"
+        ]
+    },
+    {
+        "term": "DHCP",
+        "definition": "Dynamic Host Configuration Protocol. A protocol used to automatically assign IP addresses and other network configuration parameters to devices.",
+        "hebrewDefinition": "פרוטוקול להקצאה דינמית ואוטומטית של כתובות IP והגדרות רשת נוספות (כמו שער ברירת מחדל) למחשבים ברשת.",
+        "category": "Protocol",
+        "tags": [
+            "Application"
+        ]
+    },
+    {
+        "term": "DNS",
+        "definition": "Domain Name System. A distributed database that translates human-readable domain names (like www.tau.ac.il) into IP addresses.",
+        "hebrewDefinition": "מערכת שמות המתחם. ספר הטלפונים של האינטרנט, מתרגם שמות דומיין (כמו גוגל) לכתובות IP.",
+        "category": "Protocol",
+        "tags": [
+            "Application"
+        ]
+    },
+    {
+        "term": "HTTP",
+        "definition": "HyperText Transfer Protocol. The application layer protocol used for transmitting web pages over the internet. It is stateless and transaction-based.",
+        "hebrewDefinition": "הפרוטוקול המרכזי של ה-Web, משמש להעברת דפי אינטרנט. מבוסס על מודל בקשה-תגובה (Request-Response).",
+        "category": "Protocol",
+        "tags": [
+            "Application"
+        ]
+    },
+    {
+        "term": "NAT",
+        "definition": "Network Address Translation. A method that re-maps one IP address space into another, allowing a private network to use a single public IP address to access the internet.",
+        "hebrewDefinition": "תרגום כתובות רשת. מאפשר לרשת שלמה של כתובות פרטיות לצאת לאינטרנט דרך כתובת ציבורית אחת.",
+        "category": "Protocol",
+        "tags": [
+            "Layer 3"
+        ]
+    },
+    {
+        "term": "3-Way Handshake",
+        "definition": "The process used by TCP to establish a connection between client and server involving three steps: SYN, SYN-ACK, and ACK.",
+        "hebrewDefinition": "לחיצת יד משולשת. התהליך ליצירת קשר בפרוטוקול TCP הכולל שלושה שלבים: SYN, SYN-ACK, ACK.",
+        "category": "Concept",
+        "tags": [
+            "Layer 4"
+        ]
+    },
+    {
+        "term": "RTT",
+        "definition": "Round Trip Time. The time it takes for a signal to be sent plus the time it takes for an acknowledgment of that signal to be received.",
+        "hebrewDefinition": "זמן הלוך-חזור. הזמן שלוקח לחבילה להגיע ליעד ולתשובה לחזור למקור.",
+        "category": "Concept",
+        "tags": [
+            "Performance"
+        ]
+    },
+    {
+        "term": "Socket",
+        "definition": "An interface between the application layer and the transport layer, acting like a 'door' for sending and receiving data.",
+        "hebrewDefinition": "ממשק תוכנה המשמש כדלת בין שכבת האפליקציה לשכבת התעבורה, דרכו נשלח ומתקבל מידע.",
+        "category": "Concept",
+        "tags": [
+            "Programming"
+        ]
+    },
+    {
+        "term": "Port",
+        "definition": "A 16-bit number identifying a specific process or application on a host (e.g., Port 80 for Web, Port 25 for Mail).",
+        "hebrewDefinition": "מספר המזהה את האפליקציה או התהליך הספציפי במחשב שאליו מיועד המידע (למשל פורט 80 לדפדפן).",
+        "category": "Concept",
+        "tags": [
+            "Layer 4"
+        ]
+    },
+    {
+        "term": "Subnet Mask",
+        "definition": "A 32-bit number that separates the IP address into the network and host addresses.",
+        "hebrewDefinition": "מסכת רשת. רצף ביטים המגדיר איזה חלק מכתובת ה-IP שייך לרשת ואיזה חלק שייך למארח.",
+        "category": "Concept",
+        "tags": [
+            "Layer 3"
+        ]
+    },
+    {
+        "term": "ICMP",
+        "definition": "Internet Control Message Protocol. Used by network devices to send error messages and operational information (e.g., Ping).",
+        "hebrewDefinition": "פרוטוקול לשליחת הודעות בקרה ושגיאה ברשת, משמש כלים כמו Ping ו-Traceroute.",
+        "category": "Protocol",
+        "tags": [
+            "Layer 3"
+        ]
+    },
+    {
+        "term": "CSMA/CD",
+        "definition": "Carrier Sense Multiple Access with Collision Detection. The media access control method used in early Ethernet to handle collisions.",
+        "hebrewDefinition": "אלגוריתם הגישה לתווך באתרנט. 'הקשב לפני שאתה משדר', ואם יש התנגשות, המתן זמן אקראי ונסה שוב.",
+        "category": "Algorithm",
+        "tags": [
+            "Layer 2"
+        ]
+    },
+    {
+        "term": "Flow Control",
+        "definition": "A TCP mechanism that prevents the sender from overwhelming the receiver by adjusting the amount of data sent based on the receiver's available buffer (rwnd).",
+        "hebrewDefinition": "בקרת זרימה. מנגנון ב-TCP המונע מהשולח להציף את המקבל במידע שהוא לא יכול לעבד (שימוש בחלון קליטה).",
+        "category": "Concept",
+        "tags": [
+            "Layer 4"
+        ]
+    },
+    {
+        "term": "Congestion Control",
+        "definition": "A TCP mechanism that prevents the sender from overwhelming the network infrastructure by slowing down transmission when packet loss is detected.",
+        "hebrewDefinition": "בקרת גודש. מנגנון ב-TCP המונע עומס יתר על הרשת כולה (הנתבים בדרך) על ידי האטת הקצב בעת זיהוי איבודים.",
+        "category": "Concept",
+        "tags": [
+            "Layer 4"
+        ]
+    },
+    {
+        "term": "Cookie",
+        "definition": "A small file stored on the user's computer by a web server to maintain state (like login status) in the stateless HTTP protocol.",
+        "hebrewDefinition": "קובץ קטן הנשמר אצל הלקוח ומאפשר לשרת 'לזכור' את המשתמש ולשמור מצב (State) בפרוטוקול HTTP.",
+        "category": "Concept",
+        "tags": [
+            "Application"
+        ]
+    }
+]

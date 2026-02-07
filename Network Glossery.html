@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>NetLearn - Networking Glossary</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for alphabet list if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-gray-100 min-h-screen flex flex-col">
+    <!-- Top Navigation -->
+    <header
+        class="sticky top-0 z-50 bg-white dark:bg-[#1a2632] border-b border-[#f0f2f4] dark:border-[#2a3642] px-10 py-3 shadow-sm">
+        <div class="flex items-center justify-between max-w-[1200px] mx-auto w-full">
+            <div class="flex items-center gap-4">
+                <div class="size-8 text-primary">
+                    <span class="material-symbols-outlined text-3xl">hub</span>
+                </div>
+                <h2 class="text-[#111418] dark:text-white text-xl font-bold tracking-tight">NetLearn</h2>
+            </div>
+            <div class="flex flex-1 justify-end gap-8 items-center">
+                <nav class="hidden md:flex items-center gap-8">
+                    <a class="text-[#111418] dark:text-gray-300 hover:text-primary text-sm font-medium transition-colors"
+                        href="#">Courses</a>
+                    <a class="text-primary font-semibold text-sm leading-normal" href="#">Glossary</a>
+                    <a class="text-[#111418] dark:text-gray-300 hover:text-primary text-sm font-medium transition-colors"
+                        href="#">Labs</a>
+                    <a class="text-[#111418] dark:text-gray-300 hover:text-primary text-sm font-medium transition-colors"
+                        href="#">Community</a>
+                </nav>
+                <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-transparent hover:border-primary cursor-pointer transition-all"
+                    data-alt="User profile picture thumbnail"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBvkfqDPCSDWZa6abYMk4VxdRld4jzITDizH3eOYbmoL3w8TKQ0eE9Is8_I-VmpXR3kLPvFyH2fIZag3KiTsukJUKwgsOYRC0Uo_IQS8XlU7sItRdY5fnRCLrOhoBVDt1TuEVQppUSmjelcgHnhSD-fWmNnTCtc4nWYJ487msfQwuTYr88H7eKw1etC30kaJ-Byi-z2aO0sI5qDb67ci1hhcn4Z4UWNvwVmI1zTmAjoP8epUEd-EgRjE949wfZ6f7eh7Iokg1wGWw0");'>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Layout -->
+    <main class="flex-1 flex flex-col items-center w-full px-4 sm:px-10 py-8">
+        <div class="w-full max-w-[960px] flex flex-col gap-6">
+            <!-- Title & Search Section -->
+            <section class="flex flex-col gap-6 mb-4">
+                <div class="flex flex-col gap-2">
+                    <h1 class="text-[#111418] dark:text-white text-4xl sm:text-5xl font-black tracking-[-0.033em]">
+                        Networking Glossary</h1>
+                    <p class="text-[#617589] dark:text-gray-400 text-lg">Browse standard terms, protocols, and
+                        definitions.</p>
+                </div>
+                <!-- Search Bar -->
+                <div class="relative w-full shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#617589]">
+                        <span class="material-symbols-outlined">search</span>
+                    </div>
+                    <input
+                        class="w-full h-14 pl-12 pr-4 rounded-xl border-none bg-white dark:bg-[#1a2632] text-lg text-[#111418] dark:text-white placeholder:text-[#9ca3af] focus:ring-2 focus:ring-primary shadow-sm transition-all"
+                        placeholder="Search terms (e.g., OSPF, Bandwidth)..." type="text" value="" />
+                </div>
+                <!-- Filters & Alphabet Quick Jump -->
+                <div class="flex flex-col gap-4">
+                    <!-- Category Filters -->
+                    <div class="flex flex-wrap gap-3">
+                        <button
+                            class="px-5 py-2 rounded-lg bg-[#1a2632] dark:bg-white text-white dark:text-[#1a2632] text-sm font-semibold shadow-sm transition-transform hover:scale-105">
+                            All Terms
+                        </button>
+                        <button
+                            class="px-5 py-2 rounded-lg bg-white dark:bg-[#1a2632] text-[#111418] dark:text-gray-300 border border-[#e5e7eb] dark:border-[#2a3642] text-sm font-medium hover:border-primary hover:text-primary transition-colors shadow-sm">
+                            Protocols
+                        </button>
+                        <button
+                            class="px-5 py-2 rounded-lg bg-white dark:bg-[#1a2632] text-[#111418] dark:text-gray-300 border border-[#e5e7eb] dark:border-[#2a3642] text-sm font-medium hover:border-primary hover:text-primary transition-colors shadow-sm">
+                            Hardware
+                        </button>
+                        <button
+                            class="px-5 py-2 rounded-lg bg-white dark:bg-[#1a2632] text-[#111418] dark:text-gray-300 border border-[#e5e7eb] dark:border-[#2a3642] text-sm font-medium hover:border-primary hover:text-primary transition-colors shadow-sm">
+                            Models
+                        </button>
+                    </div>
+                    <!-- A-Z Alphabet Bar -->
+                    <div
+                        class="flex items-center gap-1 overflow-x-auto no-scrollbar py-2 border-b border-[#f0f2f4] dark:border-[#2a3642]">
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md bg-primary text-white text-sm font-bold shadow-md"
+                            href="#">A</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">B</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">C</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">D</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">E</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">F</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">G</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">H</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">I</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">J</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">K</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">L</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">M</a>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">N</a>
+                        <span class="text-xs text-gray-400">...</span>
+                        <a class="shrink-0 size-8 flex items-center justify-center rounded-md hover:bg-[#f0f2f4] dark:hover:bg-[#2a3642] text-[#617589] dark:text-gray-400 text-sm font-medium transition-colors"
+                            href="#">Z</a>
+                    </div>
+                </div>
+            </section>
+            <!-- Dictionary Content List -->
+            <div class="flex flex-col gap-4 pb-20">
+                <!-- Collapsed Item: ACL -->
+                <div
+                    class="bg-white dark:bg-[#1a2632] rounded-lg shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-[#374151] p-4 flex items-center justify-between cursor-pointer group transition-all">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h3 class="text-[#111418] dark:text-gray-100 font-bold text-lg">ACL</h3>
+                            <span
+                                class="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">Security</span>
+                        </div>
+                        <p class="text-sm text-[#617589] dark:text-gray-400">Access Control List</p>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">expand_more</span>
+                </div>
+                <!-- Expanded Active Item: ARP -->
+                <div
+                    class="bg-white dark:bg-[#1a2632] rounded-xl shadow-lg border-l-4 border-primary p-6 flex flex-col gap-6 relative overflow-hidden">
+                    <!-- Background Decoration -->
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-50 to-transparent dark:from-blue-900/20 rounded-bl-full pointer-events-none">
+                    </div>
+                    <!-- Header -->
+                    <div class="flex items-center justify-between z-10">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <h3 class="text-[#111418] dark:text-white font-black text-2xl tracking-tight">ARP</h3>
+                                <span
+                                    class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-200 uppercase tracking-wide">Protocol</span>
+                                <span
+                                    class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">Layer
+                                    2/3</span>
+                            </div>
+                            <p class="text-base text-[#617589] dark:text-gray-400 font-medium">Address Resolution
+                                Protocol</p>
+                        </div>
+                        <button
+                            class="size-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                            <span class="material-symbols-outlined text-gray-600 dark:text-gray-300">expand_less</span>
+                        </button>
+                    </div>
+                    <!-- Content Body -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 z-10">
+                        <!-- Text Definitions -->
+                        <div class="flex flex-col gap-6">
+                            <div class="flex flex-col gap-2">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="material-symbols-outlined text-primary text-sm">flag</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">English
+                                        Definition</span>
+                                </div>
+                                <p class="text-[#111418] dark:text-gray-200 leading-relaxed text-sm">
+                                    A communication protocol used for discovering the link layer address, such as a
+                                    <strong>MAC address</strong>, associated with a given internet layer address,
+                                    typically an <strong>IPv4 address</strong>. This mapping is a critical function in
+                                    the Internet Protocol Suite.
+                                </p>
+                            </div>
+                            <div class="flex flex-col gap-2 relative">
+                                <!-- RTL indicator decoration -->
+                                <div class="absolute right-0 top-0 h-full w-0.5 bg-gray-100 dark:bg-gray-700"></div>
+                                <div class="flex items-center justify-end gap-2 mb-1 pr-3">
+                                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Hebrew
+                                        Definition</span>
+                                    <span class="material-symbols-outlined text-primary text-sm">translate</span>
+                                </div>
+                                <p class="text-[#111418] dark:text-gray-200 leading-relaxed text-sm text-right pr-3 font-sans"
+                                    dir="rtl">
+                                    פרוטוקול המיפוי (ARP) הוא פרוטוקול תקשורת המשמש לגילוי כתובת שכבת הקישור, כגון כתובת
+                                    <strong>MAC</strong>, המשוייכת לכתובת שכבת האינטרנט נתונה, בדרך כלל כתובת
+                                    <strong>IPv4</strong>. מיפוי זה הוא פונקציה קריטית בחבילת פרוטוקולי האינטרנט.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Visual Illustration -->
+                        <div class="flex flex-col gap-3">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">ARP Table
+                                Visualization</span>
+                            <div
+                                class="bg-gray-50 dark:bg-black/30 border border-gray-100 dark:border-gray-700 rounded-lg p-4 flex flex-col gap-3">
+                                <!-- Simulated Table Header -->
+                                <div
+                                    class="flex justify-between text-xs font-mono text-gray-400 border-b border-gray-200 dark:border-gray-700 pb-2">
+                                    <span>IP Address</span>
+                                    <span>MAC Address</span>
+                                    <span>Type</span>
+                                </div>
+                                <!-- Table Row 1 -->
+                                <div class="flex justify-between text-xs font-mono text-[#111418] dark:text-gray-300">
+                                    <span>192.168.1.1</span>
+                                    <span class="text-primary">00:1A:2B:3C:4D:5E</span>
+                                    <span class="text-green-600">Dynamic</span>
+                                </div>
+                                <!-- Table Row 2 -->
+                                <div class="flex justify-between text-xs font-mono text-[#111418] dark:text-gray-300">
+                                    <span>192.168.1.15</span>
+                                    <span class="text-primary">AA:BB:CC:11:22:33</span>
+                                    <span class="text-green-600">Dynamic</span>
+                                </div>
+                                <!-- Diagrammatic Graphic -->
+                                <div class="mt-2 h-24 w-full rounded bg-white dark:bg-[#1a2632] border border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center relative overflow-hidden"
+                                    data-alt="Abstract diagram showing a computer sending a broadcast request and receiving a unicast reply">
+                                    <!-- Creating a CSS-only simple diagram representation -->
+                                    <div
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 size-8 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-xs text-gray-500">computer</span>
+                                    </div>
+                                    <div
+                                        class="absolute right-4 top-1/2 -translate-y-1/2 size-8 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-xs text-gray-500">router</span>
+                                    </div>
+                                    <div class="h-0.5 w-24 bg-gray-300 dark:bg-gray-500 relative">
+                                        <div
+                                            class="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] text-gray-400">
+                                            Request?</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Footer: Related Terms -->
+                    <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Related Terms:</span>
+                        <a class="px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-primary text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                            href="#">IP Address</a>
+                        <a class="px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-primary text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                            href="#">MAC Address</a>
+                        <a class="px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-primary text-xs font-medium hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                            href="#">RARP</a>
+                    </div>
+                </div>
+                <!-- Collapsed Item: BGP -->
+                <div
+                    class="bg-white dark:bg-[#1a2632] rounded-lg shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-[#374151] p-4 flex items-center justify-between cursor-pointer group transition-all">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h3 class="text-[#111418] dark:text-gray-100 font-bold text-lg">BGP</h3>
+                            <span
+                                class="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">Routing</span>
+                        </div>
+                        <p class="text-sm text-[#617589] dark:text-gray-400">Border Gateway Protocol</p>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">expand_more</span>
+                </div>
+                <!-- Collapsed Item: Bandwidth -->
+                <div
+                    class="bg-white dark:bg-[#1a2632] rounded-lg shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-[#374151] p-4 flex items-center justify-between cursor-pointer group transition-all">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h3 class="text-[#111418] dark:text-gray-100 font-bold text-lg">Bandwidth</h3>
+                            <span
+                                class="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">General</span>
+                        </div>
+                        <p class="text-sm text-[#617589] dark:text-gray-400">Maximum rate of data transfer</p>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">expand_more</span>
+                </div>
+                <!-- Collapsed Item: CIDR -->
+                <div
+                    class="bg-white dark:bg-[#1a2632] rounded-lg shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-[#374151] p-4 flex items-center justify-between cursor-pointer group transition-all">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h3 class="text-[#111418] dark:text-gray-100 font-bold text-lg">CIDR</h3>
+                            <span
+                                class="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">Addressing</span>
+                        </div>
+                        <p class="text-sm text-[#617589] dark:text-gray-400">Classless Inter-Domain Routing</p>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">expand_more</span>
+                </div>
+                <!-- Collapsed Item: DHCP -->
+                <div
+                    class="bg-white dark:bg-[#1a2632] rounded-lg shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-[#374151] p-4 flex items-center justify-between cursor-pointer group transition-all">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-3">
+                            <h3 class="text-[#111418] dark:text-gray-100 font-bold text-lg">DHCP</h3>
+                            <span
+                                class="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">Protocol</span>
+                        </div>
+                        <p class="text-sm text-[#617589] dark:text-gray-400">Dynamic Host Configuration Protocol</p>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">expand_more</span>
+                </div>
+            </div>
+            <!-- Load More -->
+            <div class="flex justify-center pb-12">
+                <button class="flex items-center gap-2 text-primary font-medium hover:underline">
+                    <span>Load more definitions</span>
+                    <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                </button>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

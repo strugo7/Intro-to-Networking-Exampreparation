@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הקרב המשולש: RIP vs OSPF vs BGP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .nav-btn {
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.active {
+            background-color: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+        }
+
+        .packet {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            z-index: 20;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transform: translate(-50%, -50%);
+        }
+
+        .node {
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body class="text-slate-800">
+
+    <div class="max-w-7xl mx-auto min-h-screen flex flex-col p-4 md:p-8">
+
+        <!-- Header & Nav -->
+        <header class="mb-8 text-center space-y-6">
+            <h1 class="text-4xl md:text-5xl font-black text-slate-800">פרוטוקולי ניתוב: המדריך האינטראקטיבי</h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                שכבה 3 (Network Layer) עוסקת במציאת הנתיב הטוב ביותר. אבל מה זה "הכי טוב"? <br>
+                זה תלוי בפרוטוקול. בואו נחקור את שלושת הענקים.
+            </p>
+
+            <div
+                class="flex flex-wrap justify-center gap-4 bg-white p-2 rounded-xl shadow-sm border border-slate-200 inline-flex">
+                <button onclick="switchTab('rip')" id="tab-rip"
+                    class="nav-btn px-6 py-3 rounded-lg font-bold flex items-center gap-2">
+                    <span class="text-xl">🐢</span> RIP (Distance Vector)
+                </button>
+                <button onclick="switchTab('ospf')" id="tab-ospf"
+                    class="nav-btn px-6 py-3 rounded-lg font-bold flex items-center gap-2">
+                    <span class="text-xl">🐆</span> OSPF (Link State)
+                </button>
+                <button onclick="switchTab('bgp')" id="tab-bgp"
+                    class="nav-btn px-6 py-3 rounded-lg font-bold flex items-center gap-2">
+                    <span class="text-xl">🌐</span> BGP (Path Vector)
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Left Panel: Explanation & Controls -->
+            <div class="lg:col-span-4 space-y-6">
+                <div id="info-panel" class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-blue-600 h-full">
+                    <!-- Content injected via JS -->
+                </div>
+            </div>
+
+            <!-- Right Panel: Simulator Canvas -->
+            <div class="lg:col-span-8 bg-white rounded-2xl shadow-lg border border-slate-200 relative overflow-hidden h-[500px] bg-slate-50"
+                id="simulation-container">
+                <!-- Topology injected via JS -->
+                <div id="topology-area" class="w-full h-full relative"></div>
+            </div>
+
+        </main>
+
+        <!-- Comparison Footer -->
+        <footer class="mt-12 bg-slate-800 text-white p-8 rounded-2xl shadow-xl">
+            <h3 class="text-2xl font-bold mb-6 border-b border-slate-600 pb-2">סיכום השוואתי למבחן</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-2">
+                    <div class="font-bold text-green-400 text-xl">RIP</div>
+                    <div class="text-sm opacity-75">Routing Information Protocol</div>
+                    <ul class="text-sm space-y-1 list-disc list-inside text-slate-300">
+                        <li><strong>סוג:</strong> Distance Vector</li>
+                        <li><strong>מטריק:</strong> Hop Count (מספר קפיצות)</li>
+                        <li><strong>מגבלה:</strong> מקסימום 15 קפיצות</li>
+                        <li><strong>חיסרון:</strong> איטי, לא מתחשב ברוחב פס</li>
+                        <li><strong>שימוש:</strong> רשתות קטנות/ישנות</li>
+                    </ul>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold text-blue-400 text-xl">OSPF</div>
+                    <div class="text-sm opacity-75">Open Shortest Path First</div>
+                    <ul class="text-sm space-y-1 list-disc list-inside text-slate-300">
+                        <li><strong>סוג:</strong> Link State</li>
+                        <li><strong>מטריק:</strong> Cost (מבוסס רוחב פס)</li>
+                        <li><strong>אלגוריתם:</strong> Dijkstra (SPF)</li>
+                        <li><strong>יתרון:</strong> מהיר (Convergence), יעיל</li>
+                        <li><strong>שימוש:</strong> ארגונים גדולים (Enterprise)</li>
+                    </ul>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold text-purple-400 text-xl">BGP</div>
+                    <div class="text-sm opacity-75">Border Gateway Protocol</div>
+                    <ul class="text-sm space-y-1 list-disc list-inside text-slate-300">
+                        <li><strong>סוג:</strong> Path Vector</li>
+                        <li><strong>מטריק:</strong> Attributes & Policy (מדיניות)</li>
+                        <li><strong>תפקיד:</strong> מחבר את האינטרנט (EGP)</li>
+                        <li><strong>יתרון:</strong> סקיילביליות עצומה, שליטה</li>
+                        <li><strong>שימוש:</strong> ספקי אינטרנט (ISP)</li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        // State
+        let currentProtocol = 'rip';
+        let simulationState = {
+            ospfHighSpeed: false,
+            bgpPolicyActive: false
+        };
+
+        // Data for Protocols
+        const contentData = {
+            rip: {
+                title: "RIP: סופר הקפיצות (הוותיק)",
+                description: `
+                    <p class="mb-4">פרוטוקול RIP הוא כמו נהג שבוחר תמיד בדרך עם הכי מעט רמזורים, גם אם היא פקוקה לגמרי.</p>
+                    <h4 class="font-bold text-lg mb-2">איך זה עובד?</h4>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-6">
+                        <li><strong>Metric:</strong> Hop Count (מספר הראוטרים בדרך).</li>
+                        <li><strong>Bellman-Ford:</strong> כל 30 שניות, הראוטר צועק לשכנים שלו את כל מה שהוא יודע.</li>
+                        <li><strong>Max Hops:</strong> 15. אם זה 16, הרשת נחשבת Unreachable.</li>
+                    </ul>
+                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 text-sm text-yellow-800">
+                        <strong>בסימולטור:</strong> שלח פאקט מ-A ל-B. <br>
+                        למרות שהדרך למטה מהירה בטירוף (כביש מהיר), RIP יבחר בדרך למעלה כי יש בה פחות "קפיצות".
+                    </div>
+                `,
+                controls: `
+                    <button onclick="animatePacket('rip')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow transition flex justify-center items-center gap-2">
+                        <span>▶️</span> שלח חבילה (Start Simulation)
+                    </button>
+                `
+            },
+            ospf: {
+                title: "OSPF: ה-GPS החכם (המהיר)",
+                description: `
+                    <p class="mb-4">OSPF הוא כמו Waze. הוא רואה את כל המפה (Link State Database) ויודע איפה יש פקקים.</p>
+                    <h4 class="font-bold text-lg mb-2">איך זה עובד?</h4>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-6">
+                        <li><strong>Metric:</strong> Cost = Reference / Bandwidth. ככל שהכבל מהיר יותר, העלות נמוכה יותר.</li>
+                        <li><strong>Dijkstra:</strong> מחשב את הנתיב הקצר ביותר (SPF).</li>
+                        <li><strong>Areas:</strong> מחלק את הרשת לאזורים (Area 0 הוא הראשי).</li>
+                    </ul>
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 text-sm text-blue-800">
+                        <strong>בסימולטור:</strong> שדרג את הכבל התחתון לסיב אופטי (Fiber). ראה איך OSPF משנה את הנתיב מיד כי ה-Cost ירד.
+                    </div>
+                `,
+                controls: `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between bg-slate-100 p-3 rounded">
+                            <span class="text-sm font-bold">Link Speed (Bottom Path)</span>
+                            <button onclick="toggleOSPFLink()" id="ospf-toggle-btn" class="bg-white border border-slate-300 px-3 py-1 rounded text-xs shadow-sm hover:bg-slate-50">
+                                כרגע: 10Mbps (Slow)
+                            </button>
+                        </div>
+                        <button onclick="animatePacket('ospf')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow transition flex justify-center items-center gap-2">
+                            <span>▶️</span> שלח חבילה
+                        </button>
+                    </div>
+                `
+            },
+            bgp: {
+                title: "BGP: הדיפלומט של האינטרנט",
+                description: `
+                    <p class="mb-4">BGP הוא הפרוטוקול שמחבר בין ספקי אינטרנט (AS - Autonomous Systems). כאן לא המהירות קובעת, אלא הכסף והפוליטיקה.</p>
+                    <h4 class="font-bold text-lg mb-2">איך זה עובד?</h4>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-slate-600 mb-6">
+                        <li><strong>Path Vector:</strong> מונע לולאות ע"י רישום הדרך (AS-PATH).</li>
+                        <li><strong>Attributes:</strong> החלטות מתקבלות לפי מדיניות (Policy). למשל: "אל תעבור דרך המתחרה שלי".</li>
+                        <li><strong>Scalability:</strong> מחזיק את כל האינטרנט (מאות אלפי נתיבים).</li>
+                    </ul>
+                    <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 text-sm text-purple-800">
+                        <strong>בסימולטור:</strong> הדרך הקצרה עוברת דרך "Evil Corp". הפעל מדיניות אבטחה כדי לעקוף אותם, גם אם הדרך ארוכה יותר.
+                    </div>
+                `,
+                controls: `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between bg-slate-100 p-3 rounded">
+                            <span class="text-sm font-bold">Security Policy</span>
+                            <button onclick="toggleBGPPolicy()" id="bgp-toggle-btn" class="bg-red-100 text-red-700 border border-red-300 px-3 py-1 rounded text-xs shadow-sm hover:bg-red-200">
+                                🚫 Block AS 666 (Inactive)
+                            </button>
+                        </div>
+                        <button onclick="animatePacket('bgp')" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg shadow transition flex justify-center items-center gap-2">
+                            <span>▶️</span> שלח חבילה בינלאומית
+                        </button>
+                    </div>
+                `
+            }
+        };
+
+        // --- Core Helpers ---
+        function getDimensions() {
+            const container = document.getElementById('topology-area');
+            return { w: container.clientWidth, h: container.clientHeight };
+        }
+
+        // --- Initialization ---
+        function switchTab(protocol) {
+            currentProtocol = protocol;
+
+            // Update UI Buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-green-600', 'bg-blue-600', 'bg-purple-600');
+                btn.classList.add('inactive');
+            });
+            const activeBtn = document.getElementById(`tab-${protocol}`);
+            activeBtn.classList.add('active');
+
+            // Set Color Theme
+            if (protocol === 'rip') activeBtn.classList.add('bg-green-600');
+            if (protocol === 'ospf') activeBtn.classList.add('bg-blue-600');
+            if (protocol === 'bgp') activeBtn.classList.add('bg-purple-600');
+
+            // Update Info Panel
+            const data = contentData[protocol];
+            document.getElementById('info-panel').innerHTML = `
+                <h2 class="text-2xl font-black mb-4 ${protocol === 'rip' ? 'text-green-600' : protocol === 'ospf' ? 'text-blue-600' : 'text-purple-600'}">${data.title}</h2>
+                <div class="prose text-slate-600 mb-6">${data.description}</div>
+                <div class="mt-auto">${data.controls}</div>
+            `;
+
+            // Render Topology
+            // We use a timeout to ensure container is sized correctly if DOM changed
+            setTimeout(() => renderTopology(protocol), 50);
+        }
+
+        window.addEventListener('resize', () => {
+            renderTopology(currentProtocol);
+        });
+
+        // --- Rendering Topologies (Dynamic Calculation) ---
+        function renderTopology(protocol) {
+            const container = document.getElementById('topology-area');
+            container.innerHTML = '';
+            const { w, h } = getDimensions();
+
+            if (protocol === 'rip') renderRIP(container, w, h);
+            if (protocol === 'ospf') renderOSPF(container, w, h);
+            if (protocol === 'bgp') renderBGP(container, w, h);
+        }
+
+        function renderRIP(container, w, h) {
+            // Calculate coords
+            const startX = 80, startY = h / 2;
+            const endX = w - 80, endY = h / 2;
+            const topY = 80, botY = h - 80;
+            const midX = w / 2;
+            const thirdX = w / 3;
+            const twoThirdX = (w / 3) * 2;
+
+            const topPath = `M ${startX} ${startY} L ${midX} ${topY} L ${endX} ${endY}`;
+            const botPath = `M ${startX} ${startY} L ${thirdX} ${botY} L ${midX} ${botY} L ${twoThirdX} ${botY} L ${endX} ${endY}`;
+
+            const html = `
+                <!-- Nodes -->
+                <div class="node absolute w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center text-white font-bold shadow-lg z-10" style="left: ${startX}px; top: ${startY}px; transform: translate(-50%, -50%)">Src</div>
+                <div class="node absolute w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center text-white font-bold shadow-lg z-10" style="left: ${endX}px; top: ${endY}px; transform: translate(-50%, -50%)">Dst</div>
+                
+                <div class="node absolute w-12 h-12 bg-green-500 rounded text-white flex items-center justify-center shadow font-mono text-xs" style="left: ${midX}px; top: ${topY}px; transform: translate(-50%, -50%)">R1</div>
+                
+                <div class="node absolute w-12 h-12 bg-slate-400 rounded text-white flex items-center justify-center shadow font-mono text-xs" style="left: ${thirdX}px; top: ${botY}px; transform: translate(-50%, -50%)">R2</div>
+                <div class="node absolute w-12 h-12 bg-slate-400 rounded text-white flex items-center justify-center shadow font-mono text-xs" style="left: ${midX}px; top: ${botY}px; transform: translate(-50%, -50%)">R3</div>
+                <div class="node absolute w-12 h-12 bg-slate-400 rounded text-white flex items-center justify-center shadow font-mono text-xs" style="left: ${twoThirdX}px; top: ${botY}px; transform: translate(-50%, -50%)">R4</div>
+
+                <!-- SVG -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                    <path id="path-rip-top" d="${topPath}" fill="none" stroke="#22c55e" stroke-width="4" stroke-dasharray="10,5" class="opacity-80" />
+                    <text x="${midX}" y="${topY - 30}" text-anchor="middle" fill="#166534" font-size="14" font-weight="bold">1 Hop (Slow)</text>
+
+                    <path d="${botPath}" fill="none" stroke="#94a3b8" stroke-width="2" />
+                    <text x="${midX}" y="${botY + 30}" text-anchor="middle" fill="#64748b" font-size="12">3 Hops (Fast!)</text>
+                </svg>
+            `;
+            container.innerHTML = html;
+        }
+
+        function renderOSPF(container, w, h) {
+            const bandwidth = simulationState.ospfHighSpeed ? "10Gbps (Fiber)" : "10Mbps (Copper)";
+            const cost = simulationState.ospfHighSpeed ? "1" : "10";
+            const strokeColor = simulationState.ospfHighSpeed ? "#3b82f6" : "#94a3b8";
+            const topColor = simulationState.ospfHighSpeed ? "#94a3b8" : "#3b82f6";
+
+            const startX = 80, startY = h / 2;
+            const endX = w - 80, endY = h / 2;
+            const topY = 80, botY = h - 80;
+            const midX = w / 2;
+
+            const topPath = `M ${startX} ${startY} L ${midX} ${topY} L ${endX} ${endY}`;
+            const botPath = `M ${startX} ${startY} L ${midX} ${botY} L ${endX} ${endY}`;
+
+            const html = `
+                <div class="node absolute w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center text-white font-bold shadow-lg z-10" style="left: ${startX}px; top: ${startY}px; transform: translate(-50%, -50%)">Src</div>
+                <div class="node absolute w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center text-white font-bold shadow-lg z-10" style="left: ${endX}px; top: ${endY}px; transform: translate(-50%, -50%)">Dst</div>
+
+                <div class="node absolute w-12 h-12 bg-slate-500 rounded text-white flex items-center justify-center shadow font-mono text-xs" style="left: ${midX}px; top: ${topY}px; transform: translate(-50%, -50%)">R1</div>
+                <div class="node absolute w-12 h-12 bg-slate-500 rounded text-white flex items-center justify-center shadow font-mono text-xs" style="left: ${midX}px; top: ${botY}px; transform: translate(-50%, -50%)">R2</div>
+
+                <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                    <path id="path-ospf-top" d="${topPath}" fill="none" stroke="${topColor}" stroke-width="4" />
+                    <text x="${midX}" y="${topY - 30}" text-anchor="middle" fill="#475569" font-size="12">Cost: 5 (100Mbps)</text>
+
+                    <path id="path-ospf-bottom" d="${botPath}" fill="none" stroke="${strokeColor}" stroke-width="4" />
+                    <text x="${midX}" y="${botY + 30}" text-anchor="middle" fill="${simulationState.ospfHighSpeed ? '#1d4ed8' : '#64748b'}" font-weight="bold" font-size="12">Cost: ${cost} (${bandwidth})</text>
+                </svg>
+            `;
+            container.innerHTML = html;
+        }
+
+        function renderBGP(container, w, h) {
+            const policyActive = simulationState.bgpPolicyActive;
+            const topStroke = policyActive ? "#94a3b8" : "#9333ea";
+            const bottomStroke = policyActive ? "#9333ea" : "#94a3b8";
+
+            const startX = 80, startY = h / 2;
+            const endX = w - 80, endY = h / 2;
+            const topY = 80, botY = h - 80;
+            const midX = w / 2;
+            const thirdX = w / 3;
+            const twoThirdX = (w / 3) * 2;
+
+            const topPath = `M ${startX} ${startY} L ${midX} ${topY} L ${endX} ${endY}`;
+            const botPath = `M ${startX} ${startY} L ${thirdX} ${botY} L ${twoThirdX} ${botY} L ${endX} ${endY}`;
+
+            const html = `
+                <div class="node absolute w-24 h-24 border-2 border-slate-800 bg-white rounded-full flex flex-col items-center justify-center shadow-lg z-10" style="left: ${startX}px; top: ${startY}px; transform: translate(-50%, -50%)">
+                    <span class="font-bold">AS 100</span>
+                    <span class="text-xs text-slate-500">(ISP)</span>
+                </div>
+                
+                <div class="node absolute w-24 h-24 border-2 border-slate-800 bg-white rounded-full flex flex-col items-center justify-center shadow-lg z-10" style="left: ${endX}px; top: ${endY}px; transform: translate(-50%, -50%)">
+                    <span class="font-bold">AS 400</span>
+                    <span class="text-xs text-slate-500">(Dest)</span>
+                </div>
+
+                <div class="node absolute w-20 h-20 border-2 border-red-500 bg-red-50 rounded-lg flex flex-col items-center justify-center shadow text-red-800 z-10" style="left: ${midX}px; top: ${topY}px; transform: translate(-50%, -50%)">
+                    <span class="font-bold">AS 666</span>
+                    <span class="text-[10px]">Evil Corp</span>
+                </div>
+
+                <div class="node absolute w-20 h-20 border-2 border-green-500 bg-green-50 rounded-lg flex flex-col items-center justify-center shadow text-green-800 z-10" style="left: ${thirdX}px; top: ${botY}px; transform: translate(-50%, -50%)">
+                    <span class="font-bold">AS 200</span>
+                </div>
+                <div class="node absolute w-20 h-20 border-2 border-green-500 bg-green-50 rounded-lg flex flex-col items-center justify-center shadow text-green-800 z-10" style="left: ${twoThirdX}px; top: ${botY}px; transform: translate(-50%, -50%)">
+                    <span class="font-bold">AS 300</span>
+                </div>
+
+                <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                    <path id="path-bgp-top" d="${topPath}" fill="none" stroke="${topStroke}" stroke-width="4" stroke-dasharray="5,5" />
+                    <text x="${midX}" y="${topY - 30}" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="bold">Shortest Path (1 Hop)</text>
+
+                    <path id="path-bgp-bottom" d="${botPath}" fill="none" stroke="${bottomStroke}" stroke-width="4" />
+                    <text x="${midX}" y="${botY + 30}" text-anchor="middle" fill="#16a34a" font-size="12">Longer Path (2 Hops)</text>
+                </svg>
+            `;
+            container.innerHTML = html;
+        }
+
+        // --- Logic & Interactions ---
+
+        function toggleOSPFLink() {
+            simulationState.ospfHighSpeed = !simulationState.ospfHighSpeed;
+            const btn = document.getElementById('ospf-toggle-btn');
+            if (simulationState.ospfHighSpeed) {
+                btn.innerText = "כרגע: 10Gbps (Fiber - Fast!)";
+                btn.classList.replace('bg-white', 'bg-blue-100');
+                btn.classList.add('text-blue-700', 'border-blue-300');
+            } else {
+                btn.innerText = "כרגע: 10Mbps (Slow)";
+                btn.classList.replace('bg-blue-100', 'bg-white');
+                btn.classList.remove('text-blue-700', 'border-blue-300');
+            }
+            renderTopology('ospf');
+        }
+
+        function toggleBGPPolicy() {
+            simulationState.bgpPolicyActive = !simulationState.bgpPolicyActive;
+            const btn = document.getElementById('bgp-toggle-btn');
+            if (simulationState.bgpPolicyActive) {
+                btn.innerText = "🔒 Policy Active: Avoid AS 666";
+                btn.classList.replace('bg-red-100', 'bg-green-100');
+                btn.classList.replace('text-red-700', 'text-green-700');
+                btn.classList.replace('border-red-300', 'border-green-300');
+            } else {
+                btn.innerText = "🚫 Policy Inactive (Default)";
+                btn.classList.replace('bg-green-100', 'bg-red-100');
+                btn.classList.replace('text-green-700', 'text-red-700');
+                btn.classList.replace('border-green-300', 'border-red-300');
+            }
+            renderTopology('bgp');
+        }
+
+        function animatePacket(protocol) {
+            const container = document.getElementById('topology-area');
+            const packet = document.createElement('div');
+            packet.classList.add('packet', 'bg-red-500');
+
+            if (protocol === 'rip') packet.classList.add('bg-green-500');
+            if (protocol === 'ospf') packet.classList.add('bg-blue-500');
+            if (protocol === 'bgp') packet.classList.add('bg-purple-500');
+
+            container.appendChild(packet);
+
+            let pathElement;
+            if (protocol === 'rip') {
+                pathElement = document.getElementById('path-rip-top');
+            } else if (protocol === 'ospf') {
+                pathElement = simulationState.ospfHighSpeed ? document.getElementById('path-ospf-bottom') : document.getElementById('path-ospf-top');
+            } else if (protocol === 'bgp') {
+                pathElement = simulationState.bgpPolicyActive ? document.getElementById('path-bgp-bottom') : document.getElementById('path-bgp-top');
+            }
+
+            const length = pathElement.getTotalLength();
+            const duration = 2000;
+            const start = performance.now();
+
+            function step(timestamp) {
+                const progress = (timestamp - start) / duration;
+                if (progress < 1) {
+                    const point = pathElement.getPointAtLength(length * progress);
+                    packet.style.left = `${point.x}px`;
+                    packet.style.top = `${point.y}px`;
+                    requestAnimationFrame(step);
+                } else {
+                    packet.remove();
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        // Initialize
+        switchTab('rip');
+
+    </script>
+</body>
+
+</html>

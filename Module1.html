@@ -1,0 +1,492 @@
+< !DOCTYPE html>
+    <html lang="he" dir="rtl">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>מבוא לתקשורת מחשבים - שיעור 1</title>
+        <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap');
+
+            body {
+                font - family: 'Heebo', sans-serif;
+                background-color: #0f172a;
+                color: #e2e8f0;
+            }
+
+            .glass-panel {
+                background: rgba(30, 41, 59, 0.7);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .neon-text {
+                text - shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            }
+
+            .animate-pulse-slow {
+                animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+
+            @keyframes pulse {
+
+                0 %,
+                100 % {
+                    opacity: 1;
+                }
+
+                50% {
+                    opacity: .5;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="root"></div>
+
+        <script type="text/babel">
+            const { useState, useEffect } = React;
+
+            // --- ICONS (Defined locally to avoid CDN issues) ---
+            const IconBase = ({ children, size = 24, className = "" }) => (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    {children}
+                </svg>
+            );
+
+            const Globe = (props) => <IconBase {...props}><circle cx="12" cy="12" r="10" /><line x1="2" x2="22" y1="12" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></IconBase>;
+            const Share2 = (props) => <IconBase {...props}><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" x2="15.42" y1="13.51" y2="17.49" /><line x1="15.41" x2="8.59" y1="6.51" y2="10.49" /></IconBase>;
+            const Network = (props) => <IconBase {...props}><rect x="16" y="16" width="6" height="6" rx="1" /><rect x="2" y="16" width="6" height="6" rx="1" /><rect x="9" y="2" width="6" height="6" rx="1" /><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" /><line x1="12" x2="12" y1="12" y2="8" /></IconBase>;
+            const Server = (props) => <IconBase {...props}><rect width="20" height="8" x="2" y="2" rx="2" ry="2" /><rect width="20" height="8" x="2" y="14" rx="2" ry="2" /><line x1="6" x2="6.01" y1="6" y2="6" /><line x1="6" x2="6.01" y1="18" y2="18" /></IconBase>;
+            const Laptop = (props) => <IconBase {...props}><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9" /><path d="M2 20h20" /><path d="M12 12v4" /><rect x="8" y="2" width="8" height="4" rx="1" /></IconBase>;
+            const Activity = (props) => <IconBase {...props}><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></IconBase>;
+            const Layers = (props) => <IconBase {...props}><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" /><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" /><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" /></IconBase>;
+            const ArrowDown = (props) => <IconBase {...props}><line x1="12" x2="12" y1="5" y2="19" /><polyline points="19 12 12 19 5 12" /></IconBase>;
+            const Users = (props) => <IconBase {...props}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></IconBase>;
+            const Zap = (props) => <IconBase {...props}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></IconBase>;
+            const ShieldCheck = (props) => <IconBase {...props}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" /><path d="m9 12 2 2 4-4" /></IconBase>;
+
+            // --- COMPONENTS ---
+
+            const SectionHeader = ({ title, subtitle, icon: Icon }) => (
+                <div className="mb-8 border-r-4 border-blue-500 pr-4">
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="p-2 bg-blue-500/20 rounded-lg text-blue-400">
+                            <Icon size={24} />
+                        </div>
+                        <h2 className="text-3xl font-bold text-white">{title}</h2>
+                    </div>
+                    <p className="text-slate-400 text-lg">{subtitle}</p>
+                </div>
+            );
+
+            const AnalogyCard = ({ title, content, icon: Icon }) => (
+                <div className="bg-gradient-to-br from-indigo-900/50 to-purple-900/50 p-6 rounded-xl border border-indigo-500/30 my-6">
+                    <div className="flex items-start gap-4">
+                        <div className="bg-indigo-500 rounded-full p-3 shadow-lg shadow-indigo-500/20">
+                            <Icon size={24} color="white" />
+                        </div>
+                        <div>
+                            <h4 className="text-indigo-300 font-bold mb-1 uppercase text-sm tracking-wider">אנלוגיה מהחיים</h4>
+                            <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
+                            <p className="text-slate-300 leading-relaxed">{content}</p>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            // --- VISUALIZERS ---
+
+            const TransmissionVisualizer = () => {
+                const [mode, setMode] = useState('unicast'); // unicast, broadcast, multicast
+
+                const nodes = [
+                    { id: 'S', x: 50, y: 150, label: 'שולח', type: 'sender' },
+                    { id: 'A', x: 250, y: 50, label: 'מקבל A', type: 'receiver', group: 'group1' },
+                    { id: 'B', x: 250, y: 120, label: 'מקבל B', type: 'receiver', group: 'group2' },
+                    { id: 'C', x: 250, y: 190, label: 'מקבל C', type: 'receiver', group: 'group1' },
+                    { id: 'D', x: 250, y: 260, label: 'מקבל D', type: 'receiver', group: 'group2' }
+                ];
+
+                const isActive = (targetNode) => {
+                    if (mode === 'unicast' && targetNode.id === 'B') return true;
+                    if (mode === 'broadcast') return true;
+                    if (mode === 'multicast' && targetNode.group === 'group1') return true;
+                    return false;
+                };
+
+                return (
+                    <div className="glass-panel p-6 rounded-xl">
+                        <div className="flex justify-center gap-4 mb-6">
+                            <button onClick={() => setMode('unicast')} className={`px-4 py-2 rounded-lg transition-all ${mode === 'unicast' ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-slate-700 text-slate-400'}`}>Unicast</button>
+                            <button onClick={() => setMode('broadcast')} className={`px-4 py-2 rounded-lg transition-all ${mode === 'broadcast' ? 'bg-green-600 text-white shadow-lg shadow-green-500/30' : 'bg-slate-700 text-slate-400'}`}>Broadcast</button>
+                            <button onClick={() => setMode('multicast')} className={`px-4 py-2 rounded-lg transition-all ${mode === 'multicast' ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/30' : 'bg-slate-700 text-slate-400'}`}>Multicast</button>
+                        </div>
+
+                        <div className="bg-slate-900 rounded-xl p-4 h-64 relative border border-slate-700 overflow-hidden">
+                            <svg className="w-full h-full">
+                                {/* Connections */}
+                                {nodes.filter(n => n.type === 'receiver').map((node) => (
+                                    <line
+                                        key={node.id}
+                                        x1={nodes[0].x + 40} y1={nodes[0].y + 20}
+                                        x2={node.x} y2={node.y + 20}
+                                        stroke={isActive(node) ? (mode === 'unicast' ? '#3b82f6' : mode === 'broadcast' ? '#22c55e' : '#a855f7') : '#334155'}
+                                        strokeWidth={isActive(node) ? 2 : 1}
+                                        strokeDasharray={isActive(node) ? "0" : "5,5"}
+                                        className="transition-all duration-500"
+                                    />
+                                ))}
+
+                                {/* Packets Animation */}
+                                {nodes.filter(n => n.type === 'receiver' && isActive(n)).map((node) => (
+                                    <circle key={`p-${node.id}`} r="4" fill="white">
+                                        <animateMotion
+                                            dur="1.5s"
+                                            repeatCount="indefinite"
+                                            path={`M${nodes[0].x + 40},${nodes[0].y + 20} L${node.x},${node.y + 20}`}
+                                        />
+                                    </circle>
+                                ))}
+                            </svg>
+
+                            {/* Node Elements */}
+                            {nodes.map(node => (
+                                <div
+                                    key={node.id}
+                                    className={`absolute w-12 h-12 flex items-center justify-center rounded-full border-2 transition-all duration-500 z-10`}
+                                    style={{
+                                        left: node.x,
+                                        top: node.y,
+                                        borderColor: node.type === 'sender' ? '#3b82f6' : (isActive(node) ? 'white' : '#475569'),
+                                        backgroundColor: node.type === 'sender' ? '#1e40af' : (isActive(node) ? (mode === 'unicast' ? '#2563eb' : mode === 'broadcast' ? '#16a34a' : '#9333ea') : '#1e293b')
+                                    }}
+                                >
+                                    {node.type === 'sender' ? <Server size={20} /> : <Laptop size={20} className={isActive(node) ? 'text-white' : 'text-slate-500'} />}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mt-4 text-center">
+                            <p className="text-lg font-bold text-white mb-1">
+                                {mode === 'unicast' && "Unicast: אחד לאחד"}
+                                {mode === 'broadcast' && "Broadcast: אחד לכולם"}
+                                {mode === 'multicast' && "Multicast: אחד לקבוצה"}
+                            </p>
+                            <p className="text-sm text-slate-400">
+                                {mode === 'unicast' && "כמו שיחת טלפון פרטית או הודעה ישירה."}
+                                {mode === 'broadcast' && "כמו מורה שמדבר אל כל הכיתה. משמש לגילוי שירותים ברשת (כמו ARP)."}
+                                {mode === 'multicast' && "כמו שיחת זום או קבוצת וואטסאפ. רק מי שרשום לקבוצה מקבל את המידע."}
+                            </p>
+                        </div>
+                    </div>
+                );
+            };
+
+            const TopologyExplorer = () => {
+                const [topo, setTopo] = useState('star');
+
+                const renderTopology = () => {
+                    switch (topo) {
+                        case 'star':
+                            return (
+                                <svg className="w-full h-full text-blue-500">
+                                    {/* Central Hub */}
+                                    <rect x="180" y="130" width="40" height="40" rx="4" fill="#3b82f6" />
+                                    {/* Nodes */}
+                                    {[0, 72, 144, 216, 288].map((angle, i) => {
+                                        const rad = angle * (Math.PI / 180);
+                                        const x = 200 + Math.cos(rad) * 100;
+                                        const y = 150 + Math.sin(rad) * 100;
+                                        return (
+                                            <g key={i}>
+                                                <line x1="200" y1="150" x2={x} y2={y} stroke="#475569" strokeWidth="2" />
+                                                <circle cx={x} cy={y} r="15" fill="#1e293b" stroke="#3b82f6" strokeWidth="2" />
+                                                <circle r="3" fill="#60a5fa">
+                                                    <animateMotion dur="2s" repeatCount="indefinite" path={`M200,150 L${x},${y} L200,150`} />
+                                                </circle>
+                                            </g>
+                                        );
+                                    })}
+                                </svg>
+                            );
+                        case 'bus':
+                            return (
+                                <svg className="w-full h-full">
+                                    {/* Backbone */}
+                                    <line x1="20" y1="150" x2="380" y2="150" stroke="#3b82f6" strokeWidth="6" />
+                                    {/* Nodes */}
+                                    {[60, 130, 200, 270, 340].map((x, i) => (
+                                        <g key={i}>
+                                            <line x1={x} y1="150" x2={x} y2={i % 2 === 0 ? 80 : 220} stroke="#475569" strokeWidth="2" />
+                                            <circle cx={x} cy={i % 2 === 0 ? 80 : 220} r="15" fill="#1e293b" stroke="#3b82f6" strokeWidth="2" />
+                                        </g>
+                                    ))}
+                                    {/* Failure animation if needed, but keeping simple for now */}
+                                </svg>
+                            );
+                        case 'ring':
+                            return (
+                                <svg className="w-full h-full">
+                                    <circle cx="200" cy="150" r="100" fill="none" stroke="#3b82f6" strokeWidth="4" />
+                                    {[0, 72, 144, 216, 288].map((angle, i) => {
+                                        const rad = angle * (Math.PI / 180);
+                                        const x = 200 + Math.cos(rad) * 100;
+                                        const y = 150 + Math.sin(rad) * 100;
+                                        return (
+                                            <circle key={i} cx={x} cy={y} r="15" fill="#1e293b" stroke="#3b82f6" strokeWidth="2" />
+                                        );
+                                    })}
+                                    <circle r="5" fill="#ef4444">
+                                        <animateMotion dur="4s" repeatCount="indefinite" path="M300,150 A100,100 0 1,1 299,149" />
+                                    </circle>
+                                </svg>
+                            );
+                        default: return null;
+                    }
+                };
+
+                const topoInfo = {
+                    star: { title: 'כוכב (Star)', desc: 'כל המחשבים מחוברים לרכיב מרכזי (Switch). זו הטופולוגיה הנפוצה ביותר כיום (Ethernet LAN). יתרון: ניתוק כבל אחד לא מפיל את הרשת. חיסרון: אם המרכז נופל, הכל נופל.' },
+                    bus: { title: 'אפיק (Bus)', desc: 'כבל מרכזי אחד שאליו כולם מתחברים. טופולוגיה מיושנת. חיסרון עצום: אם הכבל הראשי נקרע, כל הרשת מושבתת.' },
+                    ring: { title: 'טבעת (Ring)', desc: 'המחשבים מחוברים במעגל. המידע (Token) עובר בכיוון אחד. פחות נפוץ כיום ברשתות LAN.' }
+                };
+
+                return (
+                    <div className="glass-panel p-6 rounded-xl">
+                        <div className="flex gap-2 mb-4 justify-center">
+                            {['star', 'bus', 'ring'].map(t => (
+                                <button
+                                    key={t}
+                                    onClick={() => setTopo(t)}
+                                    className={`px-4 py-2 rounded-full text-sm font-bold ${topo === t ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400 border border-slate-700'}`}
+                                >
+                                    {t.toUpperCase()}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="h-64 bg-slate-900/50 rounded-xl mb-4 flex items-center justify-center">
+                            {renderTopology()}
+                        </div>
+                        <div className="text-center">
+                            <h3 className="text-xl font-bold text-white">{topoInfo[topo].title}</h3>
+                            <p className="text-slate-400 mt-2">{topoInfo[topo].desc}</p>
+                        </div>
+                    </div>
+                );
+            };
+
+            const OSIModel = () => {
+                const [activeLayer, setActiveLayer] = useState(null);
+
+                const layers = [
+                    { id: 7, name: 'Application', he: 'אפליקציה', desc: 'הממשק מול המשתמש. כאן עובדים הדפדפן, האימייל וכו\'.', protocols: 'HTTP, DNS, SMTP', analogy: 'כתיבת המכתב עצמו על הדף.' },
+                    { id: 6, name: 'Presentation', he: 'הצגה', desc: 'תרגום המידע, הצפנה וכיווץ.', protocols: 'SSL, JPEG, ASCII', analogy: 'תרגום המכתב לשפה שהמקבל מבין והכנסתו למעטפה.' },
+                    { id: 5, name: 'Session', he: 'שיחה', desc: 'ניהול הדו-שיח (פתיחה וסגירה של ה-Connection).', protocols: 'RPC', analogy: 'שיחת הטלפון המקדימה: "אתה בבית? אני שולח לך מכתב".' },
+                    { id: 4, name: 'Transport', he: 'תעבורה', desc: 'אמינות, סדר ובקרת זרימה. פירוק המידע למקטעים (Segments).', protocols: 'TCP, UDP', analogy: 'מספור הדפים במכתב כדי שאם אחד יאבד, נדע איזה חסר.' },
+                    { id: 3, name: 'Network', he: 'רשת', desc: 'ניתוב (Routing) וכתובות לוגיות (IP).', protocols: 'IP, ICMP, Router', analogy: 'כתיבת הכתובת על המעטפה והחלטה של הדוור באיזה כביש לנסוע.' },
+                    { id: 2, name: 'Data Link', he: 'ערוץ הנתונים', desc: 'תקשורת פיזית בתוך ה-LAN. כתובות MAC.', protocols: 'Ethernet, Switch', analogy: 'המשאית הספציפית שלוקחת את המכתב מתיבת הדואר לסניף המקומי.' },
+                    { id: 1, name: 'Physical', he: 'פיזית', desc: 'העברת הביטים (0/1) בצורה חשמלית/אופטית.', protocols: 'Cables, WiFi, Hub', analogy: 'הכביש עצמו, האספלט שהמשאית נוסעת עליו.' },
+                ];
+
+                return (
+                    <div className="flex flex-col md:flex-row gap-8">
+                        <div className="flex-1 space-y-2">
+                            {layers.map((layer) => (
+                                <div
+                                    key={layer.id}
+                                    onClick={() => setActiveLayer(layer.id === activeLayer ? null : layer.id)}
+                                    className={`cursor-pointer transition-all duration-300 transform ${activeLayer === layer.id ? 'scale-105 translate-x-2' : 'hover:bg-slate-800'} 
+                                            p-4 rounded-lg border ${activeLayer === layer.id ? 'bg-gradient-to-r from-blue-900 to-slate-900 border-blue-400' : 'bg-slate-800/50 border-slate-700'} relative overflow-hidden`}
+                                >
+                                    <div className="flex justify-between items-center relative z-10">
+                                        <div className="flex items-center gap-3">
+                                            <span className={`font-mono text-sm px-2 py-1 rounded ${activeLayer === layer.id ? 'bg-blue-500 text-white' : 'bg-slate-700 text-slate-400'}`}>L{layer.id}</span>
+                                            <span className="font-bold text-lg">{layer.name}</span>
+                                            <span className="text-slate-400 text-sm">({layer.he})</span>
+                                        </div>
+                                        {activeLayer === layer.id && <ArrowDown size={16} className="text-blue-400" />}
+                                    </div>
+
+                                    <div className={`mt-0 overflow-hidden transition-all duration-500 ease-in-out ${activeLayer === layer.id ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                                        <p className="text-slate-300 mb-2">{layer.desc}</p>
+                                        <div className="text-sm text-blue-300 mb-2"><strong>פרוטוקולים/רכיבים:</strong> {layer.protocols}</div>
+                                        <div className="bg-slate-900/50 p-3 rounded border-r-2 border-yellow-500 text-sm text-slate-400 italic">
+                                            💡 {layer.analogy}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex-1 hidden md:flex items-center justify-center bg-slate-800/30 rounded-xl border border-dashed border-slate-700 p-8">
+                            {!activeLayer ? (
+                                <div className="text-center text-slate-500">
+                                    <Layers size={64} className="mx-auto mb-4 opacity-20" />
+                                    <p>לחץ על שכבה בצד ימין כדי לראות פרטים ואנלוגיות</p>
+                                </div>
+                            ) : (
+                                <div className="text-center animate-pulse-slow">
+                                    <div className="text-6xl font-black text-slate-800 mb-4">L{activeLayer}</div>
+                                    <h3 className="text-2xl font-bold text-blue-400 mb-4">{layers.find(l => l.id === activeLayer).name}</h3>
+                                    <p className="text-xl text-white">{layers.find(l => l.id === activeLayer).analogy}</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
+            };
+
+            // --- MAIN APP ---
+
+            const App = () => {
+                return (
+                    <div className="min-h-screen bg-slate-950 pb-20">
+                        {/* Hero Section */}
+                        <div className="relative bg-gradient-to-b from-blue-900/20 to-slate-950 pt-20 pb-12 px-6 border-b border-slate-800">
+                            <div className="max-w-4xl mx-auto text-center">
+                                <div className="inline-block p-2 px-4 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-bold mb-4">
+                                    מבוא לתקשורת מחשבים // שיעור 01
+                                </div>
+                                <h1 className="text-5xl md:text-6xl font-black text-white mb-6 neon-text tracking-tight">
+                                    המבוא לעולם המחובר
+                                </h1>
+                                <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                                    מהי רשת מחשבים? איך מידע עובר מצד לצד? ומהו המודל הסודי שמנהל את כל האינטרנט?
+                                    בואו נצלול פנימה.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="max-w-4xl mx-auto px-6 py-12 space-y-24">
+
+                            {/* Section 1: Definition */}
+                            <section>
+                                <SectionHeader
+                                    title="מהי רשת מחשבים?"
+                                    subtitle="Computer Network Definition"
+                                    icon={Globe}
+                                />
+                                <div className="grid md:grid-cols-2 gap-8 items-center">
+                                    <div>
+                                        <p className="text-lg text-slate-300 leading-relaxed mb-4">
+                                            רשת מחשבים היא אוסף של שני התקנים או יותר המחוברים ביניהם (פיזית או אלחוטית) במטרה
+                                            <span className="text-blue-400 font-bold mx-1">לשתף משאבים</span>.
+                                        </p>
+                                        <ul className="space-y-3 mb-6">
+                                            <li className="flex items-center gap-2 text-slate-400"><ShieldCheck size={18} className="text-green-500" /> שיתוף קבצים ומידע</li>
+                                            <li className="flex items-center gap-2 text-slate-400"><ShieldCheck size={18} className="text-green-500" /> שיתוף מדפסות וחומרה</li>
+                                            <li className="flex items-center gap-2 text-slate-400"><ShieldCheck size={18} className="text-green-500" /> שיתוף חיבור לאינטרנט</li>
+                                        </ul>
+                                    </div>
+                                    <AnalogyCard
+                                        title="השיחה הקבוצתית"
+                                        content="תחשבו על רשת כמו על אנשים בחדר. היכולת שלהם לדבר אחד עם השני, להעביר דפים (מידע) ולהשתמש באותו לוח מחיק (משאב משותף) - זוהי הרשת."
+                                        icon={Users}
+                                    />
+                                </div>
+                            </section>
+
+                            {/* Section 2: Transmission Types */}
+                            <section>
+                                <SectionHeader
+                                    title="סוגי תשדורות"
+                                    subtitle="Unicast, Broadcast, Multicast"
+                                    icon={Share2}
+                                />
+                                <div className="grid md:grid-cols-1 gap-8">
+                                    <p className="text-slate-300">
+                                        כשאנחנו שולחים מידע ברשת, ישנן שלוש דרכים עיקריות לעשות זאת, התלויות בנמען שלנו.
+                                        נסו את הסימולטור למטה:
+                                    </p>
+                                    <TransmissionVisualizer />
+                                </div>
+                            </section>
+
+                            {/* Section 3: Topologies */}
+                            <section>
+                                <SectionHeader
+                                    title="טופולוגיות רשת"
+                                    subtitle="איך הכל מחובר פיזית?"
+                                    icon={Network}
+                                />
+                                <div className="grid md:grid-cols-2 gap-12">
+                                    <div>
+                                        <p className="text-slate-300 mb-6">
+                                            טופולוגיה היא ה"מפה" של הרשת. הצורה שבה המחשבים מחוברים זה לזה משפיעה על היציבות, המחיר והביצועים.
+                                        </p>
+                                        <div className="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                                            <h4 className="font-bold text-white mb-2 flex items-center gap-2"><Zap size={16} className="text-yellow-400" /> טיפ למבחן</h4>
+                                            <p className="text-sm text-slate-400">
+                                                הטופולוגיה הכי נפוצה היום ב-LAN היא <strong>Star (כוכב)</strong>, אבל האינטרנט עצמו בנוי יותר כמו <strong>Mesh (סריג)</strong> כדי לשרוד נפילות.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <TopologyExplorer />
+                                </div>
+                            </section>
+
+                            {/* Section 4: OSI Model */}
+                            <section>
+                                <SectionHeader
+                                    title="מודל ה-OSI"
+                                    subtitle="השפה המשותפת של האינטרנט"
+                                    icon={Layers}
+                                />
+                                <div className="mb-8">
+                                    <p className="text-slate-300 mb-4">
+                                        כדי שמחשב של HP יוכל לדבר עם שרת של Dell שמריץ תוכנה של Microsoft, היינו חייבים סטנדרט.
+                                        מודל ה-OSI מחלק את התקשורת ל-7 שכבות.
+                                    </p>
+                                    <AnalogyCard
+                                        title="משלוח חבילה בדואר"
+                                        content="מהרגע שכתבתם מכתב (Application), שמתם במעטפה (Presentation), כתבתם כתובת (Network), ועד שהמשאית (Data Link) נסעה על הכביש (Physical)."
+                                        icon={Activity}
+                                    />
+                                </div>
+                                <OSIModel />
+                            </section>
+
+                            {/* Next Steps */}
+                            <div className="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl p-8 text-center border border-blue-500/30 shadow-2xl shadow-blue-900/20">
+                                <h3 className="text-2xl font-bold text-white mb-4">מה הלאה?</h3>
+                                <p className="text-blue-200 mb-6 max-w-2xl mx-auto">
+                                    זה היה רק המבוא. במודולים הבאים אנחנו נצלול לעומק לתוך כל שכבה, נבין מה זה IP באמת,
+                                    איך TCP עובד, ולמה אנחנו צריכים Subnet Mask.
+                                </p>
+                                <button className="bg-white text-blue-900 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-colors shadow-lg">
+                                    המשך לשיעור 2: שכבת האפליקציה
+                                </button>
+                            </div>
+
+                        </div>
+
+                        {/* Footer */}
+                        <footer className="text-center text-slate-600 py-8 border-t border-slate-800 mt-12">
+                            <p>© 2026 Intro to Networking | Built based on NotebookLM</p>
+                        </footer>
+                    </div>
+                );
+            };
+
+            const root = ReactDOM.createRoot(document.getElementById('root'));
+            root.render(<App />);
+        </script>
+    </body>
+
+    </html>
