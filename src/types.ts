@@ -12,7 +12,7 @@ export interface Question {
 }
 
 export type ContentBlockType = 'text' | 'video' | 'image' | 'code' | 'info' | 'table' | 'router-diagram' | 'encapsulation-diagram' | 'list' | 'osi-table' | 'mnemonic' | 'scenario' | 'transmission-visualizer' | 'topology-explorer' | 'osi-intro' | 'architecture-demo' | 'protocol-explorer' | 'dns-simulator' | 'multiplexing-simulator' | 'three-way-handshake' | 'packet-journey' | 'ip-header-visualizer' | 'router-simulator' | 'fragmentation-demo' | 'frame-visualizer' | 'switch-simulator' | 'arp-explainer' | 'vlan-visualizer'
-  | 'routing-protocols' | 'protocol-comparison';
+  | 'routing-protocols' | 'protocol-comparison' | 'bit-demo' | 'fiber-demo' | 'copper-demo' | 'wifi-demo' | 'media-comparison';
 
 export interface ContentBlock {
   type: ContentBlockType;

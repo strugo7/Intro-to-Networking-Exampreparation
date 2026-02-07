@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שכבה פיזית - OSI Layer 1 | שיעור אינטראקטיבי</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="pulse-ring"></div>
+            <i class="fas fa-network-wired loader-icon"></i>
+            <h2>טוען שיעור אינטראקטיבי...</h2>
+            <div class="loader-bar"><div class="loader-fill"></div></div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar">
+        <div id="progress-fill"></div>
+        <span id="progress-text">0%</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="nav-brand">
+            <i class="fas fa-layer-group"></i>
+            <span>OSI Layer 1</span>
+        </div>
+        <div class="nav-sections">
+            <button class="nav-btn active" data-section="intro"><i class="fas fa-home"></i><span>מבוא</span></button>
+            <button class="nav-btn" data-section="fiber"><i class="fas fa-bolt"></i><span>סיבים אופטיים</span></button>
+            <button class="nav-btn" data-section="copper"><i class="fas fa-plug"></i><span>כבלי נחושת</span></button>
+            <button class="nav-btn" data-section="wifi"><i class="fas fa-wifi"></i><span>WiFi</span></button>
+            <button class="nav-btn" data-section="compare"><i class="fas fa-balance-scale"></i><span>השוואה</span></button>
+            <button class="nav-btn" data-section="quiz"><i class="fas fa-question-circle"></i><span>בוחן</span></button>
+            <a href="layer3.html" class="nav-btn" style="margin-top:12px; border-top:1px solid var(--border); padding-top:16px; text-decoration:none;"><i class="fas fa-project-diagram"></i><span>שכבת הרשת</span></a>
+            <a href="glossary.html" class="nav-btn" style="text-decoration:none;"><i class="fas fa-book"></i><span>מילון מונחים</span></a>
+        </div>
+        <div class="nav-progress-dots">
+            <span class="dot active" data-section="intro"></span>
+            <span class="dot" data-section="fiber"></span>
+            <span class="dot" data-section="copper"></span>
+            <span class="dot" data-section="wifi"></span>
+            <span class="dot" data-section="compare"></span>
+            <span class="dot" data-section="quiz"></span>
+        </div>
+    </nav>
+
+    <!-- Mobile Nav Toggle -->
+    <button id="mobile-nav-toggle"><i class="fas fa-bars"></i></button>
+
+    <!-- Main Content -->
+    <main id="content">
+
+        <!-- SECTION: Introduction -->
+        <section id="section-intro" class="lesson-section active">
+            <div class="section-hero">
+                <div class="hero-background">
+                    <canvas id="hero-canvas"></canvas>
+                </div>
+                <div class="hero-content">
+                    <div class="badge">שכבה 1 מתוך 7</div>
+                    <h1>השכבה הפיזית<br><span class="highlight">Physical Layer</span></h1>
+                    <p class="hero-subtitle">הבסיס של כל התקשורת הדיגיטלית — כאן הביטים הופכים לאותות פיזיים</p>
+                    <button class="cta-btn" onclick="navigateTo('fiber')">
+                        <span>בואו נתחיל</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <div class="osi-tower" id="osi-tower">
+                    <h2 class="section-title"><i class="fas fa-layer-group"></i> מודל 7 השכבות של OSI</h2>
+                    <p class="section-desc">לחצו על השכבות כדי לראות מידע נוסף</p>
+                    <div class="tower-wrapper">
+                        <div class="tower-layer" data-layer="7" style="--layer-color: #e74c3c">
+                            <div class="layer-number">7</div>
+                            <div class="layer-info">
+                                <h3>Application</h3>
+                                <p>שכבת היישום — HTTP, FTP, SMTP</p>
+                            </div>
+                            <div class="layer-icon"><i class="fas fa-globe"></i></div>
+                        </div>
+                        <div class="tower-layer" data-layer="6" style="--layer-color: #e67e22">
+                            <div class="layer-number">6</div>
+                            <div class="layer-info">
+                                <h3>Presentation</h3>
+                                <p>שכבת המצג — הצפנה, דחיסה</p>
+                            </div>
+                            <div class="layer-icon"><i class="fas fa-file-code"></i></div>
+                        </div>
+                        <div class="tower-layer" data-layer="5" style="--layer-color: #f1c40f">
+                            <div class="layer-number">5</div>
+                            <div class="layer-info">
+                                <h3>Session</h3>
+                                <p>שכבת השיחה — ניהול חיבורים</p>
+                            </div>
+                            <div class="layer-icon"><i class="fas fa-handshake"></i></div>
+                        </div>
+                        <div class="tower-layer" data-layer="4" style="--layer-color: #2ecc71">
+                            <div class="layer-number">4</div>
+                            <div class="layer-info">
+                                <h3>Transport</h3>
+                                <p>שכבת התעבורה — TCP, UDP</p>
+                            </div>
+                            <div class="layer-icon"><i class="fas fa-truck"></i></div>
+                        </div>
+                        <div class="tower-layer" data-layer="3" style="--layer-color: #3498db">
+                            <div class="layer-number">3</div>
+                            <div class="layer-info">
+                                <h3>Network</h3>
+                                <p>שכבת הרשת — IP, ניתוב</p>
+                            </div>
+                            <div class="layer-icon"><i class="fas fa-project-diagram"></i></div>
+                        </div>
+                        <div class="tower-layer" data-layer="2" style="--layer-color: #9b59b6">
+                            <div class="layer-number">2</div>
+                            <div class="layer-info">
+                                <h3>Data Link</h3>
+                                <p>שכבת קישור הנתונים — MAC, Switch</p>
+                            </div>
+                            <div class="layer-icon"><i class="fas fa-link"></i></div>
+                        </div>
+                        <div class="tower-layer active-layer" data-layer="1" style="--layer-color: #1abc9c">
+                            <div class="layer-number">1</div>
+                            <div class="layer-info">
+                                <h3>Physical ⭐</h3>
+                                <p>השכבה הפיזית — אותות, כבלים, חיבורים</p>
+                            </div>
+                            <div class="layer-icon"><i class="fas fa-microchip"></i></div>
+                            <div class="active-indicator">
+                                <span>אנחנו כאן!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-cards-grid">
+                    <div class="info-card" data-aos="fade-up">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #667eea, #764ba2)">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        <h3>מה זה השכבה הפיזית?</h3>
+                        <p>השכבה הפיזית היא השכבה הראשונה והנמוכה ביותר במודל OSI. היא אחראית על העברת <strong>ביטים גולמיים</strong> (0 ו-1) דרך אמצעי פיזי — כבל, סיב אופטי, או גלי רדיו.</p>
+                    </div>
+                    <div class="info-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c)">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3>מה התפקיד שלה?</h3>
+                        <ul class="card-list">
+                            <li><i class="fas fa-check"></i> המרת ביטים לאותות חשמליים/אופטיים/רדיו</li>
+                            <li><i class="fas fa-check"></i> הגדרת קצב העברת הנתונים (Bit Rate)</li>
+                            <li><i class="fas fa-check"></i> סנכרון בין שולח ומקבל</li>
+                            <li><i class="fas fa-check"></i> הגדרת טופולוגיית החיבור הפיזי</li>
+                        </ul>
+                    </div>
+                    <div class="info-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe)">
+                            <i class="fas fa-broadcast-tower"></i>
+                        </div>
+                        <h3>שלוש דרכי העברה</h3>
+                        <div class="three-ways">
+                            <div class="way"><i class="fas fa-bolt" style="color:#f39c12"></i><span>סיבים אופטיים</span></div>
+                            <div class="way"><i class="fas fa-plug" style="color:#e74c3c"></i><span>כבלי נחושת</span></div>
+                            <div class="way"><i class="fas fa-wifi" style="color:#3498db"></i><span>WiFi אלחוטי</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bit Animation -->
+                <div class="interactive-demo" id="bit-demo">
+                    <h2 class="section-title"><i class="fas fa-play-circle"></i> הדגמה: העברת ביטים</h2>
+                    <p class="section-desc">לחצו על "שלח" כדי לראות איך ביטים עוברים דרך אמצעי פיזי</p>
+                    <div class="bit-demo-container">
+                        <div class="bit-sender">
+                            <i class="fas fa-laptop"></i>
+                            <span>שולח</span>
+                        </div>
+                        <div class="bit-channel" id="bit-channel">
+                            <canvas id="bit-canvas" width="600" height="100"></canvas>
+                            <div class="bit-stream" id="bit-stream"></div>
+                        </div>
+                        <div class="bit-receiver">
+                            <i class="fas fa-server"></i>
+                            <span>מקבל</span>
+                        </div>
+                    </div>
+                    <div class="demo-controls">
+                        <button class="demo-btn" id="send-bits-btn" onclick="sendBits()">
+                            <i class="fas fa-paper-plane"></i> שלח ביטים
+                        </button>
+                        <div class="bit-display" id="bit-display">
+                            <span class="label">הודעה בינארית:</span>
+                            <span class="bits" id="current-bits">01001000 01100101</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="next-btn" onclick="navigateTo('fiber')">
+                    <span>סיבים אופטיים</span>
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION: Fiber Optics -->
+        <section id="section-fiber" class="lesson-section">
+            <div class="section-header fiber-header">
+                <div class="header-bg">
+                    <canvas id="fiber-header-canvas"></canvas>
+                </div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-bolt"></i> טכנולוגיה #1</div>
+                    <h1>סיבים אופטיים<br><span class="highlight-alt">Fiber Optics</span></h1>
+                    <p>העברת נתונים במהירות האור — פשוטו כמשמעו</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- How it works -->
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-lightbulb"></i> איך זה עובד?</h2>
+                    <div class="explain-grid">
+                        <div class="explain-visual">
+                            <canvas id="fiber-canvas" width="500" height="350"></canvas>
+                            <div class="canvas-controls">
+                                <button class="ctrl-btn active" data-mode="single" onclick="setFiberMode('single')">Single Mode</button>
+                                <button class="ctrl-btn" data-mode="multi" onclick="setFiberMode('multi')">Multi Mode</button>
+                            </div>
+                        </div>
+                        <div class="explain-text">
+                            <div class="step-card">
+                                <div class="step-num">1</div>
+                                <div>
+                                    <h4>המרה חשמלית → אור</h4>
+                                    <p>משדר (LED או לייזר) ממיר את האות החשמלי לפולסי אור</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-num">2</div>
+                                <div>
+                                    <h4>שידור דרך הליבה</h4>
+                                    <p>האור נע דרך ליבת זכוכית דקיקה (Core) תוך שהוא מוחזר פנימית ע"י שכבת ה-Cladding</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-num">3</div>
+                                <div>
+                                    <h4>החזרה פנימית מלאה</h4>
+                                    <p>Total Internal Reflection — האור "קופץ" בין דפנות הסיב בזכות הבדל במקדם השבירה</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-num">4</div>
+                                <div>
+                                    <h4>קליטה והמרה חזרה</h4>
+                                    <p>מקלט (Photodiode) ממיר את פולסי האור חזרה לאותות חשמליים</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fiber Structure -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-search"></i> מבנה הסיב האופטי</h2>
+                    <p class="section-desc">העבירו את העכבר על החלקים כדי ללמוד עליהם</p>
+                    <div class="fiber-structure">
+                        <canvas id="fiber-structure-canvas" width="700" height="400"></canvas>
+                        <div id="fiber-tooltip" class="fiber-tooltip hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Types -->
+                <div class="types-section">
+                    <h2 class="section-title"><i class="fas fa-code-branch"></i> סוגי סיבים אופטיים</h2>
+                    <div class="types-grid">
+                        <div class="type-card single-mode">
+                            <div class="type-header">
+                                <canvas id="single-mode-canvas" width="280" height="120"></canvas>
+                                <h3>Single Mode</h3>
+                                <span class="type-tag">מצב יחיד</span>
+                            </div>
+                            <div class="type-body">
+                                <div class="spec-row"><span class="spec-label">קוטר ליבה</span><span class="spec-value">8-10 μm</span></div>
+                                <div class="spec-row"><span class="spec-label">מרחק</span><span class="spec-value">עד 100+ ק"מ</span></div>
+                                <div class="spec-row"><span class="spec-label">מקור אור</span><span class="spec-value">לייזר</span></div>
+                                <div class="spec-row"><span class="spec-label">רוחב פס</span><span class="spec-value">גבוה מאוד</span></div>
+                                <div class="spec-row"><span class="spec-label">עלות</span><span class="spec-value">גבוהה 💰💰💰</span></div>
+                                <div class="spec-row"><span class="spec-label">שימוש</span><span class="spec-value">רשתות ארוכות טווח, ISP</span></div>
+                            </div>
+                        </div>
+                        <div class="type-card multi-mode">
+                            <div class="type-header">
+                                <canvas id="multi-mode-canvas" width="280" height="120"></canvas>
+                                <h3>Multi Mode</h3>
+                                <span class="type-tag">רב מצבי</span>
+                            </div>
+                            <div class="type-body">
+                                <div class="spec-row"><span class="spec-label">קוטר ליבה</span><span class="spec-value">50-62.5 μm</span></div>
+                                <div class="spec-row"><span class="spec-label">מרחק</span><span class="spec-value">עד 2 ק"מ</span></div>
+                                <div class="spec-row"><span class="spec-label">מקור אור</span><span class="spec-value">LED</span></div>
+                                <div class="spec-row"><span class="spec-label">רוחב פס</span><span class="spec-value">בינוני-גבוה</span></div>
+                                <div class="spec-row"><span class="spec-label">עלות</span><span class="spec-value">בינונית 💰💰</span></div>
+                                <div class="spec-row"><span class="spec-label">שימוש</span><span class="spec-value">רשתות LAN, מרכזי נתונים</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advantages / Disadvantages -->
+                <div class="pros-cons">
+                    <h2 class="section-title"><i class="fas fa-balance-scale"></i> יתרונות וחסרונות</h2>
+                    <div class="pros-cons-grid">
+                        <div class="pros-card">
+                            <h3><i class="fas fa-thumbs-up"></i> יתרונות</h3>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> מהירות גבוהה מאוד (עד Tbps)</li>
+                                <li><i class="fas fa-check-circle"></i> חסין להפרעות אלקטרומגנטיות (EMI)</li>
+                                <li><i class="fas fa-check-circle"></i> מרחקים ארוכים ללא הנחתה משמעותית</li>
+                                <li><i class="fas fa-check-circle"></i> רוחב פס גבוה מאוד</li>
+                                <li><i class="fas fa-check-circle"></i> אבטחה גבוהה — קשה להאזין</li>
+                                <li><i class="fas fa-check-circle"></i> קל משקל ודק</li>
+                            </ul>
+                        </div>
+                        <div class="cons-card">
+                            <h3><i class="fas fa-thumbs-down"></i> חסרונות</h3>
+                            <ul>
+                                <li><i class="fas fa-times-circle"></i> עלות גבוהה (ציוד ושכבות)</li>
+                                <li><i class="fas fa-times-circle"></i> שברירי — רגיש לכיפופים חדים</li>
+                                <li><i class="fas fa-times-circle"></i> התקנה מורכבת (דורש מומחיות)</li>
+                                <li><i class="fas fa-times-circle"></i> קשה לתיקון בשטח</li>
+                                <li><i class="fas fa-times-circle"></i> חיבורים דורשים דיוק רב</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fun-fact">
+                    <i class="fas fa-star"></i>
+                    <div>
+                        <h4>עובדה מעניינת!</h4>
+                        <p>כבלי סיבים אופטיים תת-ימיים מחברים יבשות ומעבירים למעלה מ-99% מתעבורת האינטרנט הבינלאומית. אורכם הכולל מגיע ליותר מ-1.3 מיליון קילומטר!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('intro')">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>מבוא</span>
+                </button>
+                <button class="next-btn" onclick="navigateTo('copper')">
+                    <span>כבלי נחושת</span>
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION: Copper Cables -->
+        <section id="section-copper" class="lesson-section">
+            <div class="section-header copper-header">
+                <div class="header-bg">
+                    <canvas id="copper-header-canvas"></canvas>
+                </div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-plug"></i> טכנולוגיה #2</div>
+                    <h1>כבלי נחושת<br><span class="highlight-alt">Copper Cables</span></h1>
+                    <p>הוותיקים והנפוצים ביותר — חשמל שמעביר מידע</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-lightbulb"></i> איך זה עובד?</h2>
+                    <div class="explain-grid">
+                        <div class="explain-visual">
+                            <canvas id="copper-signal-canvas" width="500" height="300"></canvas>
+                            <div class="canvas-controls">
+                                <label class="slider-label">מתח (Voltage): <span id="voltage-val">5V</span></label>
+                                <input type="range" id="voltage-slider" min="1" max="10" value="5" class="custom-slider">
+                                <label class="slider-label">תדירות: <span id="freq-val">בינונית</span></label>
+                                <input type="range" id="freq-slider" min="1" max="5" value="3" class="custom-slider">
+                            </div>
+                        </div>
+                        <div class="explain-text">
+                            <div class="step-card">
+                                <div class="step-num">1</div>
+                                <div>
+                                    <h4>אותות חשמליים</h4>
+                                    <p>כבלי נחושת מעבירים נתונים באמצעות שינויים במתח חשמלי. מתח גבוה = 1, מתח נמוך = 0</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-num">2</div>
+                                <div>
+                                    <h4>זוגות שזורים (Twisted Pair)</h4>
+                                    <p>חוטי הנחושת שזורים זה עם זה כדי לצמצם הפרעות אלקטרומגנטיות (EMI)</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-num">3</div>
+                                <div>
+                                    <h4>הגנה (Shielding)</h4>
+                                    <p>סוגים מסוימים כוללים שכבת הגנה נוספת (STP) להפחתת רעשים חיצוניים</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cable Types Interactive -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-ethernet"></i> סוגי כבלי נחושת</h2>
+                    <p class="section-desc">לחצו על סוג כבל כדי לראות את המבנה שלו</p>
+                    <div class="cable-types-tabs">
+                        <button class="cable-tab active" data-cable="utp" onclick="showCableType('utp')">
+                            <i class="fas fa-ethernet"></i> UTP
+                        </button>
+                        <button class="cable-tab" data-cable="stp" onclick="showCableType('stp')">
+                            <i class="fas fa-shield-alt"></i> STP
+                        </button>
+                        <button class="cable-tab" data-cable="coaxial" onclick="showCableType('coaxial')">
+                            <i class="fas fa-circle-notch"></i> Coaxial
+                        </button>
+                    </div>
+                    <div class="cable-display">
+                        <canvas id="cable-canvas" width="700" height="400"></canvas>
+                        <div id="cable-info" class="cable-info">
+                            <div id="cable-info-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories Table -->
+                <div class="categories-section">
+                    <h2 class="section-title"><i class="fas fa-list-ol"></i> קטגוריות כבלי Ethernet</h2>
+                    <div class="table-wrapper">
+                        <table class="spec-table">
+                            <thead>
+                                <tr>
+                                    <th>קטגוריה</th>
+                                    <th>מהירות מקסימלית</th>
+                                    <th>רוחב פס</th>
+                                    <th>מרחק מקסימלי</th>
+                                    <th>שימוש נפוץ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="cat-old">
+                                    <td><span class="cat-badge">Cat 5</span></td>
+                                    <td>100 Mbps</td>
+                                    <td>100 MHz</td>
+                                    <td>100 מטר</td>
+                                    <td>מיושן</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="cat-badge cat5e">Cat 5e</span></td>
+                                    <td>1 Gbps</td>
+                                    <td>100 MHz</td>
+                                    <td>100 מטר</td>
+                                    <td>רשתות ביתיות</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="cat-badge cat6">Cat 6</span></td>
+                                    <td>10 Gbps</td>
+                                    <td>250 MHz</td>
+                                    <td>55 מטר (10G)</td>
+                                    <td>עסקי, גיימינג</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="cat-badge cat6a">Cat 6a</span></td>
+                                    <td>10 Gbps</td>
+                                    <td>500 MHz</td>
+                                    <td>100 מטר</td>
+                                    <td>מרכזי נתונים</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="cat-badge cat7">Cat 7</span></td>
+                                    <td>10 Gbps</td>
+                                    <td>600 MHz</td>
+                                    <td>100 מטר</td>
+                                    <td>תשתיות מתקדמות</td>
+                                </tr>
+                                <tr class="cat-new">
+                                    <td><span class="cat-badge cat8">Cat 8</span></td>
+                                    <td>40 Gbps</td>
+                                    <td>2000 MHz</td>
+                                    <td>30 מטר</td>
+                                    <td>מרכזי נתונים מתקדמים</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pros Cons -->
+                <div class="pros-cons">
+                    <h2 class="section-title"><i class="fas fa-balance-scale"></i> יתרונות וחסרונות</h2>
+                    <div class="pros-cons-grid">
+                        <div class="pros-card">
+                            <h3><i class="fas fa-thumbs-up"></i> יתרונות</h3>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> עלות נמוכה</li>
+                                <li><i class="fas fa-check-circle"></i> התקנה פשוטה</li>
+                                <li><i class="fas fa-check-circle"></i> נפוץ ונגיש מאוד</li>
+                                <li><i class="fas fa-check-circle"></i> גמיש ועמיד יחסית</li>
+                                <li><i class="fas fa-check-circle"></i> תומך ב-PoE (חשמל דרך הכבל)</li>
+                            </ul>
+                        </div>
+                        <div class="cons-card">
+                            <h3><i class="fas fa-thumbs-down"></i> חסרונות</h3>
+                            <ul>
+                                <li><i class="fas fa-times-circle"></i> מהירות מוגבלת לעומת סיבים</li>
+                                <li><i class="fas fa-times-circle"></i> מרחק מוגבל (עד 100 מטר)</li>
+                                <li><i class="fas fa-times-circle"></i> רגיש להפרעות EMI</li>
+                                <li><i class="fas fa-times-circle"></i> פחות מאובטח (ניתן להאזין)</li>
+                                <li><i class="fas fa-times-circle"></i> כבד ונפחי יותר</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fun-fact" style="--accent: #e74c3c">
+                    <i class="fas fa-star"></i>
+                    <div>
+                        <h4>עובדה מעניינת!</h4>
+                        <p>השם "Ethernet" נגזר מ-"Ether" — החומר שמדענים בעבר חשבו שממלא את החלל. רוברט מטקאלף המציא את Ethernet ב-1973 במעבדות Xerox PARC.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('fiber')">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>סיבים אופטיים</span>
+                </button>
+                <button class="next-btn" onclick="navigateTo('wifi')">
+                    <span>WiFi</span>
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION: WiFi -->
+        <section id="section-wifi" class="lesson-section">
+            <div class="section-header wifi-header">
+                <div class="header-bg">
+                    <canvas id="wifi-header-canvas"></canvas>
+                </div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-wifi"></i> טכנולוגיה #3</div>
+                    <h1>WiFi אלחוטי<br><span class="highlight-alt">Wireless Fidelity</span></h1>
+                    <p>חופש ללא כבלים — תקשורת באמצעות גלי רדיו</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-lightbulb"></i> איך WiFi עובד?</h2>
+                    <div class="explain-grid">
+                        <div class="explain-visual">
+                            <canvas id="wifi-canvas" width="500" height="350"></canvas>
+                        </div>
+                        <div class="explain-text">
+                            <div class="step-card">
+                                <div class="step-num">1</div>
+                                <div>
+                                    <h4>גלי רדיו (RF)</h4>
+                                    <p>WiFi משתמש בגלים אלקטרומגנטיים בתדרי 2.4GHz ו-5GHz (ו-6GHz בדור החדש) להעברת נתונים</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-num">2</div>
+                                <div>
+                                    <h4>מודולציה (Modulation)</h4>
+                                    <p>הביטים מקודדים על גלי הרדיו ע"י שינוי התדר, האמפליטודה או הפאזה של הגל</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-num">3</div>
+                                <div>
+                                    <h4>Access Point (נתב)</h4>
+                                    <p>הנתב האלחוטי משדר ומקבל אותות, ומנהל את התקשורת בין כל המכשירים ברשת</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-num">4</div>
+                                <div>
+                                    <h4>CSMA/CA</h4>
+                                    <p>פרוטוקול למניעת התנגשויות — מכשירים "מקשיבים" לפני שמשדרים כדי למנוע שידור בו-זמני</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WiFi Signal Demo -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-broadcast-tower"></i> סימולציה: עוצמת אות WiFi</h2>
+                    <p class="section-desc">גררו את המכשיר כדי לראות איך המרחק משפיע על עוצמת האות</p>
+                    <div class="wifi-sim-container">
+                        <canvas id="wifi-sim-canvas" width="700" height="400"></canvas>
+                        <div class="wifi-sim-stats">
+                            <div class="stat">
+                                <span class="stat-label">מרחק</span>
+                                <span class="stat-value" id="wifi-distance">0 מטר</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">עוצמת אות</span>
+                                <span class="stat-value" id="wifi-strength">-30 dBm</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">מהירות משוערת</span>
+                                <span class="stat-value" id="wifi-speed">1200 Mbps</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">איכות</span>
+                                <span class="stat-value" id="wifi-quality">מצוין ✅</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Frequency Bands -->
+                <div class="frequency-section">
+                    <h2 class="section-title"><i class="fas fa-wave-square"></i> תדרי WiFi</h2>
+                    <div class="freq-cards">
+                        <div class="freq-card" style="--freq-color: #3498db">
+                            <div class="freq-header">
+                                <div class="freq-wave">
+                                    <canvas id="freq-24-canvas" width="200" height="60"></canvas>
+                                </div>
+                                <h3>2.4 GHz</h3>
+                            </div>
+                            <div class="freq-body">
+                                <div class="freq-meter">
+                                    <span class="meter-label">טווח</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 85%"></div></div>
+                                    <span class="meter-val">ארוך</span>
+                                </div>
+                                <div class="freq-meter">
+                                    <span class="meter-label">מהירות</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 40%"></div></div>
+                                    <span class="meter-val">בינונית</span>
+                                </div>
+                                <div class="freq-meter">
+                                    <span class="meter-label">חדירה</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 90%"></div></div>
+                                    <span class="meter-val">גבוהה</span>
+                                </div>
+                                <div class="freq-meter">
+                                    <span class="meter-label">צפיפות</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 80%; background: #e74c3c"></div></div>
+                                    <span class="meter-val">צפוף</span>
+                                </div>
+                                <p class="freq-note">מתאים למרחקים ארוכים וחדירה דרך קירות. סובל מהפרעות (מיקרוגל, בלוטות')</p>
+                            </div>
+                        </div>
+                        <div class="freq-card" style="--freq-color: #9b59b6">
+                            <div class="freq-header">
+                                <div class="freq-wave">
+                                    <canvas id="freq-5-canvas" width="200" height="60"></canvas>
+                                </div>
+                                <h3>5 GHz</h3>
+                            </div>
+                            <div class="freq-body">
+                                <div class="freq-meter">
+                                    <span class="meter-label">טווח</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 50%"></div></div>
+                                    <span class="meter-val">בינוני</span>
+                                </div>
+                                <div class="freq-meter">
+                                    <span class="meter-label">מהירות</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 75%"></div></div>
+                                    <span class="meter-val">גבוהה</span>
+                                </div>
+                                <div class="freq-meter">
+                                    <span class="meter-label">חדירה</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 45%"></div></div>
+                                    <span class="meter-val">בינונית</span>
+                                </div>
+                                <div class="freq-meter">
+                                    <span class="meter-label">צפיפות</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 35%; background: #2ecc71"></div></div>
+                                    <span class="meter-val">פנוי</span>
+                                </div>
+                                <p class="freq-note">מהיר יותר עם פחות הפרעות, אבל טווח קצר יותר ופחות חודר דרך קירות</p>
+                            </div>
+                        </div>
+                        <div class="freq-card" style="--freq-color: #e74c3c">
+                            <div class="freq-header">
+                                <div class="freq-wave">
+                                    <canvas id="freq-6-canvas" width="200" height="60"></canvas>
+                                </div>
+                                <h3>6 GHz <span class="new-badge">WiFi 6E</span></h3>
+                            </div>
+                            <div class="freq-body">
+                                <div class="freq-meter">
+                                    <span class="meter-label">טווח</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 35%"></div></div>
+                                    <span class="meter-val">קצר</span>
+                                </div>
+                                <div class="freq-meter">
+                                    <span class="meter-label">מהירות</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 95%"></div></div>
+                                    <span class="meter-val">מהירה מאוד</span>
+                                </div>
+                                <div class="freq-meter">
+                                    <span class="meter-label">חדירה</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 25%"></div></div>
+                                    <span class="meter-val">נמוכה</span>
+                                </div>
+                                <div class="freq-meter">
+                                    <span class="meter-label">צפיפות</span>
+                                    <div class="meter-bar"><div class="meter-fill" style="width: 15%; background: #2ecc71"></div></div>
+                                    <span class="meter-val">ריק</span>
+                                </div>
+                                <p class="freq-note">הדור החדש — רוחב פס ענק, כמעט ללא הפרעות, אידיאלי ל-VR ו-streaming</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WiFi Standards -->
+                <div class="categories-section">
+                    <h2 class="section-title"><i class="fas fa-history"></i> דורות WiFi</h2>
+                    <div class="wifi-timeline" id="wifi-timeline">
+                        <div class="timeline-line"></div>
+                        <div class="timeline-item" data-year="1999">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">1999</span>
+                                <h4>WiFi 1-2 <small>(802.11a/b)</small></h4>
+                                <p>עד 54 Mbps</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" data-year="2003">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2003</span>
+                                <h4>WiFi 3 <small>(802.11g)</small></h4>
+                                <p>עד 54 Mbps, תאימות לאחור</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" data-year="2009">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2009</span>
+                                <h4>WiFi 4 <small>(802.11n)</small></h4>
+                                <p>עד 600 Mbps, MIMO</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" data-year="2014">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2014</span>
+                                <h4>WiFi 5 <small>(802.11ac)</small></h4>
+                                <p>עד 3.5 Gbps, MU-MIMO</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item" data-year="2020">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2020</span>
+                                <h4>WiFi 6 <small>(802.11ax)</small></h4>
+                                <p>עד 9.6 Gbps, OFDMA</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item active-timeline" data-year="2024">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2024</span>
+                                <h4>WiFi 7 <small>(802.11be)</small></h4>
+                                <p>עד 46 Gbps! 🚀</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pros Cons -->
+                <div class="pros-cons">
+                    <h2 class="section-title"><i class="fas fa-balance-scale"></i> יתרונות וחסרונות</h2>
+                    <div class="pros-cons-grid">
+                        <div class="pros-card">
+                            <h3><i class="fas fa-thumbs-up"></i> יתרונות</h3>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> ניידות מלאה — ללא כבלים</li>
+                                <li><i class="fas fa-check-circle"></i> התקנה פשוטה וזולה</li>
+                                <li><i class="fas fa-check-circle"></i> חיבור מכשירים רבים</li>
+                                <li><i class="fas fa-check-circle"></i> גמישות ונוחות</li>
+                                <li><i class="fas fa-check-circle"></i> מתאים למכשירים ניידים</li>
+                            </ul>
+                        </div>
+                        <div class="cons-card">
+                            <h3><i class="fas fa-thumbs-down"></i> חסרונות</h3>
+                            <ul>
+                                <li><i class="fas fa-times-circle"></i> מהירות נמוכה מכבל</li>
+                                <li><i class="fas fa-times-circle"></i> רגיש להפרעות</li>
+                                <li><i class="fas fa-times-circle"></i> טווח מוגבל</li>
+                                <li><i class="fas fa-times-circle"></i> בעיות אבטחה פוטנציאליות</li>
+                                <li><i class="fas fa-times-circle"></i> חביון (Latency) גבוה יותר</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fun-fact" style="--accent: #3498db">
+                    <i class="fas fa-star"></i>
+                    <div>
+                        <h4>עובדה מעניינת!</h4>
+                        <p>WiFi זה בכלל לא ראשי תיבות! המילה הומצאה על ידי חברת מיתוג כגרסה קליטה ל-"Hi-Fi" (High Fidelity) מעולם השמע. זה לא באמת מייצג "Wireless Fidelity".</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('copper')">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>כבלי נחושת</span>
+                </button>
+                <button class="next-btn" onclick="navigateTo('compare')">
+                    <span>השוואה</span>
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION: Comparison -->
+        <section id="section-compare" class="lesson-section">
+            <div class="section-header compare-header">
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-balance-scale"></i> סיכום</div>
+                    <h1>השוואה מקיפה<br><span class="highlight-alt">Side by Side</span></h1>
+                    <p>איך לבחור את הטכנולוגיה הנכונה?</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <div class="compare-table-section">
+                    <h2 class="section-title"><i class="fas fa-table"></i> טבלת השוואה</h2>
+                    <div class="table-wrapper">
+                        <table class="compare-table">
+                            <thead>
+                                <tr>
+                                    <th>מאפיין</th>
+                                    <th><i class="fas fa-bolt"></i> סיבים אופטיים</th>
+                                    <th><i class="fas fa-plug"></i> כבלי נחושת</th>
+                                    <th><i class="fas fa-wifi"></i> WiFi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="feature-name">סוג אות</td>
+                                    <td>אור 💡</td>
+                                    <td>חשמל ⚡</td>
+                                    <td>גלי רדיו 📡</td>
+                                </tr>
+                                <tr>
+                                    <td class="feature-name">מהירות מקסימלית</td>
+                                    <td class="best">Tbps 🏆</td>
+                                    <td>40 Gbps</td>
+                                    <td>46 Gbps (WiFi 7)</td>
+                                </tr>
+                                <tr>
+                                    <td class="feature-name">מרחק</td>
+                                    <td class="best">100+ ק"מ 🏆</td>
+                                    <td>100 מטר</td>
+                                    <td>~50 מטר בפנים</td>
+                                </tr>
+                                <tr>
+                                    <td class="feature-name">עלות</td>
+                                    <td>גבוהה 💰💰💰</td>
+                                    <td class="best">נמוכה 💰 🏆</td>
+                                    <td>בינונית 💰💰</td>
+                                </tr>
+                                <tr>
+                                    <td class="feature-name">התקנה</td>
+                                    <td>מורכבת</td>
+                                    <td class="best">פשוטה 🏆</td>
+                                    <td class="best">פשוטה 🏆</td>
+                                </tr>
+                                <tr>
+                                    <td class="feature-name">חסינות EMI</td>
+                                    <td class="best">חסין לחלוטין 🏆</td>
+                                    <td>רגיש</td>
+                                    <td>רגיש מאוד</td>
+                                </tr>
+                                <tr>
+                                    <td class="feature-name">אבטחה</td>
+                                    <td class="best">גבוהה מאוד 🏆</td>
+                                    <td>בינונית</td>
+                                    <td>נמוכה-בינונית</td>
+                                </tr>
+                                <tr>
+                                    <td class="feature-name">ניידות</td>
+                                    <td>אין</td>
+                                    <td>מוגבלת</td>
+                                    <td class="best">מלאה 🏆</td>
+                                </tr>
+                                <tr>
+                                    <td class="feature-name">חביון (Latency)</td>
+                                    <td class="best">נמוך מאוד 🏆</td>
+                                    <td>נמוך</td>
+                                    <td>בינוני-גבוה</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Use Case Scenarios -->
+                <div class="scenarios-section">
+                    <h2 class="section-title"><i class="fas fa-map-signs"></i> מתי להשתמש בכל טכנולוגיה?</h2>
+                    <div class="scenarios-grid">
+                        <div class="scenario-card" onclick="this.classList.toggle('flipped')">
+                            <div class="scenario-front">
+                                <i class="fas fa-building"></i>
+                                <h3>מרכז נתונים</h3>
+                                <span class="flip-hint">לחצו להפוך</span>
+                            </div>
+                            <div class="scenario-back">
+                                <h4>התשובה: סיבים אופטיים</h4>
+                                <p>מרכזי נתונים דורשים מהירויות גבוהות, חביון נמוך ורוחב פס עצום — סיבים אופטיים הם הפתרון המושלם.</p>
+                            </div>
+                        </div>
+                        <div class="scenario-card" onclick="this.classList.toggle('flipped')">
+                            <div class="scenario-front">
+                                <i class="fas fa-home"></i>
+                                <h3>בית חכם</h3>
+                                <span class="flip-hint">לחצו להפוך</span>
+                            </div>
+                            <div class="scenario-back">
+                                <h4>התשובה: WiFi + נחושת</h4>
+                                <p>WiFi למכשירים ניידים ו-IoT, כבל נחושת למחשב ראשי, טלוויזיה וקונסולת משחקים.</p>
+                            </div>
+                        </div>
+                        <div class="scenario-card" onclick="this.classList.toggle('flipped')">
+                            <div class="scenario-front">
+                                <i class="fas fa-city"></i>
+                                <h3>חיבור בין ערים</h3>
+                                <span class="flip-hint">לחצו להפוך</span>
+                            </div>
+                            <div class="scenario-back">
+                                <h4>התשובה: סיבים אופטיים</h4>
+                                <p>רק סיבים אופטיים יכולים להעביר כמויות עצומות של נתונים למרחקים של עשרות ומאות קילומטרים.</p>
+                            </div>
+                        </div>
+                        <div class="scenario-card" onclick="this.classList.toggle('flipped')">
+                            <div class="scenario-front">
+                                <i class="fas fa-coffee"></i>
+                                <h3>בית קפה</h3>
+                                <span class="flip-hint">לחצו להפוך</span>
+                            </div>
+                            <div class="scenario-back">
+                                <h4>התשובה: WiFi</h4>
+                                <p>לקוחות צריכים גישה מהירה ופשוטה ללא כבלים. WiFi הוא הפתרון הטבעי.</p>
+                            </div>
+                        </div>
+                        <div class="scenario-card" onclick="this.classList.toggle('flipped')">
+                            <div class="scenario-front">
+                                <i class="fas fa-gamepad"></i>
+                                <h3>גיימינג תחרותי</h3>
+                                <span class="flip-hint">לחצו להפוך</span>
+                            </div>
+                            <div class="scenario-back">
+                                <h4>התשובה: כבל נחושת (Cat6+)</h4>
+                                <p>חביון נמוך ויציב הוא קריטי. כבל Ethernet מספק חיבור אמין בלי ניודים של WiFi.</p>
+                            </div>
+                        </div>
+                        <div class="scenario-card" onclick="this.classList.toggle('flipped')">
+                            <div class="scenario-front">
+                                <i class="fas fa-hospital"></i>
+                                <h3>בית חולים</h3>
+                                <span class="flip-hint">לחצו להפוך</span>
+                            </div>
+                            <div class="scenario-back">
+                                <h4>התשובה: סיבים + נחושת</h4>
+                                <p>סיבים אופטיים לעמוד השדרה (חסין ל-EMI מציוד רפואי), נחושת לתחנות עבודה.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Speed Comparison Chart -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-chart-bar"></i> השוואת מהירויות</h2>
+                    <p class="section-desc">כמה זמן ייקח להוריד קובץ של 10GB?</p>
+                    <div class="speed-race" id="speed-race">
+                        <div class="race-track">
+                            <div class="racer" id="racer-fiber">
+                                <span class="racer-icon">💡</span>
+                                <span class="racer-label">סיב אופטי (10Gbps)</span>
+                                <div class="racer-bar"><div class="racer-fill" id="fill-fiber"></div></div>
+                                <span class="racer-time" id="time-fiber">8 שניות</span>
+                            </div>
+                            <div class="racer" id="racer-copper">
+                                <span class="racer-icon">⚡</span>
+                                <span class="racer-label">נחושת Cat6 (1Gbps)</span>
+                                <div class="racer-bar"><div class="racer-fill" id="fill-copper"></div></div>
+                                <span class="racer-time" id="time-copper">80 שניות</span>
+                            </div>
+                            <div class="racer" id="racer-wifi">
+                                <span class="racer-icon">📡</span>
+                                <span class="racer-label">WiFi 6 (~500Mbps)</span>
+                                <div class="racer-bar"><div class="racer-fill" id="fill-wifi"></div></div>
+                                <span class="racer-time" id="time-wifi">160 שניות</span>
+                            </div>
+                        </div>
+                        <button class="demo-btn" id="race-btn" onclick="startRace()">
+                            <i class="fas fa-flag-checkered"></i> התחל מרוץ!
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('wifi')">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>WiFi</span>
+                </button>
+                <button class="next-btn" onclick="navigateTo('quiz')">
+                    <span>בוחן ידע</span>
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION: Quiz -->
+        <section id="section-quiz" class="lesson-section">
+            <div class="section-header quiz-header">
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-trophy"></i> בוחן</div>
+                    <h1>בדקו את הידע שלכם!<br><span class="highlight-alt">Knowledge Check</span></h1>
+                    <p>10 שאלות על השכבה הפיזית של מודל OSI</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <div class="quiz-container" id="quiz-container">
+                    <div class="quiz-progress">
+                        <div class="quiz-progress-bar">
+                            <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+                        </div>
+                        <span class="quiz-progress-text" id="quiz-progress-text">שאלה 1 מתוך 10</span>
+                    </div>
+
+                    <div class="quiz-card" id="quiz-card">
+                        <div class="quiz-question" id="quiz-question">
+                            <span class="q-number" id="q-number">1</span>
+                            <p id="q-text"></p>
+                        </div>
+                        <div class="quiz-options" id="quiz-options"></div>
+                        <div class="quiz-feedback hidden" id="quiz-feedback">
+                            <div class="feedback-icon" id="feedback-icon"></div>
+                            <p id="feedback-text"></p>
+                        </div>
+                        <div class="quiz-actions">
+                            <button class="quiz-btn" id="quiz-next-btn" onclick="nextQuestion()" disabled>
+                                <span>השאלה הבאה</span>
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quiz-results hidden" id="quiz-results">
+                        <div class="results-icon" id="results-icon"></div>
+                        <h2 id="results-title"></h2>
+                        <p id="results-text"></p>
+                        <div class="results-score">
+                            <div class="score-circle" id="score-circle">
+                                <svg viewBox="0 0 120 120">
+                                    <circle cx="60" cy="60" r="54" class="score-bg"/>
+                                    <circle cx="60" cy="60" r="54" class="score-fill" id="score-fill"/>
+                                </svg>
+                                <span class="score-text" id="score-text">0/10</span>
+                            </div>
+                        </div>
+                        <button class="demo-btn" onclick="resetQuiz()">
+                            <i class="fas fa-redo"></i> נסו שוב
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('compare')">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>השוואה</span>
+                </button>
+                <button class="next-btn" onclick="navigateTo('intro')">
+                    <span>חזרה להתחלה</span>
+                    <i class="fas fa-home"></i>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/animations.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

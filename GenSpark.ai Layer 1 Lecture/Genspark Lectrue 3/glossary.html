@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NetLearn - Networking Glossary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = {
+    darkMode: "class",
+    theme: {
+        extend: {
+            colors: {
+                "primary": "#137fec",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101922",
+            },
+            fontFamily: {
+                "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+    },
+}
+</script>
+<style>
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.term-expand-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, padding 0.3s ease;
+    opacity: 0;
+}
+.term-expand-content.open {
+    max-height: 1200px;
+    opacity: 1;
+}
+.term-card.expanded {
+    border-left: 4px solid #137fec;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border-radius: 0.75rem;
+}
+.term-card {
+    transition: all 0.3s ease;
+}
+.alphabet-btn.active {
+    background-color: #137fec;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(19, 127, 236, 0.3);
+}
+.filter-btn.active {
+    background-color: #1a2632;
+    color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.highlight-match {
+    background-color: rgba(19, 127, 236, 0.15);
+    border-radius: 2px;
+    padding: 0 2px;
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 0.35s ease forwards; }
+.diagram-arrow {
+    position: relative;
+}
+.diagram-arrow::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, #137fec 0, #137fec 6px, transparent 6px, transparent 10px);
+}
+</style>
+</head>
+<body class="bg-background-light font-display text-[#111418] min-h-screen flex flex-col">
+
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 bg-white border-b border-[#f0f2f4] px-4 sm:px-10 py-3 shadow-sm">
+<div class="flex items-center justify-between max-w-[1200px] mx-auto w-full">
+    <div class="flex items-center gap-4">
+        <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <div class="size-8 text-primary">
+                <span class="material-symbols-outlined text-3xl">hub</span>
+            </div>
+            <h2 class="text-[#111418] text-xl font-bold tracking-tight">NetLearn</h2>
+        </a>
+    </div>
+    <div class="flex flex-1 justify-end gap-8 items-center">
+        <nav class="hidden md:flex items-center gap-8">
+            <a class="text-[#111418] hover:text-primary text-sm font-medium transition-colors" href="index.html">Layer 1</a>
+            <a class="text-[#111418] hover:text-primary text-sm font-medium transition-colors" href="layer3.html">Layer 3</a>
+            <a class="text-primary font-semibold text-sm leading-normal" href="glossary.html">Glossary</a>
+            <a class="text-[#111418] hover:text-primary text-sm font-medium transition-colors" href="#">Labs</a>
+            <a class="text-[#111418] hover:text-primary text-sm font-medium transition-colors" href="#">Community</a>
+        </nav>
+        <div class="bg-primary/10 rounded-full size-10 flex items-center justify-center cursor-pointer hover:bg-primary/20 transition-all">
+            <span class="material-symbols-outlined text-primary">person</span>
+        </div>
+    </div>
+</div>
+</header>
+
+<!-- Main Content -->
+<main class="flex-1 flex flex-col items-center w-full px-4 sm:px-10 py-8">
+<div class="w-full max-w-[960px] flex flex-col gap-6">
+
+    <!-- Title & Search -->
+    <section class="flex flex-col gap-6 mb-4">
+        <div class="flex flex-col gap-2">
+            <h1 class="text-[#111418] text-4xl sm:text-5xl font-black tracking-[-0.033em]">Networking Glossary</h1>
+            <p class="text-[#617589] text-lg">Browse standard terms, protocols, and definitions.</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative w-full shadow-sm">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#617589]">
+                <span class="material-symbols-outlined">search</span>
+            </div>
+            <input id="searchInput" class="w-full h-14 pl-12 pr-12 rounded-xl border-none bg-white text-lg text-[#111418] placeholder:text-[#9ca3af] focus:ring-2 focus:ring-primary shadow-sm transition-all" placeholder="Search terms (e.g., OSPF, Bandwidth)..." type="text"/>
+            <button id="clearSearch" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors hidden">
+                <span class="material-symbols-outlined text-xl">close</span>
+            </button>
+        </div>
+
+        <!-- Stats bar -->
+        <div class="flex items-center justify-between text-xs text-gray-400">
+            <span id="termCount">Showing all 60 terms</span>
+            <span id="activeLetterLabel">Letter: All</span>
+        </div>
+
+        <!-- Filters & Alphabet -->
+        <div class="flex flex-col gap-4">
+            <!-- Category Filters -->
+            <div class="flex flex-wrap gap-3" id="filterContainer">
+                <button class="filter-btn active px-5 py-2 rounded-lg text-sm font-semibold shadow-sm transition-all hover:scale-105" data-filter="all">
+                    All Terms
+                </button>
+                <button class="filter-btn px-5 py-2 rounded-lg bg-white text-[#111418] border border-[#e5e7eb] text-sm font-medium hover:border-primary hover:text-primary transition-colors shadow-sm" data-filter="Protocol">
+                    Protocols
+                </button>
+                <button class="filter-btn px-5 py-2 rounded-lg bg-white text-[#111418] border border-[#e5e7eb] text-sm font-medium hover:border-primary hover:text-primary transition-colors shadow-sm" data-filter="Hardware">
+                    Hardware
+                </button>
+                <button class="filter-btn px-5 py-2 rounded-lg bg-white text-[#111418] border border-[#e5e7eb] text-sm font-medium hover:border-primary hover:text-primary transition-colors shadow-sm" data-filter="Model">
+                    Models
+                </button>
+                <button class="filter-btn px-5 py-2 rounded-lg bg-white text-[#111418] border border-[#e5e7eb] text-sm font-medium hover:border-primary hover:text-primary transition-colors shadow-sm" data-filter="Security">
+                    Security
+                </button>
+                <button class="filter-btn px-5 py-2 rounded-lg bg-white text-[#111418] border border-[#e5e7eb] text-sm font-medium hover:border-primary hover:text-primary transition-colors shadow-sm" data-filter="Addressing">
+                    Addressing
+                </button>
+                <button class="filter-btn px-5 py-2 rounded-lg bg-white text-[#111418] border border-[#e5e7eb] text-sm font-medium hover:border-primary hover:text-primary transition-colors shadow-sm" data-filter="General">
+                    General
+                </button>
+            </div>
+
+            <!-- A-Z Alphabet Bar -->
+            <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-2 border-b border-[#f0f2f4]" id="alphabetBar">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Dictionary Content List -->
+    <div class="flex flex-col gap-3 pb-8" id="glossaryList">
+        <!-- Terms rendered by JS -->
+    </div>
+
+    <!-- Load More -->
+    <div class="flex justify-center pb-12" id="loadMoreContainer">
+        <button id="loadMoreBtn" class="flex items-center gap-2 text-primary font-medium hover:underline transition-all">
+            <span>Load more definitions</span>
+            <span class="material-symbols-outlined text-sm">arrow_downward</span>
+        </button>
+    </div>
+
+    <!-- No Results -->
+    <div id="noResults" class="hidden flex flex-col items-center justify-center py-16 gap-4">
+        <span class="material-symbols-outlined text-6xl text-gray-300">search_off</span>
+        <h3 class="text-xl font-bold text-gray-400">No terms found</h3>
+        <p class="text-gray-400 text-sm">Try a different search query or filter.</p>
+    </div>
+
+</div>
+</main>
+
+<!-- Back to lesson link -->
+<div class="fixed bottom-6 right-6 z-50">
+    <a href="index.html" class="flex items-center gap-2 px-4 py-3 bg-primary text-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all text-sm font-semibold">
+        <span class="material-symbols-outlined text-lg">school</span>
+        <span class="hidden sm:inline">Back to Lesson</span>
+    </a>
+</div>
+
+<script>
+// ============================
+// GLOSSARY DATA — 60+ Networking Terms
+// ============================
+const glossaryData = [
+    // === A ===
+    {
+        term: "ACL",
+        fullName: "Access Control List",
+        category: "Security",
+        layer: "",
+        definitionEn: "A set of rules applied to network interfaces or devices that filter traffic based on source/destination IP addresses, ports, and protocols. ACLs are used to control which packets are permitted or denied through a network device.",
+        definitionHe: "רשימת בקרת גישה (ACL) היא סט של כללים המיושמים על ממשקי רשת או מכשירים המסננים תעבורה על סמך כתובות IP מקור/יעד, פורטים ופרוטוקולים. ACL משמש לשליטה באילו חבילות מותרות או נחסמות.",
+        relatedTerms: ["Firewall", "NAT", "Packet Filtering"],
+        visualization: null
+    },
+    {
+        term: "ARP",
+        fullName: "Address Resolution Protocol",
+        category: "Protocol",
+        layer: "Layer 2/3",
+        definitionEn: "A communication protocol used for discovering the link layer address, such as a <strong>MAC address</strong>, associated with a given internet layer address, typically an <strong>IPv4 address</strong>. This mapping is a critical function in the Internet Protocol Suite.",
+        definitionHe: "פרוטוקול המיפוי (ARP) הוא פרוטוקול תקשורת המשמש לגילוי כתובת שכבת הקישור, כגון כתובת <strong>MAC</strong>, המשוייכת לכתובת שכבת האינטרנט נתונה, בדרך כלל כתובת <strong>IPv4</strong>. מיפוי זה הוא פונקציה קריטית בחבילת פרוטוקולי האינטרנט.",
+        relatedTerms: ["IP Address", "MAC Address", "RARP"],
+        visualization: {
+            type: "arp-table",
+            data: [
+                { ip: "192.168.1.1", mac: "00:1A:2B:3C:4D:5E", type: "Dynamic" },
+                { ip: "192.168.1.15", mac: "AA:BB:CC:11:22:33", type: "Dynamic" }
+            ]
+        }
+    },
+    // === B ===
+    {
+        term: "BGP",
+        fullName: "Border Gateway Protocol",
+        category: "Protocol",
+        layer: "Layer 7",
+        definitionEn: "The protocol underlying the global routing system of the Internet. It manages how packets are routed across the internet through the exchange of routing information between <strong>Autonomous Systems (AS)</strong>. BGP is classified as a path-vector routing protocol.",
+        definitionHe: "BGP הוא הפרוטוקול שעומד בבסיס מערכת הניתוב הגלובלית של האינטרנט. הוא מנהל כיצד חבילות מנותבות ברחבי האינטרנט באמצעות חילופי מידע ניתוב בין <strong>מערכות אוטונומיות (AS)</strong>.",
+        relatedTerms: ["OSPF", "Routing Table", "AS"],
+        visualization: {
+            type: "routing",
+            data: [
+                { as: "AS 64501", prefix: "10.0.0.0/8", nextHop: "192.168.1.1" },
+                { as: "AS 64502", prefix: "172.16.0.0/12", nextHop: "192.168.2.1" }
+            ]
+        }
+    },
+    {
+        term: "Bandwidth",
+        fullName: "Maximum rate of data transfer",
+        category: "General",
+        layer: "",
+        definitionEn: "The maximum amount of data that can be transmitted over a network connection in a given amount of time. Measured in <strong>bits per second (bps)</strong>. Common measurements include Mbps and Gbps. Not to be confused with throughput, which is the actual achieved rate.",
+        definitionHe: "רוחב פס הוא כמות הנתונים המקסימלית שניתן להעביר דרך חיבור רשת בפרק זמן נתון. נמדד ב<strong>ביטים לשנייה (bps)</strong>. יחידות נפוצות כוללות Mbps ו-Gbps. אין לבלבל עם תפוקה (throughput) שהיא הקצב בפועל.",
+        relatedTerms: ["Throughput", "Latency", "QoS"],
+        visualization: {
+            type: "bandwidth",
+            data: { download: 940, upload: 480, unit: "Mbps" }
+        }
+    },
+    {
+        term: "Bridge",
+        fullName: "Network Bridge",
+        category: "Hardware",
+        layer: "Layer 2",
+        definitionEn: "A network device that connects two or more network segments at the <strong>Data Link Layer</strong> (Layer 2). It filters traffic based on MAC addresses and forwards frames between segments, effectively reducing collision domains.",
+        definitionHe: "גשר רשת הוא התקן רשת המחבר שני מקטעי רשת או יותר ב<strong>שכבת קישור הנתונים</strong> (שכבה 2). הוא מסנן תעבורה על סמך כתובות MAC ומעביר מסגרות בין מקטעים.",
+        relatedTerms: ["Switch", "MAC Address", "VLAN"],
+        visualization: null
+    },
+    // === C ===
+    {
+        term: "CIDR",
+        fullName: "Classless Inter-Domain Routing",
+        category: "Addressing",
+        layer: "Layer 3",
+        definitionEn: "A method of IP address allocation and routing that replaces the older classful addressing system. CIDR notation uses a <strong>suffix</strong> (e.g., /24) to indicate the number of bits in the network portion of the address, enabling more efficient use of IP address space.",
+        definitionHe: "CIDR הוא שיטה להקצאת כתובות IP וניתוב שמחליפה את מערכת הכיתות הישנה. סימון CIDR משתמש ב<strong>סיפא</strong> (לדוגמה /24) לציון מספר הביטים בחלק הרשת של הכתובת, ומאפשר שימוש יעיל יותר במרחב כתובות ה-IP.",
+        relatedTerms: ["Subnet Mask", "IP Address", "VLSM"],
+        visualization: {
+            type: "cidr",
+            data: [
+                { cidr: "192.168.1.0/24", hosts: 254, mask: "255.255.255.0" },
+                { cidr: "10.0.0.0/8", hosts: "16M+", mask: "255.0.0.0" },
+                { cidr: "172.16.0.0/16", hosts: "65K+", mask: "255.255.0.0" }
+            ]
+        }
+    },
+    // === D ===
+    {
+        term: "DHCP",
+        fullName: "Dynamic Host Configuration Protocol",
+        category: "Protocol",
+        layer: "Layer 7",
+        definitionEn: "A network management protocol used to dynamically assign <strong>IP addresses</strong> and other network configuration parameters to devices on a network. This allows devices to communicate using TCP/IP without manual configuration.",
+        definitionHe: "DHCP הוא פרוטוקול ניהול רשת המשמש להקצאה דינמית של <strong>כתובות IP</strong> ופרמטרי תצורת רשת נוספים להתקנים ברשת. פרוטוקול זה מאפשר להתקנים לתקשר באמצעות TCP/IP ללא הגדרה ידנית.",
+        relatedTerms: ["IP Address", "DNS", "APIPA"],
+        visualization: {
+            type: "dhcp-flow",
+            steps: ["Discover", "Offer", "Request", "Acknowledge"]
+        }
+    },
+    {
+        term: "DNS",
+        fullName: "Domain Name System",
+        category: "Protocol",
+        layer: "Layer 7",
+        definitionEn: "A hierarchical and distributed naming system that translates human-readable <strong>domain names</strong> (like www.example.com) into <strong>IP addresses</strong> (like 93.184.216.34). Often called the 'phone book of the Internet'.",
+        definitionHe: "DNS הוא מערכת שמות היררכית ומבוזרת שמתרגמת <strong>שמות מתחם</strong> קריאים לאדם (כמו www.example.com) ל<strong>כתובות IP</strong> (כמו 93.184.216.34). מכונה לעתים קרובות 'ספר הטלפונים של האינטרנט'.",
+        relatedTerms: ["IP Address", "FQDN", "DNSSEC"],
+        visualization: {
+            type: "dns-lookup",
+            data: { domain: "www.example.com", ip: "93.184.216.34", ttl: "3600s" }
+        }
+    },
+    // === E ===
+    {
+        term: "Ethernet",
+        fullName: "IEEE 802.3 Standard",
+        category: "Protocol",
+        layer: "Layer 1/2",
+        definitionEn: "A family of wired computer networking technologies commonly used in <strong>Local Area Networks (LAN)</strong>. It defines the physical layer specifications and data link layer protocols for frame format and media access control (MAC). Speeds range from 10 Mbps to 400 Gbps.",
+        definitionHe: "Ethernet הוא משפחה של טכנולוגיות רשתות מחשבים חוטיות הנפוצות ב<strong>רשתות מקומיות (LAN)</strong>. הוא מגדיר מפרטי שכבה פיזית ופרוטוקולי שכבת קישור הנתונים עבור פורמט מסגרת ובקרת גישה למדיה (MAC).",
+        relatedTerms: ["MAC Address", "Switch", "IEEE 802.3"],
+        visualization: {
+            type: "ethernet-frame",
+            fields: ["Preamble", "Dest MAC", "Src MAC", "Type", "Payload", "FCS"]
+        }
+    },
+    {
+        term: "Encapsulation",
+        fullName: "Data Encapsulation",
+        category: "General",
+        layer: "",
+        definitionEn: "The process of wrapping data with protocol information at each layer of the <strong>OSI model</strong> before network transmission. Each layer adds its own header (and sometimes trailer) to the data from the layer above.",
+        definitionHe: "תהליך עטיפת נתונים במידע פרוטוקול בכל שכבה של <strong>מודל OSI</strong> לפני שידור ברשת. כל שכבה מוסיפה כותרת משלה (ולפעמים סיומת) לנתונים מהשכבה שמעלה.",
+        relatedTerms: ["OSI Model", "PDU", "Decapsulation"],
+        visualization: null
+    },
+    // === F ===
+    {
+        term: "Firewall",
+        fullName: "Network Firewall",
+        category: "Security",
+        layer: "Layer 3-7",
+        definitionEn: "A network security device or software that monitors and controls incoming and outgoing network traffic based on predetermined <strong>security rules</strong>. It establishes a barrier between trusted internal networks and untrusted external networks like the Internet.",
+        definitionHe: "חומת אש היא התקן או תוכנת אבטחת רשת שמנטרת ומבקרת תעבורת רשת נכנסת ויוצאת בהתבסס על <strong>כללי אבטחה</strong> קבועים מראש. היא מקימה מחסום בין רשתות פנימיות מהימנות לרשתות חיצוניות שאינן מהימנות כמו האינטרנט.",
+        relatedTerms: ["ACL", "IDS", "NAT"],
+        visualization: null
+    },
+    {
+        term: "FTP",
+        fullName: "File Transfer Protocol",
+        category: "Protocol",
+        layer: "Layer 7",
+        definitionEn: "A standard communication protocol used for the transfer of files between a client and server on a computer network. FTP uses <strong>TCP port 21</strong> for control and <strong>port 20</strong> for data transfer.",
+        definitionHe: "FTP הוא פרוטוקול תקשורת סטנדרטי המשמש להעברת קבצים בין לקוח לשרת ברשת מחשבים. FTP משתמש ב<strong>פורט TCP 21</strong> לבקרה וב<strong>פורט 20</strong> להעברת נתונים.",
+        relatedTerms: ["SFTP", "TFTP", "SCP"],
+        visualization: null
+    },
+    // === G ===
+    {
+        term: "Gateway",
+        fullName: "Default Gateway",
+        category: "Hardware",
+        layer: "Layer 3",
+        definitionEn: "A network node that serves as an access point to another network. The <strong>default gateway</strong> is typically the router's IP address on the local network and is the first hop for traffic destined for other networks.",
+        definitionHe: "שער (Gateway) הוא צומת רשת המשמש כנקודת גישה לרשת אחרת. <strong>שער ברירת המחדל</strong> הוא בדרך כלל כתובת ה-IP של הנתב ברשת המקומית והוא הקפיצה הראשונה עבור תעבורה המיועדת לרשתות אחרות.",
+        relatedTerms: ["Router", "Routing Table", "NAT"],
+        visualization: null
+    },
+    // === H ===
+    {
+        term: "HTTP",
+        fullName: "HyperText Transfer Protocol",
+        category: "Protocol",
+        layer: "Layer 7",
+        definitionEn: "An application-layer protocol for transmitting hypermedia documents, such as HTML. It follows a <strong>client-server model</strong> where the browser (client) sends requests and the web server returns responses. Uses <strong>TCP port 80</strong>.",
+        definitionHe: "HTTP הוא פרוטוקול שכבת יישום להעברת מסמכי היפרמדיה כמו HTML. הוא פועל לפי <strong>מודל לקוח-שרת</strong> בו הדפדפן (לקוח) שולח בקשות ושרת האינטרנט מחזיר תגובות. משתמש ב<strong>פורט TCP 80</strong>.",
+        relatedTerms: ["HTTPS", "TCP", "REST API"],
+        visualization: {
+            type: "http-request",
+            data: { method: "GET", path: "/index.html", status: "200 OK", contentType: "text/html" }
+        }
+    },
+    {
+        term: "HTTPS",
+        fullName: "HyperText Transfer Protocol Secure",
+        category: "Security",
+        layer: "Layer 7",
+        definitionEn: "An extension of HTTP that uses <strong>TLS/SSL</strong> encryption to secure communication between client and server. It ensures data integrity, confidentiality, and authentication. Uses <strong>TCP port 443</strong>.",
+        definitionHe: "HTTPS הוא הרחבה של HTTP שמשתמשת בהצפנת <strong>TLS/SSL</strong> לאבטחת התקשורת בין לקוח לשרת. הוא מבטיח שלמות נתונים, סודיות ואימות. משתמש ב<strong>פורט TCP 443</strong>.",
+        relatedTerms: ["HTTP", "TLS", "SSL"],
+        visualization: null
+    },
+    {
+        term: "Hub",
+        fullName: "Network Hub",
+        category: "Hardware",
+        layer: "Layer 1",
+        definitionEn: "A basic networking device that connects multiple devices in a LAN. Unlike a switch, a hub <strong>broadcasts</strong> all incoming data to every connected port, creating a single collision domain. Largely replaced by switches in modern networks.",
+        definitionHe: "רכזת (Hub) היא התקן רשת בסיסי המחבר מספר מכשירים ברשת מקומית. שלא כמו מתג, רכזת <strong>משדרת</strong> את כל הנתונים הנכנסים לכל פורט מחובר, ויוצרת דומיין התנגשות יחיד. הוחלפה ברובה על ידי מתגים.",
+        relatedTerms: ["Switch", "Bridge", "Collision Domain"],
+        visualization: null
+    },
+    // === I ===
+    {
+        term: "ICMP",
+        fullName: "Internet Control Message Protocol",
+        category: "Protocol",
+        layer: "Layer 3",
+        definitionEn: "A supporting protocol in the Internet Protocol Suite used by network devices to send <strong>error messages</strong> and operational information. The <strong>ping</strong> and <strong>traceroute</strong> commands use ICMP to diagnose network connectivity issues.",
+        definitionHe: "ICMP הוא פרוטוקול תומך בחבילת פרוטוקולי האינטרנט המשמש התקני רשת לשליחת <strong>הודעות שגיאה</strong> ומידע תפעולי. פקודות <strong>ping</strong> ו-<strong>traceroute</strong> משתמשות ב-ICMP לאבחון בעיות קישוריות.",
+        relatedTerms: ["Ping", "Traceroute", "IP"],
+        visualization: {
+            type: "ping",
+            data: [
+                { seq: 1, ttl: 64, time: "12ms" },
+                { seq: 2, ttl: 64, time: "11ms" },
+                { seq: 3, ttl: 64, time: "13ms" }
+            ]
+        }
+    },
+    {
+        term: "IP Address",
+        fullName: "Internet Protocol Address",
+        category: "Addressing",
+        layer: "Layer 3",
+        definitionEn: "A numerical label assigned to each device connected to a network that uses the Internet Protocol. <strong>IPv4</strong> uses 32-bit addresses (e.g., 192.168.1.1) while <strong>IPv6</strong> uses 128-bit addresses (e.g., 2001:db8::1).",
+        definitionHe: "כתובת IP היא תווית מספרית המוקצית לכל התקן המחובר לרשת המשתמשת בפרוטוקול האינטרנט. <strong>IPv4</strong> משתמש בכתובות של 32 סיביות (למשל 192.168.1.1) בעוד <strong>IPv6</strong> משתמש ב-128 סיביות.",
+        relatedTerms: ["Subnet Mask", "CIDR", "NAT"],
+        visualization: {
+            type: "ip-breakdown",
+            data: { address: "192.168.1.100", mask: "/24", network: "192.168.1.0", broadcast: "192.168.1.255" }
+        }
+    },
+    {
+        term: "IDS",
+        fullName: "Intrusion Detection System",
+        category: "Security",
+        layer: "Layer 3-7",
+        definitionEn: "A device or software application that monitors a network for <strong>malicious activity</strong> or policy violations. An IDS can be network-based (NIDS) or host-based (HIDS). Unlike an IPS, it typically only alerts rather than blocking threats.",
+        definitionHe: "מערכת גילוי חדירות (IDS) היא התקן או יישום תוכנה שמנטר רשת לאיתור <strong>פעילות זדונית</strong> או הפרות מדיניות. IDS יכול להיות מבוסס רשת (NIDS) או מבוסס מארח (HIDS).",
+        relatedTerms: ["IPS", "Firewall", "SIEM"],
+        visualization: null
+    },
+    // === L ===
+    {
+        term: "LAN",
+        fullName: "Local Area Network",
+        category: "General",
+        layer: "",
+        definitionEn: "A computer network that interconnects computers within a <strong>limited geographical area</strong> such as a home, school, or office building. LANs typically use Ethernet or WiFi technologies and offer high data transfer rates.",
+        definitionHe: "רשת מקומית (LAN) היא רשת מחשבים המחברת מחשבים בתוך <strong>שטח גאוגרפי מוגבל</strong> כמו בית, בית ספר או בניין משרדים. רשתות LAN משתמשות בדרך כלל בטכנולוגיות Ethernet או WiFi.",
+        relatedTerms: ["WAN", "VLAN", "Ethernet"],
+        visualization: null
+    },
+    {
+        term: "Latency",
+        fullName: "Network Latency",
+        category: "General",
+        layer: "",
+        definitionEn: "The time delay between the cause and the effect of some physical change in a network. In networking, it's the time it takes for a <strong>data packet</strong> to travel from source to destination. Measured in <strong>milliseconds (ms)</strong>.",
+        definitionHe: "זמן השהיה (Latency) הוא עיכוב הזמן בין הגורם לתוצאה של שינוי פיזי כלשהו ברשת. בתקשורת, זהו הזמן שלוקח ל<strong>חבילת נתונים</strong> לנסוע ממקור ליעד. נמדד ב<strong>אלפיות שנייה (ms)</strong>.",
+        relatedTerms: ["Bandwidth", "Jitter", "Ping"],
+        visualization: null
+    },
+    // === M ===
+    {
+        term: "MAC Address",
+        fullName: "Media Access Control Address",
+        category: "Addressing",
+        layer: "Layer 2",
+        definitionEn: "A unique identifier assigned to a network interface controller (NIC) for use as a network address. A MAC address is a <strong>48-bit</strong> address (e.g., 00:1A:2B:3C:4D:5E) burned into hardware and used for local network communication.",
+        definitionHe: "כתובת MAC היא מזהה ייחודי המוקצה לבקר ממשק רשת (NIC) לשימוש ככתובת רשת. כתובת MAC היא כתובת של <strong>48 סיביות</strong> (למשל 00:1A:2B:3C:4D:5E) שצרובה בחומרה ומשמשת לתקשורת ברשת מקומית.",
+        relatedTerms: ["ARP", "IP Address", "NIC"],
+        visualization: {
+            type: "mac-format",
+            data: { mac: "00:1A:2B:3C:4D:5E", oui: "00:1A:2B", device: "3C:4D:5E" }
+        }
+    },
+    // === N ===
+    {
+        term: "NAT",
+        fullName: "Network Address Translation",
+        category: "Protocol",
+        layer: "Layer 3",
+        definitionEn: "A method of mapping one IP address space into another by modifying network address information in the IP header of packets while in transit. NAT enables <strong>multiple devices</strong> on a private network to access the Internet using a single public IP address.",
+        definitionHe: "NAT הוא שיטה למיפוי מרחב כתובות IP אחד לאחר על ידי שינוי מידע כתובת הרשת בכותרת ה-IP של חבילות במעבר. NAT מאפשר ל<strong>מכשירים מרובים</strong> ברשת פרטית לגשת לאינטרנט באמצעות כתובת IP ציבורית אחת.",
+        relatedTerms: ["IP Address", "PAT", "Firewall"],
+        visualization: {
+            type: "nat-table",
+            data: [
+                { internal: "192.168.1.10:5000", external: "203.0.113.5:40001" },
+                { internal: "192.168.1.11:5001", external: "203.0.113.5:40002" }
+            ]
+        }
+    },
+    {
+        term: "NIC",
+        fullName: "Network Interface Card",
+        category: "Hardware",
+        layer: "Layer 1/2",
+        definitionEn: "A hardware component that connects a computer to a network. Each NIC has a unique <strong>MAC address</strong> and is responsible for converting data into electrical or optical signals for transmission over the network medium.",
+        definitionHe: "כרטיס ממשק רשת (NIC) הוא רכיב חומרה המחבר מחשב לרשת. לכל NIC יש <strong>כתובת MAC</strong> ייחודית והוא אחראי על המרת נתונים לאותות חשמליים או אופטיים לשידור דרך אמצעי הרשת.",
+        relatedTerms: ["MAC Address", "Ethernet", "Driver"],
+        visualization: null
+    },
+    // === O ===
+    {
+        term: "OSI Model",
+        fullName: "Open Systems Interconnection Model",
+        category: "Model",
+        layer: "",
+        definitionEn: "A conceptual framework that standardizes the functions of a telecommunication system into <strong>seven abstraction layers</strong>: Physical, Data Link, Network, Transport, Session, Presentation, and Application. It helps understand how data moves through a network.",
+        definitionHe: "מודל OSI הוא מסגרת מושגית שמתקנת את פונקציות מערכת תקשורת ל<strong>שבע שכבות הפשטה</strong>: פיזית, קישור נתונים, רשת, תעבורה, שיחה, מצג ויישום. הוא מסייע להבין כיצד נתונים נעים דרך רשת.",
+        relatedTerms: ["TCP/IP Model", "Encapsulation", "PDU"],
+        visualization: {
+            type: "osi-layers",
+            data: [
+                { num: 7, name: "Application", pdu: "Data", color: "#ef4444" },
+                { num: 6, name: "Presentation", pdu: "Data", color: "#f97316" },
+                { num: 5, name: "Session", pdu: "Data", color: "#eab308" },
+                { num: 4, name: "Transport", pdu: "Segment", color: "#22c55e" },
+                { num: 3, name: "Network", pdu: "Packet", color: "#3b82f6" },
+                { num: 2, name: "Data Link", pdu: "Frame", color: "#8b5cf6" },
+                { num: 1, name: "Physical", pdu: "Bits", color: "#14b8a6" }
+            ]
+        }
+    },
+    {
+        term: "OSPF",
+        fullName: "Open Shortest Path First",
+        category: "Protocol",
+        layer: "Layer 3",
+        definitionEn: "A link-state routing protocol that uses <strong>Dijkstra's algorithm</strong> to find the shortest path to every node in the network. OSPF operates within a single Autonomous System and divides the network into areas for scalability.",
+        definitionHe: "OSPF הוא פרוטוקול ניתוב מצב קישור שמשתמש ב<strong>אלגוריתם דייקסטרה</strong> למציאת הנתיב הקצר ביותר לכל צומת ברשת. OSPF פועל בתוך מערכת אוטונומית יחידה ומחלק את הרשת לאזורים.",
+        relatedTerms: ["BGP", "RIP", "Routing Table"],
+        visualization: null
+    },
+    // === P ===
+    {
+        term: "Ping",
+        fullName: "Packet Internet Groper",
+        category: "General",
+        layer: "Layer 3",
+        definitionEn: "A network utility used to test the <strong>reachability</strong> of a host on an IP network. It works by sending <strong>ICMP Echo Request</strong> packets and measuring the time for ICMP Echo Reply. Essential for basic network troubleshooting.",
+        definitionHe: "Ping הוא כלי רשת המשמש לבדיקת <strong>נגישות</strong> מארח ברשת IP. הוא פועל על ידי שליחת חבילות <strong>ICMP Echo Request</strong> ומדידת הזמן לקבלת ICMP Echo Reply. חיוני לאבחון רשת בסיסי.",
+        relatedTerms: ["ICMP", "Traceroute", "Latency"],
+        visualization: null
+    },
+    {
+        term: "Port",
+        fullName: "Network Port",
+        category: "General",
+        layer: "Layer 4",
+        definitionEn: "A logical endpoint for communication in a network. Ports are identified by <strong>16-bit numbers</strong> (0–65535). Well-known ports include: HTTP (80), HTTPS (443), SSH (22), DNS (53), FTP (21). Ports allow multiple services on one IP address.",
+        definitionHe: "פורט הוא נקודת קצה לוגית לתקשורת ברשת. פורטים מזוהים על ידי <strong>מספרים של 16 סיביות</strong> (0-65535). פורטים ידועים כוללים: HTTP (80), HTTPS (443), SSH (22), DNS (53), FTP (21).",
+        relatedTerms: ["TCP", "UDP", "Socket"],
+        visualization: {
+            type: "port-list",
+            data: [
+                { port: 21, service: "FTP", protocol: "TCP" },
+                { port: 22, service: "SSH", protocol: "TCP" },
+                { port: 53, service: "DNS", protocol: "TCP/UDP" },
+                { port: 80, service: "HTTP", protocol: "TCP" },
+                { port: 443, service: "HTTPS", protocol: "TCP" }
+            ]
+        }
+    },
+    // === Q ===
+    {
+        term: "QoS",
+        fullName: "Quality of Service",
+        category: "General",
+        layer: "Layer 2-4",
+        definitionEn: "A set of technologies that manage network resources by <strong>prioritizing</strong> certain types of traffic. QoS ensures that critical applications (like VoIP or video) receive adequate bandwidth, low latency, and low packet loss.",
+        definitionHe: "QoS הוא סט טכנולוגיות לניהול משאבי רשת על ידי <strong>תיעדוף</strong> סוגים מסוימים של תעבורה. QoS מבטיח שיישומים קריטיים (כמו VoIP או וידאו) יקבלו רוחב פס מספק, זמן השהיה נמוך ואובדן חבילות נמוך.",
+        relatedTerms: ["Bandwidth", "Latency", "VoIP"],
+        visualization: null
+    },
+    // === R ===
+    {
+        term: "Router",
+        fullName: "Network Router",
+        category: "Hardware",
+        layer: "Layer 3",
+        definitionEn: "A networking device that forwards data packets between computer networks. Routers perform traffic directing functions using <strong>routing tables</strong> and protocols. They operate at Layer 3 and make forwarding decisions based on IP addresses.",
+        definitionHe: "נתב הוא התקן רשת שמעביר חבילות נתונים בין רשתות מחשבים. נתבים מבצעים פונקציות הפניית תעבורה באמצעות <strong>טבלאות ניתוב</strong> ופרוטוקולים. הם פועלים בשכבה 3 ומקבלים החלטות העברה על סמך כתובות IP.",
+        relatedTerms: ["Switch", "Gateway", "Routing Table"],
+        visualization: null
+    },
+    {
+        term: "RIP",
+        fullName: "Routing Information Protocol",
+        category: "Protocol",
+        layer: "Layer 3",
+        definitionEn: "One of the oldest distance-vector routing protocols that uses <strong>hop count</strong> as a routing metric. RIP has a maximum of 15 hops, making it suitable only for small networks. It has been largely replaced by OSPF and EIGRP.",
+        definitionHe: "RIP הוא אחד מפרוטוקולי ניתוב וקטור-מרחק הוותיקים ביותר שמשתמש ב<strong>ספירת קפיצות</strong> כמדד ניתוב. ל-RIP מגבלה של 15 קפיצות, מה שהופך אותו מתאים רק לרשתות קטנות.",
+        relatedTerms: ["OSPF", "BGP", "EIGRP"],
+        visualization: null
+    },
+    // === S ===
+    {
+        term: "SSH",
+        fullName: "Secure Shell",
+        category: "Security",
+        layer: "Layer 7",
+        definitionEn: "A cryptographic network protocol for operating network services securely over an unsecured network. SSH provides a secure channel through <strong>encrypted communication</strong>. Uses <strong>TCP port 22</strong>. Commonly used for remote server management.",
+        definitionHe: "SSH הוא פרוטוקול רשת הצפנתי להפעלת שירותי רשת באופן מאובטח על רשת לא מאובטחת. SSH מספק ערוץ מאובטח באמצעות <strong>תקשורת מוצפנת</strong>. משתמש ב<strong>פורט TCP 22</strong>.",
+        relatedTerms: ["Telnet", "SSL", "TLS"],
+        visualization: null
+    },
+    {
+        term: "Subnet Mask",
+        fullName: "Subnet Mask",
+        category: "Addressing",
+        layer: "Layer 3",
+        definitionEn: "A 32-bit number that <strong>divides an IP address</strong> into network and host portions. For example, 255.255.255.0 (/24) means the first 24 bits identify the network and the remaining 8 bits identify hosts on that network.",
+        definitionHe: "מסכת רשת משנה היא מספר של 32 סיביות ש<strong>מחלקת כתובת IP</strong> לחלקי רשת ומארח. לדוגמה, 255.255.255.0 (/24) משמעותו ש-24 הסיביות הראשונות מזהות את הרשת ו-8 הסיביות הנותרות מזהות מארחים.",
+        relatedTerms: ["CIDR", "IP Address", "VLSM"],
+        visualization: {
+            type: "subnet-visual",
+            data: { mask: "255.255.255.0", binary: "11111111.11111111.11111111.00000000", prefix: "/24" }
+        }
+    },
+    {
+        term: "Switch",
+        fullName: "Network Switch",
+        category: "Hardware",
+        layer: "Layer 2",
+        definitionEn: "A networking device that connects devices on a network by using <strong>MAC addresses</strong> to forward data to the correct destination. Unlike a hub, a switch creates individual collision domains per port and operates at Layer 2.",
+        definitionHe: "מתג (Switch) הוא התקן רשת המחבר מכשירים ברשת באמצעות <strong>כתובות MAC</strong> להעברת נתונים ליעד הנכון. שלא כמו רכזת, מתג יוצר דומייני התנגשות פרטניים לכל פורט ופועל בשכבה 2.",
+        relatedTerms: ["Hub", "Router", "VLAN"],
+        visualization: null
+    },
+    {
+        term: "STP",
+        fullName: "Spanning Tree Protocol",
+        category: "Protocol",
+        layer: "Layer 2",
+        definitionEn: "A network protocol that builds a <strong>loop-free logical topology</strong> for Ethernet networks. STP prevents bridge loops by creating a spanning tree from the network graph, disabling redundant links while keeping backup paths available.",
+        definitionHe: "STP הוא פרוטוקול רשת שבונה <strong>טופולוגיה לוגית ללא לולאות</strong> עבור רשתות Ethernet. STP מונע לולאות גשר על ידי יצירת עץ פורש מגרף הרשת, השבתת קישורים מיותרים תוך שמירת נתיבי גיבוי.",
+        relatedTerms: ["Switch", "VLAN", "Bridge"],
+        visualization: null
+    },
+    // === T ===
+    {
+        term: "TCP",
+        fullName: "Transmission Control Protocol",
+        category: "Protocol",
+        layer: "Layer 4",
+        definitionEn: "A connection-oriented transport protocol that provides <strong>reliable, ordered, and error-checked</strong> delivery of data between applications. TCP uses a <strong>three-way handshake</strong> (SYN, SYN-ACK, ACK) to establish connections.",
+        definitionHe: "TCP הוא פרוטוקול תעבורה מוכוון-חיבור שמספק מסירת נתונים <strong>אמינה, מסודרת ומאומתת שגיאות</strong> בין יישומים. TCP משתמש ב<strong>לחיצת יד תלת-כיוונית</strong> (SYN, SYN-ACK, ACK) ליצירת חיבורים.",
+        relatedTerms: ["UDP", "IP", "Three-Way Handshake"],
+        visualization: {
+            type: "tcp-handshake",
+            steps: [
+                { from: "Client", to: "Server", label: "SYN", color: "#3b82f6" },
+                { from: "Server", to: "Client", label: "SYN-ACK", color: "#22c55e" },
+                { from: "Client", to: "Server", label: "ACK", color: "#8b5cf6" }
+            ]
+        }
+    },
+    {
+        term: "TCP/IP Model",
+        fullName: "Internet Protocol Suite",
+        category: "Model",
+        layer: "",
+        definitionEn: "The foundational communication model of the Internet, consisting of <strong>four layers</strong>: Network Access, Internet, Transport, and Application. Also known as the Internet Protocol Suite, it provides end-to-end data communication.",
+        definitionHe: "מודל TCP/IP הוא מודל התקשורת הבסיסי של האינטרנט, המורכב מ<strong>ארבע שכבות</strong>: גישה לרשת, אינטרנט, תעבורה ויישום. מודל זה מספק תקשורת נתונים מקצה לקצה.",
+        relatedTerms: ["OSI Model", "TCP", "IP"],
+        visualization: {
+            type: "tcpip-model",
+            data: [
+                { num: 4, name: "Application", examples: "HTTP, FTP, DNS", color: "#ef4444" },
+                { num: 3, name: "Transport", examples: "TCP, UDP", color: "#22c55e" },
+                { num: 2, name: "Internet", examples: "IP, ICMP, ARP", color: "#3b82f6" },
+                { num: 1, name: "Network Access", examples: "Ethernet, WiFi", color: "#8b5cf6" }
+            ]
+        }
+    },
+    {
+        term: "TLS",
+        fullName: "Transport Layer Security",
+        category: "Security",
+        layer: "Layer 5/6",
+        definitionEn: "A cryptographic protocol designed to provide <strong>communications security</strong> over a computer network. TLS is the successor to SSL and is used to encrypt connections between web browsers and servers (HTTPS), email, and other applications.",
+        definitionHe: "TLS הוא פרוטוקול הצפנה שנועד לספק <strong>אבטחת תקשורת</strong> על רשת מחשבים. TLS הוא הממשיך של SSL ומשמש להצפנת חיבורים בין דפדפני אינטרנט לשרתים (HTTPS), דוא\"ל ויישומים אחרים.",
+        relatedTerms: ["SSL", "HTTPS", "Certificate"],
+        visualization: null
+    },
+    {
+        term: "Traceroute",
+        fullName: "Traceroute / Tracert",
+        category: "General",
+        layer: "Layer 3",
+        definitionEn: "A network diagnostic tool that displays the <strong>route (path)</strong> and measures transit delays of packets across a network. It uses ICMP or UDP packets with incrementing <strong>TTL</strong> values to discover each hop along the path.",
+        definitionHe: "Traceroute הוא כלי אבחון רשת שמציג את <strong>המסלול (נתיב)</strong> ומודד עיכובי מעבר של חבילות ברשת. הוא משתמש בחבילות ICMP או UDP עם ערכי <strong>TTL</strong> עולים לגילוי כל קפיצה לאורך הנתיב.",
+        relatedTerms: ["Ping", "ICMP", "TTL"],
+        visualization: {
+            type: "traceroute",
+            data: [
+                { hop: 1, ip: "192.168.1.1", ms: "1ms", label: "Router" },
+                { hop: 2, ip: "10.0.0.1", ms: "5ms", label: "ISP" },
+                { hop: 3, ip: "72.14.233.1", ms: "12ms", label: "Google" }
+            ]
+        }
+    },
+    // === U ===
+    {
+        term: "UDP",
+        fullName: "User Datagram Protocol",
+        category: "Protocol",
+        layer: "Layer 4",
+        definitionEn: "A connectionless transport protocol that provides a <strong>fast but unreliable</strong> data delivery service. UDP does not establish connections or guarantee delivery. Used for time-sensitive applications like <strong>video streaming, gaming, and VoIP</strong>.",
+        definitionHe: "UDP הוא פרוטוקול תעבורה חסר חיבור שמספק שירות מסירת נתונים <strong>מהיר אך לא אמין</strong>. UDP לא מקים חיבורים ולא מבטיח מסירה. משמש ליישומים רגישים לזמן כמו <strong>הזרמת וידאו, משחקים ו-VoIP</strong>.",
+        relatedTerms: ["TCP", "Port", "VoIP"],
+        visualization: null
+    },
+    // === V ===
+    {
+        term: "VLAN",
+        fullName: "Virtual Local Area Network",
+        category: "General",
+        layer: "Layer 2",
+        definitionEn: "A logical subdivision of a network at Layer 2 that groups devices together regardless of their <strong>physical location</strong>. VLANs improve security and reduce broadcast traffic by creating isolated broadcast domains within a switch.",
+        definitionHe: "VLAN הוא חלוקת משנה לוגית של רשת בשכבה 2 שמקבצת התקנים יחד ללא קשר ל<strong>מיקומם הפיזי</strong>. VLAN משפר אבטחה ומצמצם תעבורת שידור על ידי יצירת דומייני שידור מבודדים בתוך מתג.",
+        relatedTerms: ["Switch", "Trunking", "802.1Q"],
+        visualization: null
+    },
+    {
+        term: "VPN",
+        fullName: "Virtual Private Network",
+        category: "Security",
+        layer: "Layer 3",
+        definitionEn: "A technology that creates a <strong>secure, encrypted tunnel</strong> over a public network (like the Internet) to connect remote users or sites to a private network. Common VPN protocols include IPSec, OpenVPN, and WireGuard.",
+        definitionHe: "VPN הוא טכנולוגיה שיוצרת <strong>מנהרה מאובטחת ומוצפנת</strong> על רשת ציבורית (כמו האינטרנט) לחיבור משתמשים או אתרים מרוחקים לרשת פרטית. פרוטוקולי VPN נפוצים כוללים IPSec, OpenVPN ו-WireGuard.",
+        relatedTerms: ["IPSec", "TLS", "Tunneling"],
+        visualization: null
+    },
+    // === W ===
+    {
+        term: "WAN",
+        fullName: "Wide Area Network",
+        category: "General",
+        layer: "",
+        definitionEn: "A telecommunications network that extends over a <strong>large geographical area</strong>, often connecting multiple LANs. The Internet is the largest WAN. Technologies include MPLS, leased lines, and broadband connections.",
+        definitionHe: "רשת רחבת שטח (WAN) היא רשת תקשורת המשתרעת על <strong>שטח גאוגרפי גדול</strong>, לעתים קרובות מחברת מספר רשתות LAN. האינטרנט הוא ה-WAN הגדול ביותר.",
+        relatedTerms: ["LAN", "MAN", "MPLS"],
+        visualization: null
+    },
+    {
+        term: "WiFi",
+        fullName: "IEEE 802.11 Wireless Standard",
+        category: "Protocol",
+        layer: "Layer 1/2",
+        definitionEn: "A family of wireless networking protocols based on the <strong>IEEE 802.11</strong> standards. WiFi uses <strong>radio waves</strong> at 2.4 GHz, 5 GHz, and 6 GHz frequencies to provide high-speed wireless network connections.",
+        definitionHe: "WiFi הוא משפחה של פרוטוקולי רשת אלחוטית המבוססים על תקני <strong>IEEE 802.11</strong>. WiFi משתמש ב<strong>גלי רדיו</strong> בתדרי 2.4 GHz, 5 GHz ו-6 GHz לספק חיבורי רשת אלחוטית במהירות גבוהה.",
+        relatedTerms: ["Ethernet", "SSID", "WPA"],
+        visualization: null
+    },
+    // === X ===
+    {
+        term: "XSS",
+        fullName: "Cross-Site Scripting",
+        category: "Security",
+        layer: "Layer 7",
+        definitionEn: "A type of security vulnerability typically found in web applications. XSS enables attackers to <strong>inject malicious scripts</strong> into web pages viewed by other users. Types include Stored, Reflected, and DOM-based XSS.",
+        definitionHe: "XSS הוא סוג של פרצת אבטחה הנמצאת בדרך כלל ביישומי אינטרנט. XSS מאפשר לתוקפים <strong>להזריק סקריפטים זדוניים</strong> לדפי אינטרנט הנצפים על ידי משתמשים אחרים.",
+        relatedTerms: ["CSRF", "SQL Injection", "WAF"],
+        visualization: null
+    },
+    // === Z ===
+    {
+        term: "Zero Trust",
+        fullName: "Zero Trust Architecture",
+        category: "Security",
+        layer: "",
+        definitionEn: "A security framework requiring all users — inside or outside the organization — to be <strong>authenticated, authorized, and continuously validated</strong> before being granted access to applications and data. Its core principle: 'Never trust, always verify.'",
+        definitionHe: "Zero Trust הוא מסגרת אבטחה הדורשת מכל המשתמשים — בתוך הארגון או מחוצה לו — להיות <strong>מאומתים, מורשים ומאומתים באופן מתמיד</strong> לפני קבלת גישה ליישומים ונתונים. עקרון הליבה: 'לעולם אל תסמוך, תמיד אמת'.",
+        relatedTerms: ["VPN", "MFA", "IAM"],
+        visualization: null
+    },
+    // Extra terms for richness
+    {
+        term: "APIPA",
+        fullName: "Automatic Private IP Addressing",
+        category: "Addressing",
+        layer: "Layer 3",
+        definitionEn: "A feature in operating systems where a device <strong>automatically assigns itself</strong> an IP address from the 169.254.x.x range when no DHCP server is available. Used as a fallback mechanism for local network communication.",
+        definitionHe: "APIPA הוא תכונה במערכות הפעלה שבה מכשיר <strong>מקצה לעצמו אוטומטית</strong> כתובת IP מהטווח 169.254.x.x כאשר אין שרת DHCP זמין. משמש כמנגנון חלופי לתקשורת ברשת מקומית.",
+        relatedTerms: ["DHCP", "IP Address", "Link-Local"],
+        visualization: null
+    },
+    {
+        term: "SNMP",
+        fullName: "Simple Network Management Protocol",
+        category: "Protocol",
+        layer: "Layer 7",
+        definitionEn: "An Internet Standard protocol for collecting and organizing information about managed devices on IP networks. SNMP uses <strong>agents</strong> on monitored devices and a <strong>manager</strong> station to collect data like bandwidth usage and uptime.",
+        definitionHe: "SNMP הוא פרוטוקול תקני אינטרנט לאיסוף וארגון מידע על התקנים מנוהלים ברשתות IP. SNMP משתמש ב<strong>סוכנים</strong> על מכשירים מנוטרים ו<strong>תחנת מנהל</strong> לאיסוף נתונים.",
+        relatedTerms: ["MIB", "OID", "Syslog"],
+        visualization: null
+    },
+    {
+        term: "VRRP",
+        fullName: "Virtual Router Redundancy Protocol",
+        category: "Protocol",
+        layer: "Layer 3",
+        definitionEn: "A protocol that provides automatic assignment of available <strong>Internet Protocol routers</strong> to participating hosts. This increases the availability and reliability of routing paths via automatic default gateway selections.",
+        definitionHe: "VRRP הוא פרוטוקול המספק הקצאה אוטומטית של <strong>נתבי פרוטוקול אינטרנט</strong> זמינים למארחים משתתפים. פרוטוקול זה מגביר את הזמינות והאמינות של נתיבי ניתוב.",
+        relatedTerms: ["HSRP", "Gateway", "Redundancy"],
+        visualization: null
+    },
+    {
+        term: "MPLS",
+        fullName: "Multiprotocol Label Switching",
+        category: "Protocol",
+        layer: "Layer 2.5",
+        definitionEn: "A routing technique that directs data based on <strong>short path labels</strong> rather than long network addresses. MPLS increases speed and controls traffic flow in telecommunication networks, operating between Layer 2 and Layer 3.",
+        definitionHe: "MPLS הוא טכניקת ניתוב שמפנה נתונים על סמך <strong>תוויות נתיב קצרות</strong> ולא כתובות רשת ארוכות. MPLS מגביר מהירות ושולט בזרימת תעבורה ברשתות תקשורת.",
+        relatedTerms: ["WAN", "VPN", "QoS"],
+        visualization: null
+    },
+    {
+        term: "EIGRP",
+        fullName: "Enhanced Interior Gateway Routing Protocol",
+        category: "Protocol",
+        layer: "Layer 3",
+        definitionEn: "An advanced distance-vector routing protocol developed by Cisco. EIGRP uses <strong>DUAL algorithm</strong> for fast convergence and supports unequal-cost load balancing. Originally proprietary, now an open standard (RFC 7868).",
+        definitionHe: "EIGRP הוא פרוטוקול ניתוב וקטור-מרחק מתקדם שפותח על ידי Cisco. EIGRP משתמש ב<strong>אלגוריתם DUAL</strong> להתכנסות מהירה ותומך באיזון עומסים לא שווה.",
+        relatedTerms: ["OSPF", "RIP", "BGP"],
+        visualization: null
+    },
+    {
+        term: "RARP",
+        fullName: "Reverse Address Resolution Protocol",
+        category: "Protocol",
+        layer: "Layer 2/3",
+        definitionEn: "An obsolete protocol used to find the <strong>IP address</strong> of a device when only its <strong>MAC address</strong> is known — the reverse of ARP. Superseded by BOOTP and DHCP in modern networks.",
+        definitionHe: "RARP הוא פרוטוקול מיושן ששימש למציאת <strong>כתובת IP</strong> של מכשיר כאשר רק <strong>כתובת ה-MAC</strong> שלו ידועה — ההפך מ-ARP. הוחלף על ידי BOOTP ו-DHCP.",
+        relatedTerms: ["ARP", "DHCP", "BOOTP"],
+        visualization: null
+    },
+    {
+        term: "Jitter",
+        fullName: "Network Jitter",
+        category: "General",
+        layer: "",
+        definitionEn: "The variation in delay of received packets. In a network, <strong>jitter</strong> is the inconsistency in arrival time of packets, which can cause audio/video degradation in real-time applications like VoIP and video conferencing.",
+        definitionHe: "Jitter הוא השונות בעיכוב של חבילות שהתקבלו. ברשת, <strong>jitter</strong> הוא חוסר העקביות בזמן ההגעה של חבילות, שיכול לגרום לפגיעה באיכות שמע/וידאו ביישומי זמן אמת.",
+        relatedTerms: ["Latency", "QoS", "VoIP"],
+        visualization: null
+    },
+    {
+        term: "IPSec",
+        fullName: "Internet Protocol Security",
+        category: "Security",
+        layer: "Layer 3",
+        definitionEn: "A suite of protocols that provides security for Internet Protocol communications by <strong>authenticating and encrypting</strong> each IP packet in a communication session. IPSec includes AH (Authentication Header) and ESP (Encapsulating Security Payload).",
+        definitionHe: "IPSec הוא חבילת פרוטוקולים שמספקת אבטחה לתקשורת פרוטוקול אינטרנט על ידי <strong>אימות והצפנה</strong> של כל חבילת IP בסשן תקשורת.",
+        relatedTerms: ["VPN", "TLS", "Encryption"],
+        visualization: null
+    },
+    {
+        term: "Telnet",
+        fullName: "Teletype Network Protocol",
+        category: "Protocol",
+        layer: "Layer 7",
+        definitionEn: "An application layer protocol that provides a <strong>bidirectional text-based communication</strong> facility using a virtual terminal connection. Uses TCP port 23. Considered insecure as data is transmitted in plaintext — largely replaced by SSH.",
+        definitionHe: "Telnet הוא פרוטוקול שכבת יישום שמספק מתקן <strong>תקשורת טקסטואלית דו-כיוונית</strong> באמצעות חיבור טרמינל וירטואלי. משתמש בפורט TCP 23. נחשב לא מאובטח — הוחלף בעיקר על ידי SSH.",
+        relatedTerms: ["SSH", "CLI", "Remote Access"],
+        visualization: null
+    },
+    {
+        term: "TTL",
+        fullName: "Time To Live",
+        category: "General",
+        layer: "Layer 3",
+        definitionEn: "A field in IP packet headers that limits the <strong>lifespan of data</strong> in the network. Each router that processes the packet decrements the TTL by 1. When TTL reaches 0, the packet is discarded — preventing infinite routing loops.",
+        definitionHe: "TTL הוא שדה בכותרות חבילות IP שמגביל את <strong>תוחלת החיים של נתונים</strong> ברשת. כל נתב שמעבד את החבילה מפחית את ה-TTL ב-1. כאשר TTL מגיע ל-0, החבילה נמחקת.",
+        relatedTerms: ["IP", "Traceroute", "Routing"],
+        visualization: null
+    },
+    {
+        term: "SSID",
+        fullName: "Service Set Identifier",
+        category: "General",
+        layer: "Layer 2",
+        definitionEn: "The <strong>name of a wireless network</strong>. When you search for available WiFi networks on your device, the names displayed are SSIDs. Each wireless access point broadcasts its SSID so devices can find and connect to it.",
+        definitionHe: "SSID הוא <strong>שם הרשת האלחוטית</strong>. כאשר מחפשים רשתות WiFi זמינות במכשיר, השמות המוצגים הם SSIDs. כל נקודת גישה אלחוטית משדרת את ה-SSID שלה כך שמכשירים יוכלו למצוא ולהתחבר.",
+        relatedTerms: ["WiFi", "WPA", "Access Point"],
+        visualization: null
+    },
+    {
+        term: "WPA",
+        fullName: "Wi-Fi Protected Access",
+        category: "Security",
+        layer: "Layer 2",
+        definitionEn: "A security protocol designed to secure <strong>wireless computer networks</strong>. WPA3 (latest version) uses SAE for stronger authentication and provides 192-bit encryption. Replaced the insecure WEP standard.",
+        definitionHe: "WPA הוא פרוטוקול אבטחה שנועד לאבטח <strong>רשתות מחשבים אלחוטיות</strong>. WPA3 (הגרסה האחרונה) משתמש ב-SAE לאימות חזק יותר ומספק הצפנה של 192 סיביות.",
+        relatedTerms: ["WiFi", "WEP", "SSID"],
+        visualization: null
+    },
+    {
+        term: "PDU",
+        fullName: "Protocol Data Unit",
+        category: "General",
+        layer: "",
+        definitionEn: "A single unit of information transmitted in a network. The name changes at each <strong>OSI layer</strong>: Data (L7-5), Segment/Datagram (L4), Packet (L3), Frame (L2), and Bits (L1).",
+        definitionHe: "PDU הוא יחידת מידע בודדת המשודרת ברשת. השם משתנה בכל <strong>שכבת OSI</strong>: Data (שכבות 7-5), Segment/Datagram (שכבה 4), Packet (שכבה 3), Frame (שכבה 2), Bits (שכבה 1).",
+        relatedTerms: ["OSI Model", "Encapsulation", "Frame"],
+        visualization: null
+    },
+    {
+        term: "Proxy",
+        fullName: "Proxy Server",
+        category: "Security",
+        layer: "Layer 7",
+        definitionEn: "A server that acts as an <strong>intermediary</strong> between a client and the Internet. Proxy servers can filter content, improve performance via caching, and provide anonymity by masking the client's IP address.",
+        definitionHe: "שרת Proxy הוא שרת שמשמש כ<strong>מתווך</strong> בין לקוח לאינטרנט. שרתי Proxy יכולים לסנן תוכן, לשפר ביצועים באמצעות מטמון ולספק אנונימיות על ידי הסתרת כתובת ה-IP של הלקוח.",
+        relatedTerms: ["Firewall", "NAT", "VPN"],
+        visualization: null
+    }
+];
+
+// ============================
+// APP STATE
+// ============================
+let activeFilter = 'all';
+let activeLetter = 'all';
+let searchQuery = '';
+let expandedTerm = null;
+let displayCount = 12;
+const ITEMS_PER_LOAD = 10;
+
+// ============================
+// INIT
+// ============================
+document.addEventListener('DOMContentLoaded', () => {
+    buildAlphabetBar();
+    bindEvents();
+    renderGlossary();
+});
+
+// ============================
+// ALPHABET BAR
+// ============================
+function buildAlphabetBar() {
+    const bar = document.getElementById('alphabetBar');
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    
+    // "All" button
+    let html = `<button class="alphabet-btn active shrink-0 size-8 flex items-center justify-center rounded-md text-sm font-bold transition-all" data-letter="all">✦</button>`;
+    
+    letters.forEach(l => {
+        const hasTerms = glossaryData.some(t => t.term[0].toUpperCase() === l);
+        html += `<button class="alphabet-btn shrink-0 size-8 flex items-center justify-center rounded-md text-sm font-medium transition-all ${hasTerms ? 'hover:bg-[#f0f2f4] text-[#617589] cursor-pointer' : 'text-gray-300 cursor-default opacity-40'}" data-letter="${l}" ${!hasTerms ? 'disabled' : ''}>${l}</button>`;
+    });
+    bar.innerHTML = html;
+}
+
+// ============================
+// EVENTS
+// ============================
+function bindEvents() {
+    // Search
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearch');
+    searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        clearBtn.classList.toggle('hidden', !searchQuery);
+        displayCount = 100; // Show all when searching
+        renderGlossary();
+    });
+    clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchQuery = '';
+        clearBtn.classList.add('hidden');
+        displayCount = 12;
+        renderGlossary();
+    });
+
+    // Filters
+    document.getElementById('filterContainer').addEventListener('click', (e) => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        activeFilter = btn.dataset.filter;
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('active');
+            b.classList.add('bg-white', 'text-[#111418]', 'border', 'border-[#e5e7eb]');
+        });
+        btn.classList.add('active');
+        btn.classList.remove('bg-white', 'text-[#111418]', 'border', 'border-[#e5e7eb]');
+        displayCount = 12;
+        expandedTerm = null;
+        renderGlossary();
+    });
+
+    // Alphabet
+    document.getElementById('alphabetBar').addEventListener('click', (e) => {
+        const btn = e.target.closest('.alphabet-btn');
+        if (!btn || btn.disabled) return;
+        activeLetter = btn.dataset.letter;
+        document.querySelectorAll('.alphabet-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        displayCount = 100;
+        expandedTerm = null;
+        renderGlossary();
+    });
+
+    // Load more
+    document.getElementById('loadMoreBtn').addEventListener('click', () => {
+        displayCount += ITEMS_PER_LOAD;
+        renderGlossary();
+    });
+}
+
+// ============================
+// FILTER & RENDER
+// ============================
+function getFilteredTerms() {
+    return glossaryData.filter(term => {
+        // Category filter
+        if (activeFilter !== 'all' && term.category !== activeFilter) return false;
+        // Letter filter
+        if (activeLetter !== 'all' && term.term[0].toUpperCase() !== activeLetter) return false;
+        // Search filter
+        if (searchQuery) {
+            const q = searchQuery;
+            return term.term.toLowerCase().includes(q) ||
+                   term.fullName.toLowerCase().includes(q) ||
+                   term.definitionEn.toLowerCase().includes(q) ||
+                   term.definitionHe.includes(q) ||
+                   term.category.toLowerCase().includes(q);
+        }
+        return true;
+    }).sort((a, b) => a.term.localeCompare(b.term));
+}
+
+function renderGlossary() {
+    const list = document.getElementById('glossaryList');
+    const filtered = getFilteredTerms();
+    const toShow = filtered.slice(0, displayCount);
+    
+    // Update stats
+    document.getElementById('termCount').textContent = 
+        searchQuery ? `Found ${filtered.length} terms for "${searchQuery}"` :
+        `Showing ${Math.min(displayCount, filtered.length)} of ${filtered.length} terms`;
+    document.getElementById('activeLetterLabel').textContent = 
+        activeLetter === 'all' ? 'Letter: All' : `Letter: ${activeLetter}`;
+
+    // No results
+    document.getElementById('noResults').classList.toggle('hidden', filtered.length > 0);
+    document.getElementById('loadMoreContainer').classList.toggle('hidden', filtered.length === 0 || toShow.length >= filtered.length);
+
+    // Build HTML
+    let currentLetter = '';
+    let html = '';
+
+    toShow.forEach((term, idx) => {
+        const firstLetter = term.term[0].toUpperCase();
+        if (firstLetter !== currentLetter && activeLetter === 'all' && !searchQuery) {
+            currentLetter = firstLetter;
+            html += `<div class="flex items-center gap-3 mt-6 mb-2 first:mt-0">
+                <span class="text-2xl font-black text-primary">${currentLetter}</span>
+                <div class="flex-1 h-px bg-gradient-to-l from-transparent to-primary/20"></div>
+            </div>`;
+        }
+
+        const isExpanded = expandedTerm === term.term;
+        html += buildTermCard(term, isExpanded, idx);
+    });
+
+    list.innerHTML = html;
+
+    // Bind expand/collapse
+    list.querySelectorAll('.term-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const termName = btn.dataset.term;
+            expandedTerm = expandedTerm === termName ? null : termName;
+            renderGlossary();
+            // Scroll into view
+            setTimeout(() => {
+                const el = document.querySelector(`[data-term-card="${termName}"]`);
+                if (el && expandedTerm === termName) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }, 100);
+        });
+    });
+}
+
+// ============================
+// TERM CARD BUILDER
+// ============================
+function buildTermCard(term, isExpanded, idx) {
+    const categoryColors = {
+        'Protocol': 'bg-blue-100 text-blue-700',
+        'Security': 'bg-red-100 text-red-700',
+        'Hardware': 'bg-amber-100 text-amber-700',
+        'Model': 'bg-purple-100 text-purple-700',
+        'Addressing': 'bg-green-100 text-green-700',
+        'General': 'bg-gray-100 text-gray-600',
+        'Routing': 'bg-cyan-100 text-cyan-700',
+    };
+    const catClass = categoryColors[term.category] || 'bg-gray-100 text-gray-600';
+
+    if (!isExpanded) {
+        // Collapsed card
+        return `
+        <div class="term-card bg-white rounded-lg shadow-sm border border-transparent hover:border-gray-200 hover:shadow-md p-4 flex items-center justify-between cursor-pointer group transition-all fade-in-up" style="animation-delay:${idx * 30}ms" data-term-card="${term.term}">
+            <div class="flex flex-col gap-1 term-toggle flex-1" data-term="${term.term}">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <h3 class="text-[#111418] font-bold text-lg">${highlightText(term.term)}</h3>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium ${catClass}">${term.category}</span>
+                    ${term.layer ? `<span class="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">${term.layer}</span>` : ''}
+                </div>
+                <p class="text-sm text-[#617589]">${highlightText(term.fullName)}</p>
+            </div>
+            <button class="term-toggle shrink-0 size-8 flex items-center justify-center" data-term="${term.term}">
+                <span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">expand_more</span>
+            </button>
+        </div>`;
+    }
+
+    // Expanded card
+    return `
+    <div class="term-card expanded bg-white rounded-xl shadow-lg border-l-4 border-primary p-6 flex flex-col gap-6 relative overflow-hidden fade-in-up" data-term-card="${term.term}">
+        <!-- Background Decoration -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full pointer-events-none"></div>
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between z-10">
+            <div class="flex flex-col gap-1">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <h3 class="text-[#111418] font-black text-2xl tracking-tight">${term.term}</h3>
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold ${catClass} uppercase tracking-wide">${term.category}</span>
+                    ${term.layer ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">${term.layer}</span>` : ''}
+                </div>
+                <p class="text-base text-[#617589] font-medium">${term.fullName}</p>
+            </div>
+            <button class="term-toggle size-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors shrink-0" data-term="${term.term}">
+                <span class="material-symbols-outlined text-gray-600">expand_less</span>
+            </button>
+        </div>
+
+        <!-- Content Body -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 z-10">
+            <!-- Text Definitions -->
+            <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined text-primary text-sm">flag</span>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">English Definition</span>
+                    </div>
+                    <p class="text-[#111418] leading-relaxed text-sm">${term.definitionEn}</p>
+                </div>
+                <div class="flex flex-col gap-2 relative">
+                    <div class="absolute right-0 top-0 h-full w-0.5 bg-gray-100"></div>
+                    <div class="flex items-center justify-end gap-2 mb-1 pr-3">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Hebrew Definition</span>
+                        <span class="material-symbols-outlined text-primary text-sm">translate</span>
+                    </div>
+                    <p class="text-[#111418] leading-relaxed text-sm text-right pr-3" dir="rtl">${term.definitionHe}</p>
+                </div>
+            </div>
+            
+            <!-- Visualization -->
+            <div class="flex flex-col gap-3">
+                ${buildVisualization(term)}
+            </div>
+        </div>
+
+        <!-- Related Terms -->
+        ${term.relatedTerms.length ? `
+        <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-gray-100">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Related Terms:</span>
+            ${term.relatedTerms.map(rt => `<button class="related-jump px-3 py-1 rounded-full bg-blue-50 text-primary text-xs font-medium hover:bg-blue-100 transition-colors cursor-pointer" onclick="jumpToTerm('${rt}')">${rt}</button>`).join('')}
+        </div>` : ''}
+    </div>`;
+}
+
+// ============================
+// VISUALIZATION BUILDER
+// ============================
+function buildVisualization(term) {
+    const viz = term.visualization;
+    
+    if (!viz) {
+        // Generic "concept" illustration
+        return `
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Concept Overview</span>
+        <div class="bg-gray-50 border border-gray-100 rounded-lg p-5 flex flex-col items-center justify-center gap-3 min-h-[180px]">
+            <span class="material-symbols-outlined text-4xl text-primary/30">schema</span>
+            <p class="text-xs text-gray-400 text-center">${term.term} — ${term.fullName}</p>
+            <div class="flex gap-2 flex-wrap justify-center">
+                ${term.relatedTerms.slice(0, 3).map(r => `<span class="px-2 py-0.5 rounded bg-primary/5 text-primary text-[10px] font-mono">${r}</span>`).join('')}
+            </div>
+        </div>`;
+    }
+
+    switch (viz.type) {
+        case 'arp-table':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">ARP Table Visualization</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-3">
+                <div class="flex justify-between text-xs font-mono text-gray-400 border-b border-gray-200 pb-2">
+                    <span>IP Address</span><span>MAC Address</span><span>Type</span>
+                </div>
+                ${viz.data.map(row => `
+                <div class="flex justify-between text-xs font-mono text-[#111418]">
+                    <span>${row.ip}</span><span class="text-primary">${row.mac}</span><span class="text-green-600">${row.type}</span>
+                </div>`).join('')}
+                <div class="mt-2 h-20 w-full rounded bg-white border border-dashed border-gray-300 flex items-center justify-center gap-6 relative">
+                    <div class="size-8 bg-gray-200 rounded flex items-center justify-center"><span class="material-symbols-outlined text-xs text-gray-500">computer</span></div>
+                    <div class="flex flex-col items-center gap-0.5">
+                        <span class="text-[9px] text-primary font-mono">Who has IP?</span>
+                        <div class="w-16 h-0.5 bg-primary"></div>
+                        <div class="w-16 h-0.5 bg-green-500"></div>
+                        <span class="text-[9px] text-green-600 font-mono">I'm MAC!</span>
+                    </div>
+                    <div class="size-8 bg-gray-200 rounded flex items-center justify-center"><span class="material-symbols-outlined text-xs text-gray-500">router</span></div>
+                </div>
+            </div>`;
+
+        case 'routing':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">BGP Routing Table</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-2">
+                <div class="flex justify-between text-xs font-mono text-gray-400 border-b border-gray-200 pb-2">
+                    <span>AS</span><span>Prefix</span><span>Next Hop</span>
+                </div>
+                ${viz.data.map(row => `
+                <div class="flex justify-between text-xs font-mono text-[#111418]">
+                    <span class="text-purple-600">${row.as}</span><span>${row.prefix}</span><span class="text-primary">${row.nextHop}</span>
+                </div>`).join('')}
+            </div>`;
+
+        case 'bandwidth':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Bandwidth Meter</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-4">
+                <div class="flex flex-col gap-2">
+                    <div class="flex justify-between text-xs"><span class="text-gray-500">Download</span><span class="font-bold text-green-600">${viz.data.download} ${viz.data.unit}</span></div>
+                    <div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full" style="width:${(viz.data.download/1000)*100}%"></div></div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <div class="flex justify-between text-xs"><span class="text-gray-500">Upload</span><span class="font-bold text-blue-600">${viz.data.upload} ${viz.data.unit}</span></div>
+                    <div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full" style="width:${(viz.data.upload/1000)*100}%"></div></div>
+                </div>
+            </div>`;
+
+        case 'dhcp-flow':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">DHCP DORA Process</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-2">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex flex-col items-center"><span class="material-symbols-outlined text-lg text-gray-500">computer</span><span class="text-[10px] text-gray-400">Client</span></div>
+                    <div class="flex-1"></div>
+                    <div class="flex flex-col items-center"><span class="material-symbols-outlined text-lg text-primary">dns</span><span class="text-[10px] text-gray-400">DHCP Server</span></div>
+                </div>
+                ${viz.steps.map((step, i) => {
+                    const isRight = i % 2 === 0;
+                    const colors = ['#3b82f6', '#22c55e', '#8b5cf6', '#f59e0b'];
+                    return `<div class="flex items-center gap-2 ${isRight ? '' : 'flex-row-reverse'}">
+                        <div class="w-3 h-3 rounded-full" style="background:${colors[i]}"></div>
+                        <div class="flex-1 h-0.5 bg-gray-300 relative"><div class="absolute top-1/2 ${isRight ? 'left-1/2' : 'right-1/2'} -translate-y-1/2 ${isRight ? '-translate-x-1/2' : 'translate-x-1/2'} text-[10px] font-bold font-mono" style="color:${colors[i]}">${step}</div></div>
+                        <div class="material-symbols-outlined text-xs text-gray-400">${isRight ? 'arrow_forward' : 'arrow_back'}</div>
+                    </div>`;
+                }).join('')}
+            </div>`;
+
+        case 'dns-lookup':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">DNS Lookup</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-3">
+                <div class="flex items-center gap-2 font-mono text-xs">
+                    <span class="text-gray-500">$</span>
+                    <span class="text-[#111418]">nslookup ${viz.data.domain}</span>
+                </div>
+                <div class="bg-white border border-gray-200 rounded p-3 font-mono text-xs flex flex-col gap-1">
+                    <span class="text-gray-500">Server:  8.8.8.8</span>
+                    <span class="text-gray-500">Address: 8.8.8.8#53</span>
+                    <span class="mt-1">Name: <span class="text-primary">${viz.data.domain}</span></span>
+                    <span>Address: <span class="text-green-600 font-bold">${viz.data.ip}</span></span>
+                    <span class="text-gray-400">TTL: ${viz.data.ttl}</span>
+                </div>
+            </div>`;
+
+        case 'cidr':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">CIDR Notation Examples</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-2">
+                <div class="grid grid-cols-3 gap-2 text-xs font-mono text-gray-400 border-b border-gray-200 pb-2">
+                    <span>CIDR</span><span>Hosts</span><span>Mask</span>
+                </div>
+                ${viz.data.map(row => `
+                <div class="grid grid-cols-3 gap-2 text-xs font-mono text-[#111418]">
+                    <span class="text-primary">${row.cidr}</span><span>${row.hosts}</span><span class="text-gray-500">${row.mask}</span>
+                </div>`).join('')}
+            </div>`;
+
+        case 'ethernet-frame':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Ethernet Frame Structure</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4">
+                <div class="flex gap-0.5">
+                    ${viz.fields.map((f, i) => {
+                        const colors = ['#94a3b8', '#3b82f6', '#8b5cf6', '#f59e0b', '#22c55e', '#ef4444'];
+                        return `<div class="flex-1 rounded text-center py-2 px-1 text-[10px] font-mono font-bold text-white" style="background:${colors[i]}">${f}</div>`;
+                    }).join('')}
+                </div>
+                <div class="flex justify-between text-[9px] text-gray-400 mt-1 font-mono">
+                    <span>7B</span><span>6B</span><span>6B</span><span>2B</span><span>46-1500B</span><span>4B</span>
+                </div>
+            </div>`;
+
+        case 'ping':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Ping Output</span>
+            <div class="bg-gray-900 border border-gray-700 rounded-lg p-4 font-mono text-xs text-green-400 flex flex-col gap-1">
+                <span class="text-gray-500">$ ping 8.8.8.8</span>
+                ${viz.data.map(row => `<span>64 bytes: icmp_seq=${row.seq} ttl=${row.ttl} time=${row.time}</span>`).join('')}
+                <span class="text-gray-500 mt-1">--- 3 packets transmitted, 3 received, 0% loss ---</span>
+            </div>`;
+
+        case 'http-request':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">HTTP Request/Response</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-3">
+                <div class="bg-white border border-gray-200 rounded p-3 font-mono text-xs">
+                    <span class="text-blue-600 font-bold">${viz.data.method}</span> <span>${viz.data.path}</span> <span class="text-gray-400">HTTP/1.1</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm text-green-500">arrow_downward</span>
+                    <span class="text-xs text-gray-400">Response</span>
+                </div>
+                <div class="bg-white border border-green-200 rounded p-3 font-mono text-xs">
+                    <span class="text-green-600 font-bold">${viz.data.status}</span> <span class="text-gray-400">Content-Type: ${viz.data.contentType}</span>
+                </div>
+            </div>`;
+
+        case 'osi-layers':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">OSI 7-Layer Model</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-3 flex flex-col gap-1">
+                ${viz.data.map(layer => `
+                <div class="flex items-center gap-2 py-1.5 px-2 rounded" style="background:${layer.color}10; border-left:3px solid ${layer.color}">
+                    <span class="text-xs font-black w-5 text-center" style="color:${layer.color}">${layer.num}</span>
+                    <span class="text-xs font-semibold text-[#111418] flex-1">${layer.name}</span>
+                    <span class="text-[10px] font-mono text-gray-500">${layer.pdu}</span>
+                </div>`).join('')}
+            </div>`;
+
+        case 'nat-table':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">NAT Translation Table</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-2">
+                <div class="flex justify-between text-xs font-mono text-gray-400 border-b border-gray-200 pb-2">
+                    <span>Internal</span><span>→</span><span>External</span>
+                </div>
+                ${viz.data.map(row => `
+                <div class="flex justify-between text-xs font-mono text-[#111418]">
+                    <span class="text-orange-600">${row.internal}</span><span class="text-gray-400">→</span><span class="text-primary">${row.external}</span>
+                </div>`).join('')}
+            </div>`;
+
+        case 'tcp-handshake':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">TCP Three-Way Handshake</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-3">
+                <div class="flex justify-between mb-1">
+                    <div class="flex flex-col items-center"><span class="material-symbols-outlined text-base text-gray-500">computer</span><span class="text-[10px] text-gray-400">Client</span></div>
+                    <div class="flex flex-col items-center"><span class="material-symbols-outlined text-base text-primary">dns</span><span class="text-[10px] text-gray-400">Server</span></div>
+                </div>
+                ${viz.steps.map((step, i) => `
+                <div class="flex items-center gap-2 ${i % 2 === 0 ? '' : 'flex-row-reverse'}">
+                    <div class="w-3 h-3 rounded-full" style="background:${step.color}"></div>
+                    <div class="flex-1 h-[2px] rounded" style="background:${step.color}40"><div class="h-full rounded" style="background:${step.color};width:${70+i*15}%;transition:width 1s"></div></div>
+                    <span class="text-[10px] font-mono font-bold" style="color:${step.color}">${step.label}</span>
+                </div>`).join('')}
+            </div>`;
+
+        case 'tcpip-model':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">TCP/IP 4-Layer Model</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-3 flex flex-col gap-1.5">
+                ${viz.data.map(layer => `
+                <div class="flex items-center gap-2 py-2 px-3 rounded" style="background:${layer.color}10; border-left:3px solid ${layer.color}">
+                    <span class="text-sm font-black w-5 text-center" style="color:${layer.color}">${layer.num}</span>
+                    <span class="text-sm font-semibold text-[#111418] flex-1">${layer.name}</span>
+                    <span class="text-[10px] font-mono text-gray-500">${layer.examples}</span>
+                </div>`).join('')}
+            </div>`;
+
+        case 'ip-breakdown':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">IP Address Breakdown</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-3">
+                <div class="text-center font-mono text-lg font-bold text-[#111418]">${viz.data.address}<span class="text-primary">${viz.data.mask}</span></div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-white rounded p-2 border border-gray-200"><span class="text-gray-400">Network: </span><span class="font-mono text-primary">${viz.data.network}</span></div>
+                    <div class="bg-white rounded p-2 border border-gray-200"><span class="text-gray-400">Broadcast: </span><span class="font-mono text-orange-600">${viz.data.broadcast}</span></div>
+                </div>
+            </div>`;
+
+        case 'mac-format':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">MAC Address Format</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-3">
+                <div class="text-center font-mono text-base font-bold text-[#111418] tracking-wider">${viz.data.mac}</div>
+                <div class="flex gap-0">
+                    <div class="flex-1 bg-blue-100 rounded-l py-2 text-center"><span class="text-[10px] font-mono text-blue-700 font-bold">${viz.data.oui}</span><br/><span class="text-[9px] text-blue-500">OUI (Vendor)</span></div>
+                    <div class="flex-1 bg-green-100 rounded-r py-2 text-center"><span class="text-[10px] font-mono text-green-700 font-bold">${viz.data.device}</span><br/><span class="text-[9px] text-green-500">Device ID</span></div>
+                </div>
+            </div>`;
+
+        case 'port-list':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Well-Known Ports</span>
+            <div class="bg-gray-900 border border-gray-700 rounded-lg p-4 flex flex-col gap-1.5 font-mono text-xs">
+                ${viz.data.map(p => `
+                <div class="flex items-center gap-3">
+                    <span class="text-yellow-400 w-8 text-right">${p.port}</span>
+                    <span class="text-green-400 flex-1">${p.service}</span>
+                    <span class="text-gray-500">${p.protocol}</span>
+                </div>`).join('')}
+            </div>`;
+
+        case 'subnet-visual':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Subnet Mask Visual</span>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex flex-col gap-3">
+                <div class="text-center"><span class="font-mono text-sm text-[#111418]">${viz.data.mask}</span> = <span class="font-mono text-sm text-primary font-bold">${viz.data.prefix}</span></div>
+                <div class="flex gap-0.5 text-[10px] font-mono">
+                    ${viz.data.binary.split('.').map((octet, i) => `
+                    <div class="flex-1 rounded py-1.5 text-center font-bold ${i < 3 ? 'bg-primary/10 text-primary' : 'bg-orange-100 text-orange-600'}">${octet}</div>
+                    `).join('')}
+                </div>
+                <div class="flex text-[9px] text-center">
+                    <div class="flex-[3] text-primary font-bold">← Network Portion →</div>
+                    <div class="flex-1 text-orange-500 font-bold">Host →</div>
+                </div>
+            </div>`;
+
+        case 'traceroute':
+            return `
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Traceroute Output</span>
+            <div class="bg-gray-900 border border-gray-700 rounded-lg p-4 font-mono text-xs text-green-400 flex flex-col gap-1">
+                <span class="text-gray-500">$ traceroute 8.8.8.8</span>
+                ${viz.data.map(h => `<span><span class="text-yellow-400">${h.hop}</span>  <span class="text-primary">${h.ip}</span>  <span class="text-gray-500">${h.ms}</span>  <span class="text-gray-600">(${h.label})</span></span>`).join('')}
+            </div>`;
+
+        default:
+            return `<div class="bg-gray-50 border border-gray-100 rounded-lg p-6 flex items-center justify-center min-h-[120px]"><span class="text-xs text-gray-400">Visual coming soon</span></div>`;
+    }
+}
+
+// ============================
+// HELPERS
+// ============================
+function highlightText(text) {
+    if (!searchQuery) return text;
+    const regex = new RegExp(`(${escapeRegex(searchQuery)})`, 'gi');
+    return text.replace(regex, '<span class="highlight-match">$1</span>');
+}
+
+function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function jumpToTerm(termName) {
+    // Find the term
+    const term = glossaryData.find(t => t.term === termName || t.fullName === termName);
+    if (!term) return;
+
+    // Reset filters to show the term
+    activeFilter = 'all';
+    activeLetter = 'all';
+    searchQuery = '';
+    displayCount = 100;
+    expandedTerm = term.term;
+
+    // Reset UI
+    document.getElementById('searchInput').value = '';
+    document.getElementById('clearSearch').classList.add('hidden');
+    document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('active');
+        b.classList.add('bg-white', 'text-[#111418]', 'border', 'border-[#e5e7eb]');
+    });
+    document.querySelector('[data-filter="all"]').classList.add('active');
+    document.querySelector('[data-filter="all"]').classList.remove('bg-white', 'text-[#111418]', 'border', 'border-[#e5e7eb]');
+    document.querySelectorAll('.alphabet-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('[data-letter="all"]').classList.add('active');
+
+    renderGlossary();
+
+    setTimeout(() => {
+        const el = document.querySelector(`[data-term-card="${term.term}"]`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
+}
+</script>
+</body>
+</html>

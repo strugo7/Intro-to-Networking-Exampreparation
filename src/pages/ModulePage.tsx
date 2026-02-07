@@ -11,6 +11,11 @@ import { VideoPlayer, InfoBlock, TerminalBlock, RouterDiagram, RoutingTable, Enc
 import TransmissionVisualizer from '../components/module1/TransmissionVisualizer';
 import TopologyExplorer from '../components/module1/TopologyExplorer';
 import OSIIntro from '../components/module1/OSIIntro';
+import BitDemo from '../components/module1/BitDemo';
+import FiberDemo from '../components/module1/FiberDemo';
+import CopperDemo from '../components/module1/CopperDemo';
+import WiFiDemo from '../components/module1/WiFiDemo';
+import MediaComparison from '../components/module1/MediaComparison';
 import ArchitectureDemo from '../components/module7/ArchitectureDemo';
 import ProtocolExplorer from '../components/module7/ProtocolExplorer';
 import DNSSimulator from '../components/module7/DNSSimulator';
@@ -97,6 +102,16 @@ export const ModulePage = () => {
             case 'transmission-visualizer': return <TransmissionVisualizer key={block.id} />;
             case 'topology-explorer': return <TopologyExplorer key={block.id} />;
             case 'osi-intro': return <OSIIntro key={block.id} />;
+            case 'bit-demo': return <BitDemo key={block.id} />;
+            case 'fiber-demo': return <FiberDemo key={block.id} />;
+            case 'copper-demo': return <CopperDemo key={block.id} />;
+            case 'wifi-demo': return <WiFiDemo key={block.id} />;
+            case 'media-comparison': return <MediaComparison key={block.id} />;
+            case 'bit-demo': return <BitDemo key={block.id} />;
+            case 'fiber-demo': return <FiberDemo key={block.id} />;
+            case 'copper-demo': return <CopperDemo key={block.id} />;
+            case 'wifi-demo': return <WiFiDemo key={block.id} />;
+            case 'media-comparison': return <MediaComparison key={block.id} />;
             case 'architecture-demo': return <ArchitectureDemo key={block.id} />;
             case 'protocol-explorer': return <ProtocolExplorer key={block.id} />;
             case 'dns-simulator': return <DNSSimulator key={block.id} />;

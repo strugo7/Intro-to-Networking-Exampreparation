@@ -15,14 +15,25 @@
     <!-- Google Fonts for Hebrew -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
 
+    <!-- Chosen Palette: "Modern Tech Slate" - Base: Slate 50, Primary: Indigo 600, Accents: Amber/Teal -->
+
+    <!-- Application Structure Plan:
+         1. Overview: Features a Bit Simulator converting text to binary waveforms using Chart.js.
+         2. Media Lab: A dynamic spec-sheet explorer. Clicking media types updates a technical dashboard.
+         3. Risk Center: A threat matrix showing Impact vs Ease of attack, with contextual mitigation steps.
+         4. Quiz: Knowledge validation via interactive feedback.
+         
+         Chosen for usability: Grouping implementation details (Media) separately from risks (Security) allows focused study.
+    -->
+
     <style>
         body {
             font-family: 'Rubik', sans-serif;
-            background-color: #f1f5f9;
-            /* Slate 100 */
+            background-color: #f8fafc;
+            /* Slate 50 */
         }
 
-        /* Chart Container Styling */
+        /* Chart Container Styling per Requirements */
         .chart-container {
             position: relative;
             width: 100%;
@@ -40,16 +51,22 @@
         }
 
         .nav-item.active {
-            border-bottom: 3px solid #0ea5e9;
-            /* Sky 500 */
-            color: #0f172a;
-            /* Slate 900 */
+            background-color: white;
+            border-bottom: 4px solid #4f46e5;
+            /* Indigo 600 */
+            color: #4f46e5;
             font-weight: 700;
+        }
+
+        .media-card.selected {
+            border-color: #4f46e5;
+            background-color: #eef2ff;
+            transform: scale(1.02);
         }
 
         /* Animation for sections */
         .animate-fade-in {
-            animation: fadeIn 0.3s ease-in-out;
+            animation: fadeIn 0.4s ease-out;
         }
 
         @keyframes fadeIn {
@@ -64,100 +81,88 @@
             }
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+        /* CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. */
     </style>
 </head>
 
 <body class="text-slate-800">
 
-    <div class="max-w-6xl mx-auto min-h-screen flex flex-col bg-white shadow-xl my-4 rounded-xl overflow-hidden">
+    <div
+        class="max-w-6xl mx-auto min-h-screen flex flex-col bg-white shadow-2xl my-4 sm:my-8 rounded-2xl overflow-hidden">
 
         <!-- Header -->
-        <header class="bg-slate-900 text-white p-6 shadow-md">
+        <header class="bg-indigo-950 text-white p-8">
             <div class="flex justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">מסע אל השכבה הפיזית (Layer 1)</h1>
-                    <p class="text-slate-300 text-sm">המרה, שידור ותווך פיזי - מהביט הבודד ועד הכבל</p>
+                    <h1 class="text-3xl font-extrabold mb-2 tracking-tight">מעבדת השכבה הפיזית</h1>
+                    <p class="text-indigo-200 font-light italic">מנהלת את התקשורת ברמת הביט (0/1) והאות הפיזי</p>
                 </div>
-                <div class="text-4xl">🔌</div>
+                <div class="text-5xl opacity-80 select-none">📡</div>
             </div>
         </header>
 
         <!-- Navigation -->
-        <nav class="flex bg-slate-100 border-b border-slate-200 overflow-x-auto">
+        <nav class="flex bg-slate-100 border-b border-slate-200">
             <button onclick="switchTab('overview')" id="nav-overview"
-                class="nav-item active flex-1 py-4 px-6 text-center whitespace-nowrap hover:bg-slate-200 transition-colors">
-                1. ביטים ואותות
+                class="nav-item active flex-1 py-5 px-4 text-center transition-all duration-200 hover:bg-white">
+                ביטים ואותות
             </button>
             <button onclick="switchTab('media')" id="nav-media"
-                class="nav-item flex-1 py-4 px-6 text-center whitespace-nowrap hover:bg-slate-200 transition-colors">
-                2. סוגי מדיה (כבלים/אלחוטי)
+                class="nav-item flex-1 py-5 px-4 text-center transition-all duration-200 hover:bg-white border-r border-slate-200">
+                סוגי מדיה ומפרטים
             </button>
             <button onclick="switchTab('security')" id="nav-security"
-                class="nav-item flex-1 py-4 px-6 text-center whitespace-nowrap hover:bg-slate-200 transition-colors">
-                3. איומי אבטחה
+                class="nav-item flex-1 py-5 px-4 text-center transition-all duration-200 hover:bg-white border-r border-slate-200">
+                ניטור סיכונים
             </button>
             <button onclick="switchTab('quiz')" id="nav-quiz"
-                class="nav-item flex-1 py-4 px-6 text-center whitespace-nowrap hover:bg-slate-200 transition-colors">
-                4. בחן את עצמך
+                class="nav-item flex-1 py-5 px-4 text-center transition-all duration-200 hover:bg-white border-r border-slate-200">
+                מבחן ידע
             </button>
         </nav>
 
         <!-- Main Content Area -->
-        <main class="flex-grow p-6 overflow-y-auto">
+        <main class="flex-grow p-8">
 
             <!-- SECTION 1: OVERVIEW & BITS -->
             <section id="section-overview" class="space-y-8 animate-fade-in">
-                <div class="bg-blue-50 border-r-4 border-blue-500 p-4 rounded shadow-sm">
-                    <h2 class="text-xl font-bold text-blue-900 mb-2">מהו תפקיד השכבה הפיזית?</h2>
-                    <p class="text-slate-700">
-                        שכבה 1 אינה מבינה בכתובות IP או בהודעות דוא"ל. השפה היחידה שהיא מכירה היא <strong>ביטים
-                            (Bits)</strong>.
-                        התפקיד שלה הוא לקחת את המידע הדיגיטלי (0 ו-1) ולהמיר אותו לאותות פיזיים (חשמל, אור, או רדיו)
-                        שניתן לשדר על גבי כבל או באוויר.
+                <div class="max-w-3xl">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-4">תפקיד השכבה (Layer 1 Role)</h2>
+                    <p class="text-slate-600 leading-relaxed">
+                        לפי <strong>הרצאה 1</strong>, השכבה הפיזית אחראית על שינוע זרם ביטים (Bitstream) גולמי. היא
+                        מגדירה את המאפיינים המכניים, החשמליים והפונקציונליים של החיבור הפיזי.
+                        האתגר המרכזי כאן הוא <strong>EMI (Electromagnetic Interference)</strong> - הפרעות שמעוותות את
+                        האותות.
                     </p>
                 </div>
 
                 <!-- Bit Simulator -->
-                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-                    <h3 class="text-lg font-bold mb-4 flex items-center">
-                        <span class="ml-2">⚡</span> סימולטור המרת נתונים לאותות
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+                    <h3 class="text-lg font-bold mb-6 flex items-center">
+                        <span class="ml-2">⚡</span> סימולטור: ממידע דיגיטלי לאות פיזי
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-4">
-                            <label class="block text-sm font-medium text-slate-600">הקלד טקסט (אנגלית/מספרים):</label>
-                            <input type="text" id="bit-input" placeholder="למשל: Hello"
-                                class="w-full p-3 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none"
-                                oninput="updateBitViz()">
-
-                            <div class="bg-slate-900 text-green-400 p-4 rounded font-mono text-sm overflow-x-auto">
-                                <p class="text-xs text-slate-500 mb-1">פלט בינארי:</p>
-                                <div id="binary-output" class="tracking-widest">ממתין לקלט...</div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">קלט
+                                    טקסטואלי</label>
+                                <input type="text" id="bit-input" placeholder="הקלד מילה..."
+                                    class="w-full p-4 bg-white border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                                    oninput="updateBitViz()">
                             </div>
-                            <p class="text-xs text-slate-500">
-                                * כל תו מתורגם ל-8 ביטים (ASCII). הגרף משמאל מדמה את המתח החשמלי על הכבל (גבוה=1,
-                                נמוך=0).
-                            </p>
+
+                            <div
+                                class="bg-slate-900 text-green-400 p-5 rounded-xl font-mono text-sm shadow-inner relative overflow-hidden">
+                                <div class="absolute top-0 right-0 p-2 text-[10px] text-slate-500 uppercase">Binary
+                                    Stream</div>
+                                <div id="binary-output" class="tracking-widest leading-loose pt-2">ממתין לקלט...</div>
+                            </div>
                         </div>
 
-                        <div class="flex flex-col items-center justify-center bg-slate-50 rounded-lg p-4">
-                            <h4 class="text-sm font-semibold text-slate-500 mb-2">ויזואליזציה של האות (Signal)</h4>
+                        <div
+                            class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col justify-center">
+                            <h4 class="text-center text-xs font-bold text-slate-400 mb-4 uppercase">ייצוג מתח על הכבל
+                                (NRZ Logic)</h4>
                             <div class="chart-container">
                                 <canvas id="bitChart"></canvas>
                             </div>
@@ -166,134 +171,180 @@
                 </div>
             </section>
 
-            <!-- SECTION 2: MEDIA TYPES -->
+            <!-- SECTION 2: MEDIA LAB -->
             <section id="section-media" class="hidden space-y-8 animate-fade-in">
-                <div class="bg-indigo-50 border-r-4 border-indigo-500 p-4 rounded shadow-sm">
-                    <h2 class="text-xl font-bold text-indigo-900 mb-2">השוואת אמצעי תווך (Media Types)</h2>
-                    <p class="text-slate-700">
-                        ישנן שלוש דרכים עיקריות להעברת ביטים: חשמל (נחושת), אור (סיבים) וגלי רדיו (אלחוטי). לכל אחת
-                        יתרונות וחסרונות.
-                        לחץ על אחד הכרטיסים למטה כדי לקבל הסבר מפורט.
+                <div class="bg-indigo-50 rounded-2xl p-6 border border-indigo-100">
+                    <h2 class="text-2xl font-bold text-indigo-950 mb-2">מעבדת השוואת מדיה</h2>
+                    <p class="text-indigo-800 opacity-80">
+                        בחלק זה נשווה בין אמצעי התקשורת השונים לפי המצגות. השכבה הפיזית תומכת בנחושת (UTP), סיבים
+                        (Fiber) ואלחוט (WiFi).
+                        כל מדיה נבחרת לפי דרישות המרחק, המהירות והתקציב.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Cards -->
-                    <div class="bg-white p-5 rounded-xl border border-slate-200 hover:shadow-lg hover:border-orange-300 transition cursor-pointer group"
-                        onclick="highlightMedia('copper')">
-                        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🔌</div>
-                        <h3 class="font-bold text-lg text-orange-700">נחושת (Copper)</h3>
-                        <p class="text-sm text-slate-500 mt-2">Twisted Pair, RJ-45</p>
-                        <p class="text-sm mt-2">הכי נפוץ ב-LAN. רגיש להפרעות חשמליות (EMI).</p>
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Media Selectors -->
+                    <div class="lg:col-span-1 space-y-3">
+                        <button onclick="highlightMedia('copper')" id="media-btn-copper"
+                            class="media-card w-full text-right p-4 rounded-xl border-2 border-slate-200 hover:border-indigo-300 transition-all flex items-center justify-between group">
+                            <div>
+                                <div class="font-bold text-slate-900">כבלי נחושת</div>
+                                <div class="text-xs text-slate-500">Ethernet / RJ-45</div>
+                            </div>
+                            <span class="text-2xl">🔌</span>
+                        </button>
+                        <button onclick="highlightMedia('fiber')" id="media-btn-fiber"
+                            class="media-card w-full text-right p-4 rounded-xl border-2 border-slate-200 hover:border-indigo-300 transition-all flex items-center justify-between group">
+                            <div>
+                                <div class="font-bold text-slate-900">סיב אופטי</div>
+                                <div class="text-xs text-slate-500">Light Pulses</div>
+                            </div>
+                            <span class="text-2xl">✨</span>
+                        </button>
+                        <button onclick="highlightMedia('wifi')" id="media-btn-wifi"
+                            class="media-card w-full text-right p-4 rounded-xl border-2 border-slate-200 hover:border-indigo-300 transition-all flex items-center justify-between group">
+                            <div>
+                                <div class="font-bold text-slate-900">תקשורת אלחוטית</div>
+                                <div class="text-xs text-slate-500">802.11 / Radio</div>
+                            </div>
+                            <span class="text-2xl">📡</span>
+                        </button>
                     </div>
 
-                    <div class="bg-white p-5 rounded-xl border border-slate-200 hover:shadow-lg hover:border-blue-300 transition cursor-pointer group"
-                        onclick="highlightMedia('fiber')">
-                        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">✨</div>
-                        <h3 class="font-bold text-lg text-blue-700">סיבים אופטיים (Fiber)</h3>
-                        <p class="text-sm text-slate-500 mt-2">Single/Multi-mode</p>
-                        <p class="text-sm mt-2">מהיר מאוד, מרחקים גדולים, חסין לחלוטין ל-EMI.</p>
-                    </div>
+                    <!-- Dashboard Info -->
+                    <div
+                        class="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-200 relative">
+                        <div class="space-y-6">
+                            <div>
+                                <h3 id="media-detail-title"
+                                    class="text-2xl font-black text-indigo-600 mb-2 underline decoration-indigo-200 underline-offset-8">
+                                    בחר מדיה לבדיקה</h3>
+                                <p id="media-detail-text" class="text-slate-600 leading-relaxed">לחץ על אחד האמצעים
+                                    מימין כדי לראות ניתוח טכני מעמיק מתוך חומרי הלימוד.</p>
+                            </div>
 
-                    <div class="bg-white p-5 rounded-xl border border-slate-200 hover:shadow-lg hover:border-teal-300 transition cursor-pointer group"
-                        onclick="highlightMedia('wifi')">
-                        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">📡</div>
-                        <h3 class="font-bold text-lg text-teal-700">אלחוטי (WiFi)</h3>
-                        <p class="text-sm text-slate-500 mt-2">Radio Waves</p>
-                        <p class="text-sm mt-2">נוחות וניידות. מושפע מהפרעות פיזיות ואחרות.</p>
-                    </div>
-                </div>
-
-                <!-- Interactive Comparison Chart -->
-                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm mt-6">
-                    <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
-                        <h3 class="text-lg font-bold">השוואת ביצועים (כללי)</h3>
-                        <div class="flex flex-wrap gap-2 justify-center mt-2 sm:mt-0">
-                            <button onclick="updateMediaChart('speed')"
-                                class="px-3 py-1 bg-slate-200 rounded hover:bg-slate-300 text-sm font-medium transition">מהירות</button>
-                            <button onclick="updateMediaChart('distance')"
-                                class="px-3 py-1 bg-slate-200 rounded hover:bg-slate-300 text-sm font-medium transition">מרחק</button>
-                            <button onclick="updateMediaChart('immunity')"
-                                class="px-3 py-1 bg-slate-200 rounded hover:bg-slate-300 text-sm font-medium transition">חסינות</button>
-                            <button onclick="updateMediaChart('cost')"
-                                class="px-3 py-1 bg-slate-200 rounded hover:bg-slate-300 text-sm font-medium transition">עלות</button>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase">טווח מקסימלי</div>
+                                    <div id="spec-range" class="text-lg font-bold text-slate-800">-</div>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase">חסינות ל-EMI</div>
+                                    <div id="spec-emi" class="text-lg font-bold text-slate-800">-</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="flex flex-col lg:flex-row items-center gap-8">
-                        <div class="chart-container flex-1">
-                            <canvas id="mediaChart"></canvas>
-                        </div>
-                        <div class="flex-1 bg-slate-50 p-6 rounded-lg border border-slate-100 min-h-[150px]">
-                            <h4 id="media-detail-title" class="font-bold text-lg mb-2 text-slate-800">בחר מדד או כרטיס
-                                למעלה</h4>
-                            <p id="media-detail-text" class="text-slate-600 leading-relaxed text-sm">
-                                השתמש בכפתורי המדדים או לחץ על כרטיסי המדיה כדי לראות השוואה מעמיקה. שים לב ליתרון
-                                המובהק של הסיבים האופטיים במרחק ובחסינות, לעומת העלות הנמוכה והפשטות של הנחושת.
-                            </p>
+                        <div class="flex flex-col h-full space-y-4">
+                            <div class="flex-grow bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase mb-4">השוואת ביצועים יחסית</h4>
+                                <div class="h-48">
+                                    <canvas id="mediaChart"></canvas>
+                                </div>
+                            </div>
+                            <div id="media-use-case"
+                                class="bg-indigo-600 text-white p-4 rounded-xl text-sm font-medium shadow-lg hidden">
+                                💡 <strong>שימוש מומלץ:</strong> <span id="spec-use-case">-</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 3: SECURITY -->
+            <!-- SECTION 3: RISK MONITOR -->
             <section id="section-security" class="hidden space-y-8 animate-fade-in">
-                <div class="bg-red-50 border-r-4 border-red-500 p-4 rounded shadow-sm">
-                    <h2 class="text-xl font-bold text-red-900 mb-2">אבטחה בשכבה הפיזית (Layer 1 Security)</h2>
-                    <p class="text-slate-700">
-                        רבים נוטים לחשוב על סייבר במונחים של תוכנה, אבל התקפות פיזיות הן מסוכנות לא פחות.
+                <div class="bg-rose-50 rounded-2xl p-6 border border-rose-100 border-r-8 border-r-rose-500">
+                    <h2 class="text-2xl font-bold text-rose-950 mb-2">מרכז ניטור סיכונים פיזיים</h2>
+                    <p class="text-rose-900 opacity-80 italic">
+                        לפי מצגת "Physical Layer & Security", איומים בשכבה 1 הם הבסיס לכל התקפה מוצלחת. מידע שעובר על
+                        כבל חשמלי (נחושת) קל "להריח" (Sniffing) מרחוק.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Threat Card 1 -->
-                    <div class="bg-white rounded-lg shadow border border-slate-200 overflow-hidden">
-                        <div class="h-2 bg-red-500 w-full"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Risk Item 1 -->
+                    <div
+                        class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="h-1.5 bg-rose-500"></div>
                         <div class="p-6">
                             <div class="flex justify-between items-start mb-4">
-                                <h3 class="font-bold text-lg">ציתות (Wiretapping)</h3>
-                                <span class="text-2xl">👂</span>
+                                <h3 class="font-bold text-lg text-slate-900">ציתות (Eavesdropping)</h3>
+                                <div class="p-2 bg-rose-100 text-rose-600 rounded-lg text-sm">🚨</div>
                             </div>
-                            <p class="text-sm text-slate-600 mb-4">
-                                חיבור פיזי לכבל הנחושת כדי להאזין לתעבורה.
-                            </p>
-                            <div class="bg-red-50 p-3 rounded text-xs text-red-800">
-                                <strong>הגנה:</strong> שימוש בסיבים אופטיים (קשה מאוד לציתות ללא גילוי) או הצפנה בשכבות
-                                גבוהות יותר.
+                            <p class="text-sm text-slate-500 mb-6">חיבור פיזי לכבל או שימוש באנטנה לקליטת פליטות
+                                אלקטרומגנטיות מהכבל.</p>
+
+                            <div class="space-y-4 text-xs">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-slate-400 font-bold uppercase">קלות הביצוע</span>
+                                        <span class="text-rose-600">גבוהה</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 rounded-full h-1.5">
+                                        <div class="bg-rose-500 h-1.5 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded-lg border border-slate-100 text-slate-600 italic">
+                                    <strong>מניעה:</strong> שימוש בסיבים אופטיים או הצפנה מלאה (IPSec/TLS).
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Threat Card 2 -->
-                    <div class="bg-white rounded-lg shadow border border-slate-200 overflow-hidden">
-                        <div class="h-2 bg-orange-500 w-full"></div>
+                    <!-- Risk Item 2 -->
+                    <div
+                        class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="h-1.5 bg-amber-500"></div>
                         <div class="p-6">
                             <div class="flex justify-between items-start mb-4">
-                                <h3 class="font-bold text-lg">שיבוש (Jamming)</h3>
-                                <span class="text-2xl">📻</span>
+                                <h3 class="font-bold text-lg text-slate-900">שיבוש (Jamming)</h3>
+                                <div class="p-2 bg-amber-100 text-amber-600 rounded-lg text-sm">📡</div>
                             </div>
-                            <p class="text-sm text-slate-600 mb-4">
-                                שידור גלי רדיו בעוצמה גבוהה בתדר של ה-WiFi כדי למנוע תקשורת.
-                            </p>
-                            <div class="bg-orange-50 p-3 rounded text-xs text-orange-800">
-                                <strong>הגנה:</strong> מעבר לתדרים פחות עמוסים (5GHz), איתור מקור השיבוש.
+                            <p class="text-sm text-slate-500 mb-6">יצירת רעש בתדר של הרשת (במיוחד WiFi) כדי למנוע
+                                מהביטים לעבור בצורה תקינה.</p>
+
+                            <div class="space-y-4 text-xs">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-slate-400 font-bold uppercase">רמת נזק</span>
+                                        <span class="text-amber-600">בינונית (DoS)</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 rounded-full h-1.5">
+                                        <div class="bg-amber-500 h-1.5 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded-lg border border-slate-100 text-slate-600 italic">
+                                    <strong>מניעה:</strong> שימוש בטכניקות דילוג תדרים (FHSS) או מעבר לכבלים.
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Threat Card 3 -->
-                    <div class="bg-white rounded-lg shadow border border-slate-200 overflow-hidden">
-                        <div class="h-2 bg-slate-700 w-full"></div>
+                    <!-- Risk Item 3 -->
+                    <div
+                        class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="h-1.5 bg-slate-900"></div>
                         <div class="p-6">
                             <div class="flex justify-between items-start mb-4">
-                                <h3 class="font-bold text-lg">חבלה פיזית</h3>
-                                <span class="text-2xl">✂️</span>
+                                <h3 class="font-bold text-lg text-slate-900">חבלה פיזית</h3>
+                                <div class="p-2 bg-slate-200 text-slate-600 rounded-lg text-sm">✂️</div>
                             </div>
-                            <p class="text-sm text-slate-600 mb-4">
-                                חיתוך כבלים, ניתוק חשמל לציוד תקשורת, או גניבת רכיבים.
-                            </p>
-                            <div class="bg-slate-100 p-3 rounded text-xs text-slate-800">
-                                <strong>הגנה:</strong> נעילת ארונות תקשורת, מצלמות אבטחה, יתירות (Redundancy).
+                            <p class="text-sm text-slate-500 mb-6">חיתוך כבלים או פגיעה בחומרת הקצה (ראוטרים/סוויצ'ים)
+                                בחדר השרתים.</p>
+
+                            <div class="space-y-4 text-xs">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-slate-400 font-bold uppercase">סיכון זמינות</span>
+                                        <span class="text-slate-900">קריטי</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 rounded-full h-1.5">
+                                        <div class="bg-slate-900 h-1.5 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded-lg border border-slate-100 text-slate-600 italic">
+                                    <strong>מניעה:</strong> בקרת כניסה פיזית, מצלמות, ונעילת ארונות תקשורת.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -301,81 +352,60 @@
             </section>
 
             <!-- SECTION 4: QUIZ -->
-            <section id="section-quiz" class="hidden space-y-8 animate-fade-in">
-                <div class="bg-green-50 border-r-4 border-green-500 p-4 rounded shadow-sm">
-                    <h2 class="text-xl font-bold text-green-900 mb-2">בחן את עצמך</h2>
-                    <p class="text-slate-700">
-                        האם הבנתם את החומר? ענו על השאלות.
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm max-w-3xl mx-auto">
-                    <!-- Question 1 -->
-                    <div class="mb-8 border-b border-slate-100 pb-6">
-                        <h3 class="font-bold text-lg mb-4">1. מהו היתרון המרכזי של סיב אופטי על פני כבל נחושת?</h3>
-                        <div class="space-y-2">
-                            <button onclick="checkAnswer(this, false, 'זה לא נכון. סיבים לרוב יקרים יותר.')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">א.
-                                הוא זול יותר להתקנה</button>
-                            <button onclick="checkAnswer(this, false, 'לא מדויק. זכוכית שבירה יותר מנחושת.')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">ב.
-                                הוא גמיש יותר פיזית</button>
-                            <button
-                                onclick="checkAnswer(this, true, 'נכון מאוד! אור אינו מושפע משדות מגנטיים או חשמליים.')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">ג.
-                                הוא חסין להפרעות אלקטרומגנטיות (EMI)</button>
-                            <button onclick="checkAnswer(this, false, 'לא נכון. נחושת משתמשת ב-RJ45.')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">ד.
-                                הוא משתמש במחבר RJ-45</button>
-                        </div>
-                        <div class="feedback hidden mt-2 p-3 rounded bg-slate-100 text-sm"></div>
+            <section id="section-quiz" class="hidden animate-fade-in">
+                <div class="max-w-2xl mx-auto space-y-6">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-bold">בחן את הידע שלך</h2>
+                        <p class="text-slate-500">שאלות מסגנון המבחן על השכבה הפיזית</p>
                     </div>
 
-                    <!-- Question 2 -->
-                    <div class="mb-8 border-b border-slate-100 pb-6">
-                        <h3 class="font-bold text-lg mb-4">2. איזה מכשיר נחשב למכשיר "טיפש" (Layer 1) שמשכפל אותות לכל
-                            הפורטים?</h3>
-                        <div class="space-y-2">
-                            <button onclick="checkAnswer(this, false, 'Switch עובד בשכבה 2 (MAC).')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">א.
-                                Switch</button>
-                            <button onclick="checkAnswer(this, false, 'Router עובד בשכבה 3 (IP).')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">ב.
-                                Router</button>
-                            <button onclick="checkAnswer(this, true, 'נכון! Hub רק משכפל אותות חשמליים.')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">ג.
-                                Hub</button>
-                            <button onclick="checkAnswer(this, false, 'לא קשור.')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">ד.
-                                Firewall</button>
+                    <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-lg space-y-8">
+                        <!-- Q1 -->
+                        <div class="space-y-4">
+                            <h3 class="font-bold text-slate-900 text-lg">1. איזה מהבאים הוא היתרון המשמעותי ביותר של סיב
+                                אופטי בבנייני תעשייה?</h3>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button onclick="checkAnswer(this, false, 'טעות. סיבים לרוב יקרים יותר להתקנה מנחושת.')"
+                                    class="w-full text-right p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">א.
+                                    מחיר התקנה זול במיוחד</button>
+                                <button
+                                    onclick="checkAnswer(this, true, 'נכון! מכיוון שהסיב משתמש באור, הוא לא מושפע מהפרעות מגנטיות של מכונות.')"
+                                    class="w-full text-right p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">ב.
+                                    חסינות מוחלטת להפרעות אלקטרומגנטיות (EMI)</button>
+                                <button
+                                    onclick="checkAnswer(this, false, 'לא נכון. סיבים עשויים זכוכית והם שבירים יותר.')"
+                                    class="w-full text-right p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">ג.
+                                    גמישות פיזית גבוהה יותר מנחושת</button>
+                            </div>
                         </div>
-                        <div class="feedback hidden mt-2 p-3 rounded bg-slate-100 text-sm"></div>
-                    </div>
 
-                    <!-- Question 3 -->
-                    <div class="mb-4">
-                        <h3 class="font-bold text-lg mb-4">3. מהו הגורם העיקרי לבעיות ב-WiFi בתדר 2.4GHz?</h3>
-                        <div class="space-y-2">
-                            <button onclick="checkAnswer(this, false, 'לא.')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">א.
-                                המהירות הגבוהה מדי של האות</button>
-                            <button
-                                onclick="checkAnswer(this, true, 'נכון! מיקרוגלים וטלפונים אלחוטיים יושבים על תדר זה.')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">ב.
-                                הפרעות ממכשירים ביתיים ורשתות אחרות</button>
-                            <button onclick="checkAnswer(this, false, 'לא, 2.4GHz עובר קירות יחסית טוב.')"
-                                class="w-full text-right p-3 rounded border border-slate-200 hover:bg-slate-50 transition">ג.
-                                חוסר יכולת לעבור קירות</button>
+                        <!-- Q2 -->
+                        <div class="space-y-4">
+                            <h3 class="font-bold text-slate-900 text-lg">2. מכשיר Hub נחשב למכשיר שכבה 1 מכיוון ש:</h3>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button onclick="checkAnswer(this, false, 'לא. סוויץ עושה את זה והוא שכבה 2.')"
+                                    class="w-full text-right p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">א.
+                                    הוא יודע לקרוא כתובות MAC</button>
+                                <button
+                                    onclick="checkAnswer(this, true, 'נכון! Hub הוא מכשיר \'טיפש\' שרק מגביר ומשכפל אותות חשמליים.')"
+                                    class="w-full text-right p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">ב.
+                                    הוא פשוט משכפל את האות הפיזי לכל הפורטים</button>
+                                <button onclick="checkAnswer(this, false, 'לא. נתבים עובדים בשכבה 3.')"
+                                    class="w-full text-right p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">ג.
+                                    הוא מבצע ניתוב לפי כתובות IP</button>
+                            </div>
                         </div>
-                        <div class="feedback hidden mt-2 p-3 rounded bg-slate-100 text-sm"></div>
+
+                        <div id="quiz-feedback" class="hidden p-4 rounded-xl text-sm text-center font-bold"></div>
                     </div>
                 </div>
             </section>
 
         </main>
 
-        <footer class="bg-slate-100 p-4 border-t text-center text-slate-500 text-sm">
-            נוצר על בסיס חומרי הקורס - מורה פרטי למבוא לתקשורת
+        <footer
+            class="bg-slate-100 p-6 border-t text-center text-slate-400 text-xs font-medium uppercase tracking-widest">
+            Computer Networks 101 | Interactive Canvas Module
         </footer>
     </div>
 
@@ -384,25 +414,29 @@
         const state = {
             currentTab: 'overview',
             mediaData: {
-                speed: {
-                    label: 'רוחב פס / מהירות (Speed)',
-                    data: [5, 10, 6],
-                    desc: 'סיבים אופטיים מספקים את המהירות הגבוהה ביותר (Gbps/Tbps). נחושת מוגבלת יותר, ו-WiFi תלוי קליטה ומרחק.'
+                copper: {
+                    title: "נחושת (Copper UTP)",
+                    text: "כבלי ה-UTP (Unshielded Twisted Pair) הם הסטנדרט ברוב רשתות ה-LAN. הם מעבירים אותות חשמליים ומגיעים בדרגות שונות (Cat5e, Cat6). האות רגיש מאוד ל-EMI.",
+                    range: "עד 100 מטר",
+                    emi: "רגישות גבוהה",
+                    use: "חיבור תחנות עבודה לסוויצ'ים בתוך משרד.",
+                    chartData: [8, 3, 10, 9] // Cost, Distance, Speed, Ease
                 },
-                distance: {
-                    label: 'מרחק שידור מקסימלי (Distance)',
-                    data: [3, 10, 5],
-                    desc: 'סיבים יכולים להעביר מידע לעשרות קילומטרים. נחושת מוגבלת ל-100 מטר בדרך כלל (Ethernet).'
+                fiber: {
+                    title: "סיב אופטי (Fiber Optic)",
+                    text: "העברת מידע באמצעות פולסים של אור בתוך ליבת זכוכית. אין קרינה אלקטרומגנטית ואין רגישות להפרעות. קיימים סיבי Single-mode ו-Multi-mode.",
+                    range: "עד עשרות קילומטרים",
+                    emi: "חסינות מוחלטת",
+                    use: "תשתיות ליבה (Backbone) וחיבור בין אתרים מרוחקים.",
+                    chartData: [3, 10, 10, 2]
                 },
-                immunity: {
-                    label: 'חסינות להפרעות (EMI Immunity)',
-                    data: [4, 10, 2],
-                    desc: 'סיבים משתמשים באור ולכן חסינים לחשמל. נחושת רגישה, ו-WiFi רגיש מאוד להפרעות רדיו.'
-                },
-                cost: {
-                    label: 'עלות וקלות התקנה (10=זול/קל)',
-                    data: [9, 3, 8],
-                    desc: 'נחושת זולה ונוחה לעבודה. סיבים דורשים ציוד יקר ומומחיות. WiFi זול בפריסה אך דורש תכנון.'
+                wifi: {
+                    title: "אלחוטי (Wireless WiFi)",
+                    text: "שידור גלי רדיו באוויר בתדרים 2.4GHz או 5GHz. נוחות מרבית אך רמת אבטחה וביצועים נמוכה יותר בשכבה הפיזית.",
+                    range: "30-100 מטר (תלוי במכשולים)",
+                    emi: "רגישות גבוהה מאוד",
+                    use: "ניידות למשתמשי קצה וסמארטפונים.",
+                    chartData: [7, 4, 6, 8]
                 }
             }
         };
@@ -415,11 +449,11 @@
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(`section-${tabId}`).classList.remove('hidden');
 
-            if (tabId === 'overview' && !window.bitChart) initBitChart();
-            if (tabId === 'media' && !window.mediaChart) initMediaChart();
+            if (tabId === 'overview') setTimeout(initBitChart, 50);
+            if (tabId === 'media') setTimeout(initMediaChart, 50);
         }
 
-        // --- Bit Visualization Logic ---
+        // --- Bit Visualization ---
         function stringToBinary(str) {
             let output = "";
             for (let i = 0; i < str.length; i++) {
@@ -429,157 +463,126 @@
         }
 
         function initBitChart() {
-            const ctx = document.getElementById('bitChart').getContext('2d');
-            window.bitChart = new Chart(ctx, {
+            const ctx = document.getElementById('bitChart')?.getContext('2d');
+            if (!ctx) return;
+
+            if (window.bitChartInstance) window.bitChartInstance.destroy();
+
+            window.bitChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: [],
                     datasets: [{
-                        label: 'Voltage Level (High=1, Low=0)',
+                        label: 'Voltage',
                         data: [],
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        borderWidth: 2,
+                        borderColor: '#4f46e5',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        borderWidth: 3,
                         stepped: true,
-                        fill: true
+                        fill: true,
+                        pointRadius: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: {
-                            min: -0.5,
-                            max: 1.5,
-                            ticks: { stepSize: 1, callback: v => v === 1 ? '1 (High)' : v === 0 ? '0 (Low)' : '' }
-                        },
-                        x: { display: false }
+                        y: { min: -0.2, max: 1.2, ticks: { display: false }, grid: { display: false } },
+                        x: { display: false, grid: { display: false } }
                     },
                     plugins: { legend: { display: false } },
-                    animation: { duration: 0 }
+                    animation: { duration: 300 }
                 }
             });
             updateBitViz();
         }
 
         function updateBitViz() {
-            const input = document.getElementById('bit-input').value || 'A';
-            const binaryString = stringToBinary(input);
-            document.getElementById('binary-output').textContent = binaryString;
+            const input = document.getElementById('bit-input').value || 'Hi';
+            const binary = stringToBinary(input);
+            document.getElementById('binary-output').textContent = binary;
 
-            const dataPoints = [];
-            const labels = [];
-            const cleanBinary = binaryString.replace(/\s/g, '');
-
-            for (let bit of cleanBinary) {
-                dataPoints.push(parseInt(bit));
-                labels.push('');
-            }
-
-            if (window.bitChart) {
-                window.bitChart.data.datasets[0].data = dataPoints.slice(0, 50);
-                window.bitChart.data.labels = labels.slice(0, 50);
-                window.bitChart.update();
+            const bits = binary.replace(/\s/g, '').split('').map(b => parseInt(b));
+            if (window.bitChartInstance) {
+                window.bitChartInstance.data.labels = bits.map((_, i) => i);
+                window.bitChartInstance.data.datasets[0].data = bits;
+                window.bitChartInstance.update();
             }
         }
 
-        // --- Media Comparison Logic ---
+        // --- Media Chart ---
         function initMediaChart() {
-            const ctx = document.getElementById('mediaChart').getContext('2d');
-            window.mediaChart = new Chart(ctx, {
-                type: 'bar',
+            const ctx = document.getElementById('mediaChart')?.getContext('2d');
+            if (!ctx) return;
+
+            if (window.mediaChartInstance) window.mediaChartInstance.destroy();
+
+            window.mediaChartInstance = new Chart(ctx, {
+                type: 'radar',
                 data: {
-                    labels: ['נחושת (Copper)', 'סיבים (Fiber)', 'אלחוטי (WiFi)'],
+                    labels: ['עלות (זול)', 'מרחק', 'מהירות', 'קלות התקנה'],
                     datasets: [{
-                        label: 'ציון יחסי',
-                        data: state.mediaData.speed.data,
-                        backgroundColor: ['#c2410c', '#1d4ed8', '#0f766e'],
-                        borderRadius: 6
+                        label: 'דירוג',
+                        data: [0, 0, 0, 0],
+                        borderColor: '#4f46e5',
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        pointBackgroundColor: '#4f46e5'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: { beginAtZero: true, max: 10 }
+                        r: { min: 0, max: 10, ticks: { display: false } }
                     },
-                    plugins: {
-                        legend: { display: false }
-                    }
+                    plugins: { legend: { display: false } }
                 }
             });
-            updateMediaChart('speed');
         }
 
-        function updateMediaChart(metricKey) {
-            if (!window.mediaChart) return;
-            const metric = state.mediaData[metricKey];
-            window.mediaChart.data.datasets[0].data = metric.data;
-            window.mediaChart.update();
+        function highlightMedia(key) {
+            const data = state.mediaData[key];
 
-            document.getElementById('media-detail-title').textContent = metric.label;
-            document.getElementById('media-detail-text').textContent = metric.desc;
-        }
+            // UI Updates
+            document.querySelectorAll('.media-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById(`media-btn-${key}`).classList.add('selected');
 
-        /**
-         * Added Function to fix ReferenceError
-         * Handles clicking on the Media Cards
-         */
-        function highlightMedia(mediaKey) {
-            const mediaDetails = {
-                copper: {
-                    title: "נחושת (Copper Cabling)",
-                    desc: "כבלי נחושת הם עמוד השדרה של רוב רשתות ה-LAN המשרדיות והביתיות. הם מעבירים אותות חשמליים דרך כבלי 'זוג שזור' (Twisted Pair) המשתמשים במחברי RJ-45. החיסרון העיקרי הוא רגישות להפרעות אלקטרומגנטיות (EMI) והעובדה שהאות דועך לאחר כ-100 מטר."
-                },
-                fiber: {
-                    title: "סיבים אופטיים (Fiber-Optic)",
-                    desc: "סיבים אופטיים משתמשים בפולסים של אור המועברים בתוך ליבת זכוכית דקיקה. הם חסינים לחלוטין ל-EMI (כי אור אינו מושפע מחשמל), מספקים מהירות עצומה ויכולים לשדר למרחקים של עשרות קילומטרים. קיימים שני סוגים עיקריים: Single-mode (למרחקים ארוכים) ו-Multi-mode (למרחקים קצרים)."
-                },
-                wifi: {
-                    title: "תקשורת אלחוטית (WiFi)",
-                    desc: "WiFi מבוסס על שידור ביטים באמצעות גלי רדיו באוויר. התדרים הנפוצים הם 2.4GHz (טווח גדול יותר אך פחות מהירות) ו-5GHz (מהירות גבוהה יותר אך טווח קצר). WiFi רגיש מאוד להפרעות פיזיות (כמו קירות) ולהתקני רדיו אחרים שעלולים לשבש את האות (EMI גבוה)."
-                }
-            };
+            document.getElementById('media-detail-title').textContent = data.title;
+            document.getElementById('media-detail-text').textContent = data.text;
+            document.getElementById('spec-range').textContent = data.range;
+            document.getElementById('spec-emi').textContent = data.emi;
+            document.getElementById('spec-use-case').textContent = data.use;
+            document.getElementById('media-use-case').classList.remove('hidden');
 
-            const info = mediaDetails[mediaKey];
-            const detailTitle = document.getElementById('media-detail-title');
-            const detailText = document.getElementById('media-detail-text');
-
-            // Update text with a small visual pulse
-            detailTitle.textContent = info.title;
-            detailText.textContent = info.desc;
-
-            detailTitle.classList.add('text-blue-600');
-            setTimeout(() => detailTitle.classList.remove('text-blue-600'), 500);
+            if (window.mediaChartInstance) {
+                window.mediaChartInstance.data.datasets[0].data = data.chartData;
+                window.mediaChartInstance.update();
+            }
         }
 
         // --- Quiz Logic ---
-        function checkAnswer(btn, isCorrect, feedbackText) {
-            const parent = btn.parentElement;
-            const feedbackEl = parent.nextElementSibling;
+        function checkAnswer(btn, isCorrect, feedback) {
+            const feedbackBox = document.getElementById('quiz-feedback');
 
-            const buttons = parent.querySelectorAll('button');
-            buttons.forEach(b => {
-                b.disabled = true;
-                b.classList.add('opacity-50', 'cursor-not-allowed');
+            // Reset buttons in the same question
+            btn.parentElement.querySelectorAll('button').forEach(b => {
+                b.classList.remove('bg-green-100', 'border-green-500', 'bg-rose-100', 'border-rose-500');
             });
 
             if (isCorrect) {
-                btn.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
-                feedbackEl.className = "mt-2 p-3 rounded bg-green-50 text-green-800 border border-green-200";
+                btn.classList.add('bg-green-100', 'border-green-500');
+                feedbackBox.className = "p-4 rounded-xl text-sm text-center font-bold bg-green-50 text-green-700 block";
             } else {
-                btn.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
-                feedbackEl.className = "mt-2 p-3 rounded bg-red-50 text-red-800 border border-red-200";
+                btn.classList.add('bg-rose-100', 'border-rose-500');
+                feedbackBox.className = "p-4 rounded-xl text-sm text-center font-bold bg-rose-50 text-rose-700 block";
             }
 
-            feedbackEl.textContent = feedbackText;
-            feedbackEl.classList.remove('hidden');
+            feedbackBox.textContent = feedback;
         }
 
-        window.onload = function () {
+        window.onload = () => {
             initBitChart();
         };
-
     </script>
 </body>
 
