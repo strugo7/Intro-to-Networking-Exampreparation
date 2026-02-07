@@ -91,7 +91,7 @@ const RoutingTypes: React.FC = () => {
         <div className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card title="ניתוב ישיר" desc="חיבור פיזי. לא צריך להגדיר כלום." canvasRef={directRef} />
-                <Card title="ניתוב סטטי" desc="הגדרה ידנית ע\" י מנהל הרשת." canvasRef={staticRef} />
+                <Card title="ניתוב סטטי" desc='הגדרה ידנית ע"י מנהל הרשת.' canvasRef={staticRef} />
                 <Card title="ניתוב דינמי" desc="הנתב לומד לבד מנתבים אחרים (OSPF/RIP)." canvasRef={dynamicRef} />
             </div>
 
@@ -113,8 +113,8 @@ const RoutingTypes: React.FC = () => {
 
                 {searchResult && (
                     <div className={`p-4 rounded border flex items-center gap-3 ${searchResult.status === 'success' ? 'bg-green-50 border-green-200 text-green-700' :
-                            searchResult.status === 'warning' ? 'bg-orange-50 border-orange-200 text-orange-700' :
-                                'bg-red-50 border-red-200 text-red-700'
+                        searchResult.status === 'warning' ? 'bg-orange-50 border-orange-200 text-orange-700' :
+                            'bg-red-50 border-red-200 text-red-700'
                         }`}>
                         {searchResult.status === 'success' ? <CheckCircle className="w-5 h-5" /> :
                             searchResult.status === 'warning' ? <Route className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
