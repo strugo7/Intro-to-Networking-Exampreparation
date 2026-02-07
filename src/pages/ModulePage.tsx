@@ -16,6 +16,15 @@ import FiberDemo from '../components/module1/FiberDemo';
 import CopperDemo from '../components/module1/CopperDemo';
 import WiFiDemo from '../components/module1/WiFiDemo';
 import MediaComparison from '../components/module1/MediaComparison';
+
+// Module 5 Components (Layer 3)
+import Layer3Intro from '../components/module5/Layer3Intro';
+import IPAddressing from '../components/module5/IPAddressing';
+import BinaryConverter from '../components/module5/BinaryConverter';
+import SubnetCalculator from '../components/module5/SubnetCalculator';
+import RoutingTypes from '../components/module5/RoutingTypes';
+import ProtocolsDemo from '../components/module5/ProtocolsDemo';
+import Layer3Quiz from '../components/module5/Layer3Quiz';
 import ArchitectureDemo from '../components/module7/ArchitectureDemo';
 import ProtocolExplorer from '../components/module7/ProtocolExplorer';
 import DNSSimulator from '../components/module7/DNSSimulator';
@@ -107,11 +116,16 @@ export const ModulePage = () => {
             case 'copper-demo': return <CopperDemo key={block.id} />;
             case 'wifi-demo': return <WiFiDemo key={block.id} />;
             case 'media-comparison': return <MediaComparison key={block.id} />;
-            case 'bit-demo': return <BitDemo key={block.id} />;
-            case 'fiber-demo': return <FiberDemo key={block.id} />;
-            case 'copper-demo': return <CopperDemo key={block.id} />;
-            case 'wifi-demo': return <WiFiDemo key={block.id} />;
-            case 'media-comparison': return <MediaComparison key={block.id} />;
+
+            // Module 5 (Layer 3)
+            case 'layer3-intro': return <Layer3Intro key={block.id} />;
+            case 'ip-addressing': return <IPAddressing key={block.id} />;
+            case 'binary-converter': return <BinaryConverter key={block.id} />;
+            case 'subnet-calculator': return <SubnetCalculator key={block.id} />;
+            case 'routing-types': return <RoutingTypes key={block.id} />;
+            case 'protocols-demo': return <ProtocolsDemo key={block.id} />;
+            case 'layer3-quiz': return <Layer3Quiz key={block.id} />;
+
             case 'architecture-demo': return <ArchitectureDemo key={block.id} />;
             case 'protocol-explorer': return <ProtocolExplorer key={block.id} />;
             case 'dns-simulator': return <DNSSimulator key={block.id} />;
