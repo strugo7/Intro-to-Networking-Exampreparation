@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שכבת קישור הנתונים - OSI Layer 2 | שיעור אינטראקטיבי</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/layer2.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="pulse-ring"></div>
+            <i class="fas fa-exchange-alt loader-icon"></i>
+            <h2>טוען שיעור שכבת קישור הנתונים...</h2>
+            <div class="loader-bar"><div class="loader-fill"></div></div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar"><div id="progress-fill"></div><span id="progress-text">0%</span></div>
+
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="nav-brand">
+            <i class="fas fa-exchange-alt"></i>
+            <span>OSI Layer 2</span>
+        </div>
+        <div class="nav-sections">
+            <button class="nav-btn active" data-section="intro"><i class="fas fa-home"></i><span>מבוא</span></button>
+            <button class="nav-btn" data-section="ethernet"><i class="fas fa-ethernet"></i><span>Ethernet ו-MAC</span></button>
+            <button class="nav-btn" data-section="switching"><i class="fas fa-project-diagram"></i><span>Switching</span></button>
+            <button class="nav-btn" data-section="stp"><i class="fas fa-shield-alt"></i><span>STP</span></button>
+            <button class="nav-btn" data-section="vlan"><i class="fas fa-layer-group"></i><span>VLAN</span></button>
+            <button class="nav-btn" data-section="quiz"><i class="fas fa-trophy"></i><span>בוחן</span></button>
+            <a href="index.html" class="nav-btn nav-link" style="margin-top:12px;border-top:1px solid var(--border);padding-top:16px;"><i class="fas fa-broadcast-tower"></i><span>שכבה 1</span></a>
+            <a href="layer3.html" class="nav-btn nav-link"><i class="fas fa-network-wired"></i><span>שכבה 3</span></a>
+            <a href="glossary.html" class="nav-btn nav-link"><i class="fas fa-book"></i><span>מילון מונחים</span></a>
+        </div>
+        <div class="nav-progress-dots">
+            <span class="dot active" data-section="intro"></span>
+            <span class="dot" data-section="ethernet"></span>
+            <span class="dot" data-section="switching"></span>
+            <span class="dot" data-section="stp"></span>
+            <span class="dot" data-section="vlan"></span>
+            <span class="dot" data-section="quiz"></span>
+        </div>
+    </nav>
+
+    <!-- Mobile Nav Toggle -->
+    <button class="mobile-nav-toggle" id="mobile-nav-toggle"><i class="fas fa-bars"></i></button>
+
+    <main>
+        <!-- ===================== INTRO ===================== -->
+        <section id="section-intro" class="lesson-section active">
+            <div class="section-header intro-header">
+                <div class="header-bg"><canvas id="hero-canvas"></canvas></div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-exchange-alt"></i> OSI Layer 2</div>
+                    <h1 class="hero-title">שכבת קישור הנתונים<br><span class="highlight">Data Link Layer</span></h1>
+                    <p class="hero-subtitle">הגשר בין הביטים הפיזיים לעולם הרשת הלוגית — מסגרות, כתובות MAC, ושליטה בגישה לתווך</p>
+                    <button class="cta-btn" onclick="navigateTo('ethernet')"><i class="fas fa-play"></i> התחל ללמוד</button>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- OSI Mini Tower -->
+                <div class="osi-tower-wrapper">
+                    <h2 class="section-title"><i class="fas fa-layer-group"></i> מודל OSI — שכבה 2</h2>
+                    <div class="osi-tower">
+                        <div class="tower-layer" data-layer="7"><span class="layer-number">7</span><span class="layer-info"><strong>Application</strong><small>HTTP, DNS, FTP</small></span></div>
+                        <div class="tower-layer" data-layer="6"><span class="layer-number">6</span><span class="layer-info"><strong>Presentation</strong><small>SSL, הצפנה</small></span></div>
+                        <div class="tower-layer" data-layer="5"><span class="layer-number">5</span><span class="layer-info"><strong>Session</strong><small>ניהול חיבורים</small></span></div>
+                        <div class="tower-layer" data-layer="4"><span class="layer-number">4</span><span class="layer-info"><strong>Transport</strong><small>TCP, UDP</small></span></div>
+                        <div class="tower-layer" data-layer="3"><span class="layer-number">3</span><span class="layer-info"><strong>Network</strong><small>IP, ניתוב</small></span></div>
+                        <div class="tower-layer active" data-layer="2"><span class="layer-number">2</span><span class="layer-info"><strong>Data Link</strong><small>Ethernet, MAC, Switch</small></span><span class="active-indicator"></span></div>
+                        <div class="tower-layer" data-layer="1"><span class="layer-number">1</span><span class="layer-info"><strong>Physical</strong><small>ביטים, כבלים, אותות</small></span></div>
+                    </div>
+                </div>
+
+                <!-- What does Layer 2 do? -->
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-lightbulb"></i> מה עושה שכבה 2?</h2>
+                    <div class="explain-content-full">
+                        <p class="big-text">שכבת קישור הנתונים אחראית להעביר מידע <strong>בצורה אמינה</strong> בין שני מכשירים שנמצאים <strong>באותה רשת פיזית</strong>. היא לוקחת את הביטים מהשכבה הפיזית, מארגנת אותם ל<strong>מסגרות (Frames)</strong>, ומוודאת שהם מגיעים ליעד הנכון.</p>
+                    </div>
+                </div>
+
+                <div class="info-cards-grid">
+                    <div class="info-card">
+                        <div class="card-icon"><i class="fas fa-id-card"></i></div>
+                        <h3>כתובות MAC</h3>
+                        <p>כל מכשיר ברשת מקבל כתובת MAC ייחודית — "תעודת זהות" פיזית שנצרבת בכרטיס הרשת.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-icon"><i class="fas fa-border-all"></i></div>
+                        <h3>מסגור (Framing)</h3>
+                        <p>המידע מחולק למסגרות (Frames) עם כותרת, נתונים ובדיקת שגיאות — מבנה מוסדר לתקשורת.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>בקרת שגיאות</h3>
+                        <p>FCS (Frame Check Sequence) מוודא שהמסגרת הגיעה שלמה — שגיאה? המסגרת נזרקת!</p>
+                    </div>
+                </div>
+
+                <!-- Frame Animation -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-play-circle"></i> מסע של Frame ברשת</h2>
+                    <p class="section-desc">צפו איך מסגרת Ethernet נבנית ונשלחת מהמקור ליעד</p>
+                    <div class="frame-journey-wrap">
+                        <canvas id="frame-journey-canvas"></canvas>
+                        <div class="demo-controls">
+                            <button class="demo-btn" onclick="startFrameJourney()"><i class="fas fa-play"></i> שלח Frame</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-layers -->
+                <div class="sublayer-section">
+                    <h2 class="section-title"><i class="fas fa-cubes"></i> תת-שכבות של Layer 2</h2>
+                    <div class="sublayer-grid">
+                        <div class="sublayer-card llc-card">
+                            <div class="sublayer-badge">LLC</div>
+                            <h4>Logical Link Control</h4>
+                            <p>תת-שכבה עליונה — אחראית על <strong>תקשורת עם שכבה 3</strong>, זיהוי פרוטוקולים (IPv4, IPv6, ARP), ובקרת זרימה.</p>
+                            <div class="sublayer-protocols">
+                                <span>IEEE 802.2</span>
+                                <span>SNAP</span>
+                            </div>
+                        </div>
+                        <div class="sublayer-card mac-card">
+                            <div class="sublayer-badge">MAC</div>
+                            <h4>Media Access Control</h4>
+                            <p>תת-שכבה תחתונה — אחראית על <strong>גישה לתווך הפיזי</strong>, כתובות MAC, ושליטה מתי מותר לשדר.</p>
+                            <div class="sublayer-protocols">
+                                <span>CSMA/CD</span>
+                                <span>CSMA/CA</span>
+                                <span>Token Ring</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Devices at Layer 2 -->
+                <div class="devices-section">
+                    <h2 class="section-title"><i class="fas fa-microchip"></i> רכיבים ופרוטוקולים בשכבה 2</h2>
+                    <div class="devices-grid">
+                        <div class="device-card">
+                            <div class="device-icon switch-icon">🔀</div>
+                            <h4>Switch (מתג)</h4>
+                            <p>הרכיב המרכזי! לומד כתובות MAC ומעביר מסגרות רק לפורט היעד — יעיל ומהיר.</p>
+                        </div>
+                        <div class="device-card">
+                            <div class="device-icon bridge-icon">🌉</div>
+                            <h4>Bridge (גשר)</h4>
+                            <p>קודמו של ה-Switch — מחבר בין שני מקטעי רשת ומסנן תעבורה לפי MAC.</p>
+                        </div>
+                        <div class="device-card">
+                            <div class="device-icon nic-icon">🔌</div>
+                            <h4>NIC (כרטיס רשת)</h4>
+                            <p>כל מכשיר ברשת צריך NIC — הוא מכיל את כתובת ה-MAC ומתרגם בין תוכנה לחומרה.</p>
+                        </div>
+                    </div>
+                    <div class="protocols-list">
+                        <h4><i class="fas fa-list"></i> פרוטוקולים עיקריים בשכבה 2:</h4>
+                        <div class="proto-tags">
+                            <span class="proto-tag eth">Ethernet (802.3)</span>
+                            <span class="proto-tag wifi">Wi-Fi (802.11)</span>
+                            <span class="proto-tag ppp">PPP</span>
+                            <span class="proto-tag stp-tag">STP (802.1D)</span>
+                            <span class="proto-tag vlan-tag">VLAN (802.1Q)</span>
+                            <span class="proto-tag arp-tag">ARP</span>
+                            <span class="proto-tag hdlc">HDLC</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="next-btn" onclick="navigateTo('ethernet')"><span>Ethernet ו-MAC</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== ETHERNET & MAC ===================== -->
+        <section id="section-ethernet" class="lesson-section">
+            <div class="section-header ethernet-header">
+                <div class="header-bg"><canvas id="ethernet-header-canvas"></canvas></div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-ethernet"></i> נושא #1</div>
+                    <h1>Ethernet וכתובות MAC<br><span class="highlight-alt">IEEE 802.3</span></h1>
+                    <p>הפרוטוקול שמפעיל כמעט כל רשת מקומית בעולם</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- Ethernet Frame Structure -->
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-border-all"></i> מבנה מסגרת Ethernet</h2>
+                    <div class="explain-content-full">
+                        <p class="big-text">כל מידע שנשלח ברשת Ethernet עובר ב<strong>מסגרת (Frame)</strong> — מבנה קבוע שמכיל את כתובות המקור והיעד, הנתונים עצמם, ובדיקת שגיאות.</p>
+                    </div>
+                </div>
+
+                <!-- Frame visual -->
+                <div class="frame-structure">
+                    <h3 class="section-subtitle"><i class="fas fa-puzzle-piece"></i> מבנה ה-Frame</h3>
+                    <div class="frame-visual" dir="ltr">
+                        <div class="frame-field preamble"><span class="field-name">Preamble</span><span class="field-size">7 bytes</span><span class="field-desc">סנכרון</span></div>
+                        <div class="frame-field sfd"><span class="field-name">SFD</span><span class="field-size">1 byte</span><span class="field-desc">התחלה</span></div>
+                        <div class="frame-field dest-mac"><span class="field-name">Dest MAC</span><span class="field-size">6 bytes</span><span class="field-desc">יעד</span></div>
+                        <div class="frame-field src-mac"><span class="field-name">Src MAC</span><span class="field-size">6 bytes</span><span class="field-desc">מקור</span></div>
+                        <div class="frame-field ethertype"><span class="field-name">Type</span><span class="field-size">2 bytes</span><span class="field-desc">IPv4/IPv6</span></div>
+                        <div class="frame-field payload"><span class="field-name">Payload (Data)</span><span class="field-size">46-1500 bytes</span><span class="field-desc">הנתונים</span></div>
+                        <div class="frame-field fcs"><span class="field-name">FCS</span><span class="field-size">4 bytes</span><span class="field-desc">בדיקת שגיאות</span></div>
+                    </div>
+                    <div class="frame-legend">
+                        <span class="legend-item"><span class="legend-color" style="background:#f59e0b"></span> Header</span>
+                        <span class="legend-item"><span class="legend-color" style="background:#3b82f6"></span> Addresses</span>
+                        <span class="legend-item"><span class="legend-color" style="background:#22c55e"></span> Data</span>
+                        <span class="legend-item"><span class="legend-color" style="background:#ef4444"></span> Trailer</span>
+                    </div>
+                </div>
+
+                <!-- MAC Address -->
+                <div class="mac-section">
+                    <h2 class="section-title"><i class="fas fa-id-card"></i> כתובת MAC — "תעודת הזהות" של הרשת</h2>
+                    <div class="mac-explain-grid">
+                        <div class="mac-explain-text">
+                            <p>כל כרטיס רשת (NIC) מגיע עם כתובת <strong>MAC (Media Access Control)</strong> ייחודית שנצרבת על ידי היצרן. זו כתובת <strong>פיזית בת 48 ביטים</strong> (6 בתים) שנכתבת בפורמט הקסדצימלי.</p>
+                            <div class="mac-example" dir="ltr">
+                                <div class="mac-visual">
+                                    <div class="mac-part oui"><span class="mac-bytes">AA:BB:CC</span><span class="mac-label">OUI (יצרן)</span></div>
+                                    <span class="mac-separator">:</span>
+                                    <div class="mac-part device"><span class="mac-bytes">11:22:33</span><span class="mac-label">Device (מכשיר)</span></div>
+                                </div>
+                            </div>
+                            <div class="mac-facts">
+                                <div class="mac-fact"><i class="fas fa-fingerprint"></i><span><strong>48 ביטים</strong> = 6 בתים = 12 ספרות hex</span></div>
+                                <div class="mac-fact"><i class="fas fa-industry"></i><span>3 בתים ראשונים = <strong>OUI</strong> (מזהה יצרן: Cisco, Intel, Apple...)</span></div>
+                                <div class="mac-fact"><i class="fas fa-laptop"></i><span>3 בתים אחרונים = מזהה <strong>ייחודי למכשיר</strong></span></div>
+                                <div class="mac-fact"><i class="fas fa-broadcast-tower"></i><span><strong>FF:FF:FF:FF:FF:FF</strong> = Broadcast — שולח לכולם!</span></div>
+                            </div>
+                        </div>
+                        <div class="mac-types-wrap">
+                            <h4>סוגי כתובות MAC:</h4>
+                            <div class="mac-type-card unicast"><div class="mac-type-icon">👤</div><h5>Unicast</h5><p>מכשיר אחד ספציפי</p></div>
+                            <div class="mac-type-card broadcast"><div class="mac-type-icon">📢</div><h5>Broadcast</h5><p>כל המכשירים ברשת (FF:FF:FF:FF:FF:FF)</p></div>
+                            <div class="mac-type-card multicast"><div class="mac-type-icon">👥</div><h5>Multicast</h5><p>קבוצה ספציפית של מכשירים</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ARP -->
+                <div class="arp-section">
+                    <h2 class="section-title"><i class="fas fa-search-location"></i> ARP — Address Resolution Protocol</h2>
+                    <div class="arp-explain">
+                        <p class="big-text">כשמחשב רוצה לשלוח מסגרת, הוא יודע את כתובת ה-<strong>IP</strong> של היעד, אבל צריך גם את כתובת ה-<strong>MAC</strong>. <strong>ARP</strong> הוא הפרוטוקול שמתרגם IP → MAC.</p>
+                    </div>
+                    <div class="arp-steps">
+                        <div class="arp-step"><span class="arp-num">1</span><div class="arp-step-content"><h5>ARP Request (Broadcast)</h5><p>"מי זה 192.168.1.5? אני 192.168.1.10!"</p><span class="arp-tag broadcast">📢 נשלח לכולם</span></div></div>
+                        <div class="arp-step"><span class="arp-num">2</span><div class="arp-step-content"><h5>ARP Reply (Unicast)</h5><p>"אני 192.168.1.5! ה-MAC שלי הוא AA:BB:CC:11:22:33"</p><span class="arp-tag unicast">👤 רק למקור</span></div></div>
+                        <div class="arp-step"><span class="arp-num">3</span><div class="arp-step-content"><h5>ARP Cache</h5><p>המקור שומר את המיפוי IP↔MAC בטבלה מקומית</p><span class="arp-tag cache">💾 נשמר בזיכרון</span></div></div>
+                    </div>
+                    <div class="arp-canvas-wrap">
+                        <canvas id="arp-canvas"></canvas>
+                        <button class="demo-btn sm" onclick="startARPAnimation()"><i class="fas fa-play"></i> הפעל ARP</button>
+                    </div>
+                </div>
+
+                <div class="fun-fact" style="--accent:#f59e0b"><i class="fas fa-star"></i><div><h4>עובדה מעניינת!</h4><p>יש בערך <strong>281 טריליון</strong> כתובות MAC אפשריות (2⁴⁸). מספיק לתת כתובת ייחודית לכל גרגיר חול על פני כדור הארץ — ועדיין ישארו!</p></div></div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('intro')"><i class="fas fa-arrow-right"></i><span>מבוא</span></button>
+                <button class="next-btn" onclick="navigateTo('switching')"><span>Switching</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== SWITCHING ===================== -->
+        <section id="section-switching" class="lesson-section">
+            <div class="section-header switching-header">
+                <div class="header-bg"><canvas id="switching-header-canvas"></canvas></div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-project-diagram"></i> נושא #2</div>
+                    <h1>Switching — מיתוג<br><span class="highlight-alt">MAC Address Table</span></h1>
+                    <p>איך ה-Switch לומד מי מחובר לאן ושולח מסגרות בצורה חכמה</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- Hub vs Switch -->
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-exchange-alt"></i> Hub לעומת Switch — ההבדל הקריטי</h2>
+                    <div class="hub-vs-switch">
+                        <div class="hvs-card hub-card">
+                            <div class="hvs-icon">🔌</div>
+                            <h4>Hub (רכזת)</h4>
+                            <p>שולח כל מסגרת <strong>לכל הפורטים</strong> — כולם מקבלים הכל. בזבזני, איטי, ויוצר Collisions.</p>
+                            <div class="hvs-visual">
+                                <span class="hvs-label">📤 → 📥📥📥📥</span>
+                                <span class="hvs-tag bad">❌ Broadcast Domain אחד</span>
+                            </div>
+                        </div>
+                        <div class="hvs-vs">VS</div>
+                        <div class="hvs-card switch-card">
+                            <div class="hvs-icon">🔀</div>
+                            <h4>Switch (מתג)</h4>
+                            <p>לומד כתובות MAC ושולח מסגרת <strong>רק לפורט היעד</strong>. חכם, מהיר, ויעיל.</p>
+                            <div class="hvs-visual">
+                                <span class="hvs-label">📤 → 📥 (רק ליעד!)</span>
+                                <span class="hvs-tag good">✅ Collision Domain לכל פורט</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How Switch Learns -->
+                <div class="switch-learning">
+                    <h2 class="section-title"><i class="fas fa-graduation-cap"></i> איך Switch לומד כתובות MAC?</h2>
+                    <p class="section-desc">ה-Switch בונה טבלת MAC Address Table (CAM Table) — ככה הוא יודע לאן לשלוח כל מסגרת</p>
+
+                    <div class="learning-steps">
+                        <div class="learn-step">
+                            <span class="learn-num">1</span>
+                            <div class="learn-content">
+                                <h5>מסגרת נכנסת</h5>
+                                <p>מסגרת מגיעה לפורט מסוים. ה-Switch קורא את <strong>Source MAC</strong> (כתובת המקור).</p>
+                            </div>
+                        </div>
+                        <div class="learn-step">
+                            <span class="learn-num">2</span>
+                            <div class="learn-content">
+                                <h5>למידה (Learning)</h5>
+                                <p>ה-Switch שומר בטבלה: "<strong>MAC הזה</strong> נמצא ב<strong>פורט הזה</strong>".</p>
+                            </div>
+                        </div>
+                        <div class="learn-step">
+                            <span class="learn-num">3</span>
+                            <div class="learn-content">
+                                <h5>העברה (Forwarding)</h5>
+                                <p>ה-Switch בודק את <strong>Destination MAC</strong>. אם הוא מכיר — שולח <strong>רק לפורט המתאים</strong>.</p>
+                            </div>
+                        </div>
+                        <div class="learn-step">
+                            <span class="learn-num">4</span>
+                            <div class="learn-content">
+                                <h5>הצפה (Flooding)</h5>
+                                <p>אם ה-Destination MAC <strong>לא מוכר</strong> — ה-Switch שולח את המסגרת <strong>לכל הפורטים</strong> (חוץ מהמקור).</p>
+                            </div>
+                        </div>
+                        <div class="learn-step">
+                            <span class="learn-num">5</span>
+                            <div class="learn-content">
+                                <h5>סינון (Filtering)</h5>
+                                <p>אם המקור והיעד באותו פורט — ה-Switch <strong>לא מעביר</strong> (אין צורך!).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAC Table Simulator -->
+                <div class="interactive-demo mac-sim-section">
+                    <h2 class="section-title"><i class="fas fa-table"></i> סימולטור MAC Address Table</h2>
+                    <p class="section-desc">צפו בזמן אמת איך ה-Switch בונה את טבלת ה-MAC שלו כשמסגרות עוברות ברשת</p>
+                    <div class="mac-sim-layout">
+                        <div class="mac-sim-canvas-wrap">
+                            <canvas id="mac-table-canvas"></canvas>
+                        </div>
+                        <div class="mac-sim-table-wrap">
+                            <h4><i class="fas fa-database"></i> MAC Address Table</h4>
+                            <table class="spec-table mac-table-display">
+                                <thead><tr><th>Port</th><th>MAC Address</th><th>סטטוס</th></tr></thead>
+                                <tbody id="mac-table-body">
+                                    <tr class="empty-row"><td colspan="3">הטבלה ריקה — הפעילו סימולציה!</td></tr>
+                                </tbody>
+                            </table>
+                            <div class="mac-sim-log" id="mac-sim-log"></div>
+                        </div>
+                    </div>
+                    <div class="mac-sim-controls">
+                        <button class="demo-btn" onclick="startMACTableSim()"><i class="fas fa-play"></i> הפעל סימולציה</button>
+                        <button class="demo-btn outline" onclick="sendSingleFrame()"><i class="fas fa-paper-plane"></i> שלח מסגרת בודדת</button>
+                        <button class="demo-btn outline" onclick="resetMACTableSim()"><i class="fas fa-undo"></i> אפס</button>
+                    </div>
+                </div>
+
+                <div class="fun-fact" style="--accent:#3b82f6"><i class="fas fa-bolt"></i><div><h4>ידעתם?</h4><p>Switch מודרני יכול לנהל <strong>מיליוני מסגרות בשנייה</strong>! ה-MAC Address Table שלו יכולה להכיל <strong>אלפי עד עשרות אלפי</strong> כתובות MAC, וכל ערך נמחק אחרי <strong>300 שניות (5 דקות)</strong> של חוסר פעילות — זה נקרא <strong>Aging Timer</strong>.</p></div></div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('ethernet')"><i class="fas fa-arrow-right"></i><span>Ethernet ו-MAC</span></button>
+                <button class="next-btn" onclick="navigateTo('stp')"><span>STP</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== STP ===================== -->
+        <section id="section-stp" class="lesson-section">
+            <div class="section-header stp-header">
+                <div class="header-bg"><canvas id="stp-header-canvas"></canvas></div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-shield-alt"></i> נושא #3</div>
+                    <h1>Spanning Tree Protocol<br><span class="highlight-alt">STP — IEEE 802.1D</span></h1>
+                    <p>איך מונעים לולאות הרסניות ברשת</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- Why STP -->
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-exclamation-triangle"></i> הבעיה: לולאות ברשת (Loops)</h2>
+                    <div class="explain-content-full">
+                        <p class="big-text">כשיש <strong>מסלולים מרובים</strong> בין Switches (לצורך גיבוי), עלולה להיווצר <strong>לולאה (Loop)</strong>. מסגרות ממשיכות לסובב ללא סוף, גורמות ל<strong>Broadcast Storm</strong>, ומפילות את הרשת כולה!</p>
+                    </div>
+                </div>
+
+                <!-- Loop problem visual -->
+                <div class="loop-problem">
+                    <div class="loop-demo-grid">
+                        <div class="loop-problem-card">
+                            <div class="loop-icon">🔄</div>
+                            <h4>Broadcast Storm</h4>
+                            <p>מסגרת Broadcast מוכפלת שוב ושוב בכל Switch עד שהרשת קורסת</p>
+                        </div>
+                        <div class="loop-problem-card">
+                            <div class="loop-icon">📋</div>
+                            <h4>MAC Table Instability</h4>
+                            <p>ה-Switch רואה את אותה כתובת MAC ממספר פורטים — הטבלה "משתגעת"</p>
+                        </div>
+                        <div class="loop-problem-card">
+                            <div class="loop-icon">📧</div>
+                            <h4>Duplicate Frames</h4>
+                            <p>המכשיר מקבל את אותה מסגרת מספר פעמים — גורם לשגיאות</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STP Solution -->
+                <div class="stp-solution">
+                    <h2 class="section-title"><i class="fas fa-magic"></i> הפתרון: STP</h2>
+                    <div class="stp-explain-grid">
+                        <div class="stp-explain-text">
+                            <p>STP <strong>חוסם אוטומטית</strong> נתיבים מיותרים כדי ליצור <strong>טופולוגיית עץ (Tree)</strong> — ללא לולאות. אם קישור נופל, STP <strong>פותח נתיב חלופי</strong>.</p>
+                            <div class="stp-process">
+                                <div class="stp-step"><span class="stp-step-num">1</span><div><h5>בחירת Root Bridge</h5><p>ה-Switch עם ה-<strong>Bridge ID הנמוך ביותר</strong> נבחר כשורש (Root). כולם מחשבים את המרחק אליו.</p></div></div>
+                                <div class="stp-step"><span class="stp-step-num">2</span><div><h5>בחירת Root Port</h5><p>בכל Switch (שאינו Root), הפורט עם <strong>ה-Cost הנמוך ביותר</strong> לעץ השורש נבחר כ-Root Port.</p></div></div>
+                                <div class="stp-step"><span class="stp-step-num">3</span><div><h5>בחירת Designated Port</h5><p>בכל Segment, הפורט עם ה-<strong>Cost הנמוך ביותר</strong> נבחר כ-Designated — ממשיך להעביר.</p></div></div>
+                                <div class="stp-step"><span class="stp-step-num">4</span><div><h5>חסימת שאר הפורטים</h5><p>כל שאר הפורטים נכנסים ל<strong>מצב Blocked</strong> — לא מעבירים מסגרות, רק מאזינים ל-BPDU.</p></div></div>
+                            </div>
+                        </div>
+                        <div class="stp-states-wrap">
+                            <h4><i class="fas fa-signal"></i> מצבי פורט ב-STP:</h4>
+                            <div class="stp-states">
+                                <div class="stp-state blocked"><span class="state-icon">🚫</span><span class="state-name">Blocking</span><span class="state-desc">לא מעביר, לא לומד. רק מאזין ל-BPDU.</span></div>
+                                <div class="stp-state-arrow">→</div>
+                                <div class="stp-state listening"><span class="state-icon">👂</span><span class="state-name">Listening</span><span class="state-desc">מאזין ל-BPDU. לא מעביר נתונים. 15 שניות.</span></div>
+                                <div class="stp-state-arrow">→</div>
+                                <div class="stp-state learning"><span class="state-icon">📚</span><span class="state-name">Learning</span><span class="state-desc">לומד כתובות MAC. לא מעביר עדיין. 15 שניות.</span></div>
+                                <div class="stp-state-arrow">→</div>
+                                <div class="stp-state forwarding"><span class="state-icon">✅</span><span class="state-name">Forwarding</span><span class="state-desc">עובד! מעביר מסגרות ולומד MAC.</span></div>
+                            </div>
+                            <div class="stp-timer-note">
+                                <i class="fas fa-clock"></i> סך הכל: ~30-50 שניות עד שפורט הופך ל-Forwarding (ב-STP קלאסי)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STP Live Simulator -->
+                <div class="interactive-demo stp-sim-section">
+                    <h2 class="section-title"><i class="fas fa-play-circle"></i> סימולטור STP — הדגמה חיה</h2>
+                    <p class="section-desc">צפו איך STP בוחר Root Bridge, מגדיר Root Ports ו-Designated Ports, וחוסם נתיבים מיותרים</p>
+                    <div class="stp-sim-wrap">
+                        <canvas id="stp-canvas"></canvas>
+                    </div>
+                    <div class="stp-sim-controls">
+                        <button class="demo-btn" onclick="startSTPSim()"><i class="fas fa-play"></i> הפעל STP</button>
+                        <button class="demo-btn outline" onclick="breakSTPLink()"><i class="fas fa-unlink"></i> נתק קישור</button>
+                        <button class="demo-btn outline" onclick="resetSTPSim()"><i class="fas fa-undo"></i> אפס</button>
+                    </div>
+                    <div class="stp-sim-legend">
+                        <span class="stp-leg-item"><span class="stp-leg-color" style="background:#f59e0b"></span> Root Bridge</span>
+                        <span class="stp-leg-item"><span class="stp-leg-color" style="background:#22c55e"></span> Forwarding (Root/Designated)</span>
+                        <span class="stp-leg-item"><span class="stp-leg-color" style="background:#ef4444"></span> Blocked</span>
+                        <span class="stp-leg-item"><span class="stp-leg-color" style="background:#64748b"></span> Disabled Link</span>
+                    </div>
+                </div>
+
+                <!-- RSTP -->
+                <div class="rstp-note">
+                    <h3><i class="fas fa-bolt"></i> RSTP — Rapid STP (802.1w)</h3>
+                    <p>STP קלאסי איטי (30-50 שניות). <strong>RSTP</strong> מהיר הרבה יותר — התכנסות תוך <strong>1-2 שניות</strong>! ברוב הרשתות המודרניות משתמשים ב-RSTP או MSTP.</p>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('switching')"><i class="fas fa-arrow-right"></i><span>Switching</span></button>
+                <button class="next-btn" onclick="navigateTo('vlan')"><span>VLAN</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== VLAN ===================== -->
+        <section id="section-vlan" class="lesson-section">
+            <div class="section-header vlan-header">
+                <div class="header-bg"><canvas id="vlan-header-canvas"></canvas></div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-layer-group"></i> נושא #4</div>
+                    <h1>VLAN — רשתות וירטואליות<br><span class="highlight-alt">IEEE 802.1Q</span></h1>
+                    <p>חלוקה לוגית של רשת פיזית אחת למספר רשתות נפרדות</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- What is VLAN -->
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-lightbulb"></i> מה זה VLAN?</h2>
+                    <div class="explain-content-full">
+                        <p class="big-text"><strong>VLAN (Virtual LAN)</strong> מאפשר לחלק Switch פיזי אחד ל<strong>מספר רשתות לוגיות נפרדות</strong>. מכשירים ב-VLAN אחד <strong>לא יכולים לתקשר</strong> עם מכשירים ב-VLAN אחר — בלי נתב!</p>
+                    </div>
+                </div>
+
+                <!-- Why VLAN -->
+                <div class="vlan-benefits">
+                    <h3 class="section-subtitle"><i class="fas fa-star"></i> למה משתמשים ב-VLAN?</h3>
+                    <div class="benefits-grid">
+                        <div class="benefit-card"><div class="benefit-icon">🔒</div><h5>אבטחה</h5><p>מחלקת כספים לא רואה את תעבורת ה-IT — הפרדה לוגית = אבטחה</p></div>
+                        <div class="benefit-card"><div class="benefit-icon">🚀</div><h5>ביצועים</h5><p>Broadcast מוגבל ל-VLAN ספציפי — פחות עומס על הרשת</p></div>
+                        <div class="benefit-card"><div class="benefit-icon">🔧</div><h5>ניהול</h5><p>קל להזיז עובד ל-VLAN אחר בלי לשנות כבלים — הכל בתוכנה</p></div>
+                        <div class="benefit-card"><div class="benefit-icon">💰</div><h5>חיסכון</h5><p>Switch אחד במקום כמה — חוסך ציוד, כבלים ותחזוקה</p></div>
+                    </div>
+                </div>
+
+                <!-- VLAN in Corporate Network -->
+                <div class="vlan-corporate">
+                    <h2 class="section-title"><i class="fas fa-building"></i> VLAN ברשת ארגונית — דוגמה</h2>
+                    <div class="corp-visual">
+                        <canvas id="vlan-corporate-canvas"></canvas>
+                    </div>
+                    <div class="corp-vlans">
+                        <div class="corp-vlan" style="--vlan-color:#3b82f6"><span class="corp-vlan-id">VLAN 10</span><span class="corp-vlan-name">הנהלה</span></div>
+                        <div class="corp-vlan" style="--vlan-color:#22c55e"><span class="corp-vlan-id">VLAN 20</span><span class="corp-vlan-name">IT</span></div>
+                        <div class="corp-vlan" style="--vlan-color:#f59e0b"><span class="corp-vlan-id">VLAN 30</span><span class="corp-vlan-name">כספים</span></div>
+                        <div class="corp-vlan" style="--vlan-color:#ef4444"><span class="corp-vlan-id">VLAN 40</span><span class="corp-vlan-name">אורחים</span></div>
+                    </div>
+                </div>
+
+                <!-- Port Types -->
+                <div class="port-types-section">
+                    <h2 class="section-title"><i class="fas fa-plug"></i> סוגי פורטים ב-VLAN</h2>
+                    <div class="port-types-grid">
+                        <div class="port-type-card access-card">
+                            <div class="port-type-header">
+                                <div class="port-type-badge access-badge">Access</div>
+                                <h4>Access Port</h4>
+                            </div>
+                            <p>שייך ל-<strong>VLAN אחד בלבד</strong>. מחובר למכשיר קצה (מחשב, מדפסת). המסגרות <strong>לא מתויגות</strong> (untagged).</p>
+                            <div class="port-type-example" dir="ltr">
+                                <code>Switch(config-if)# switchport mode access</code><br>
+                                <code>Switch(config-if)# switchport access vlan 10</code>
+                            </div>
+                        </div>
+                        <div class="port-type-card trunk-card">
+                            <div class="port-type-header">
+                                <div class="port-type-badge trunk-badge">Trunk</div>
+                                <h4>Trunk Port</h4>
+                            </div>
+                            <p>מעביר מסגרות <strong>ממספר VLANs</strong>. מחבר Switch ל-Switch או Switch ל-Router. המסגרות <strong>מתויגות</strong> עם 802.1Q Tag.</p>
+                            <div class="port-type-example" dir="ltr">
+                                <code>Switch(config-if)# switchport mode trunk</code><br>
+                                <code>Switch(config-if)# switchport trunk allowed vlan 10,20,30</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 802.1Q Tag -->
+                <div class="tag-section">
+                    <h2 class="section-title"><i class="fas fa-tag"></i> 802.1Q Tag — תיוג מסגרות</h2>
+                    <p class="section-desc">כש-Frame עובר ב-Trunk, נוסף לו Tag של 4 בתים שמציין לאיזה VLAN הוא שייך</p>
+                    <div class="tag-visual" dir="ltr">
+                        <div class="tag-frame-field">Dest MAC</div>
+                        <div class="tag-frame-field">Src MAC</div>
+                        <div class="tag-frame-field tag-field">
+                            <span class="tag-label">802.1Q Tag</span>
+                            <span class="tag-detail">TPID | PCP | DEI | VID (12 bit)</span>
+                            <span class="tag-size">4 bytes</span>
+                        </div>
+                        <div class="tag-frame-field">Type</div>
+                        <div class="tag-frame-field">Payload</div>
+                        <div class="tag-frame-field">FCS</div>
+                    </div>
+                    <p class="tag-note"><i class="fas fa-info-circle"></i> ה-<strong>VLAN ID (VID)</strong> הוא שדה של 12 ביטים — מאפשר עד <strong>4,094 VLANs</strong> (0 ו-4095 שמורים).</p>
+                </div>
+
+                <!-- Inter-VLAN Routing -->
+                <div class="intervlan-section">
+                    <h2 class="section-title"><i class="fas fa-route"></i> Inter-VLAN Routing</h2>
+                    <div class="intervlan-explain">
+                        <p class="big-text">מכשירים ב-VLANs שונים <strong>לא יכולים לדבר ביניהם</strong> ללא <strong>נתב (Router)</strong> או <strong>Layer 3 Switch</strong>. הפתרון הנפוץ הוא <strong>Router-on-a-Stick</strong>:</p>
+                    </div>
+                    <div class="intervlan-methods">
+                        <div class="intervlan-card">
+                            <h5><i class="fas fa-plug"></i> Router-on-a-Stick</h5>
+                            <p>נתב עם <strong>ממשק משנה (sub-interface)</strong> לכל VLAN, מחובר ב-Trunk ל-Switch</p>
+                            <div class="intervlan-code" dir="ltr">
+                                <code>Router(config)# interface g0/0.10</code><br>
+                                <code>Router(config-subif)# encapsulation dot1q 10</code><br>
+                                <code>Router(config-subif)# ip address 192.168.10.1 255.255.255.0</code>
+                            </div>
+                        </div>
+                        <div class="intervlan-card">
+                            <h5><i class="fas fa-microchip"></i> Layer 3 Switch (SVI)</h5>
+                            <p>Switch מנוהל עם יכולות ניתוב — מהיר יותר כי הניתוב קורה בחומרה!</p>
+                            <div class="intervlan-code" dir="ltr">
+                                <code>Switch(config)# interface vlan 10</code><br>
+                                <code>Switch(config-if)# ip address 192.168.10.1 255.255.255.0</code><br>
+                                <code>Switch(config)# ip routing</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VLAN Canvas Sim -->
+                <div class="interactive-demo vlan-sim-section">
+                    <h2 class="section-title"><i class="fas fa-play-circle"></i> סימולטור VLAN — הדגמה אינטראקטיבית</h2>
+                    <p class="section-desc">צפו איך מסגרות מועברות בתוך VLANs — ומה קורה כשמנסים לשלוח בין VLANs</p>
+                    <div class="vlan-sim-wrap">
+                        <canvas id="vlan-sim-canvas"></canvas>
+                    </div>
+                    <div class="vlan-sim-controls">
+                        <button class="demo-btn" onclick="startVLANSim('same')"><i class="fas fa-check"></i> שלח באותו VLAN</button>
+                        <button class="demo-btn outline" onclick="startVLANSim('cross')"><i class="fas fa-times"></i> שלח בין VLANs</button>
+                        <button class="demo-btn outline" onclick="resetVLANSim()"><i class="fas fa-undo"></i> אפס</button>
+                    </div>
+                </div>
+
+                <div class="fun-fact" style="--accent:#8b5cf6"><i class="fas fa-star"></i><div><h4>טיפ מקצועני!</h4><p>ברשתות ארגוניות, <strong>VLAN 1 הוא ברירת המחדל</strong> ו<strong>לא מומלץ להשתמש בו</strong> מסיבות אבטחה. תמיד צרו VLANs ייעודיים לכל מחלקה, והקצו את <strong>VLAN ניהול</strong> נפרד ל-SSH/Telnet לציוד.</p></div></div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('stp')"><i class="fas fa-arrow-right"></i><span>STP</span></button>
+                <button class="next-btn" onclick="navigateTo('quiz')"><span>בוחן ידע</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== QUIZ ===================== -->
+        <section id="section-quiz" class="lesson-section">
+            <div class="section-header quiz-header">
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-trophy"></i> בוחן</div>
+                    <h1>בדקו את הידע שלכם!<br><span class="highlight-alt">Layer 2 Knowledge Check</span></h1>
+                    <p>15 שאלות על שכבת קישור הנתונים, Ethernet, Switching, STP ו-VLAN</p>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="quiz-container" id="quiz-container">
+                    <div class="quiz-progress">
+                        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
+                        <span class="quiz-progress-text" id="quiz-progress-text">שאלה 1 מתוך 15</span>
+                    </div>
+                    <div class="quiz-card" id="quiz-card">
+                        <div class="quiz-question" id="quiz-question">
+                            <span class="q-number" id="q-number">1</span>
+                            <p id="q-text"></p>
+                        </div>
+                        <div class="quiz-options" id="quiz-options"></div>
+                        <div class="quiz-feedback hidden" id="quiz-feedback">
+                            <div class="feedback-icon" id="feedback-icon"></div>
+                            <p id="feedback-text"></p>
+                        </div>
+                        <div class="quiz-actions">
+                            <button class="quiz-btn" id="quiz-next-btn" onclick="nextQuestion()" disabled>
+                                <span>השאלה הבאה</span><i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="quiz-results hidden" id="quiz-results">
+                        <div class="results-icon" id="results-icon"></div>
+                        <h2 id="results-title"></h2>
+                        <p id="results-text"></p>
+                        <div class="results-score">
+                            <div class="score-circle" id="score-circle">
+                                <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" class="score-bg"/><circle cx="60" cy="60" r="54" class="score-fill" id="score-fill"/></svg>
+                                <span class="score-text" id="score-text">0/15</span>
+                            </div>
+                        </div>
+                        <button class="demo-btn" onclick="resetQuiz()"><i class="fas fa-redo"></i> נסו שוב</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('vlan')"><i class="fas fa-arrow-right"></i><span>VLAN</span></button>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/layer2-animations.js"></script>
+    <script src="js/layer2-quiz.js"></script>
+    <script src="js/layer2-main.js"></script>
+</body>
+</html>

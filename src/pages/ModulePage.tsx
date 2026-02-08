@@ -42,6 +42,14 @@ import SwitchSimulator from '../components/module4/SwitchSimulator';
 import ARPExplainer from '../components/module4/ARPExplainer';
 import VLANVisualizer from '../components/module4/VLANVisualizer';
 
+// Layer 2 Lesson Components
+import Layer2Intro from '../components/module4/Layer2Intro';
+import EthernetLesson from '../components/module4/EthernetLesson';
+import SwitchingLesson from '../components/module4/SwitchingLesson';
+import StpLesson from '../components/module4/StpLesson';
+import VlanLesson from '../components/module4/VlanLesson';
+import Layer2Quiz from '../components/module4/Layer2Quiz';
+
 import ReactMarkdown from 'react-markdown';
 
 
@@ -140,6 +148,14 @@ export const ModulePage = () => {
             case 'switch-simulator': return <SwitchSimulator key={block.id} />;
             case 'arp-explainer': return <ARPExplainer key={block.id} />;
             case 'vlan-visualizer': return <VLANVisualizer key={block.id} />;
+
+            // Layer 2 New Lessons
+            case 'layer2-intro': return <Layer2Intro key={block.id} />;
+            case 'ethernet-lesson': return <EthernetLesson key={block.id} />;
+            case 'switching-lesson': return <SwitchingLesson key={block.id} />;
+            case 'stp-lesson': return <StpLesson key={block.id} />;
+            case 'vlan-lesson': return <VlanLesson key={block.id} />;
+            case 'layer2-quiz': return <Layer2Quiz key={block.id} />;
             case 'routing-protocols': return <RoutingProtocols key={block.id} />;
             case 'protocol-comparison': return <ProtocolComparison key={block.id} />;
             case 'mnemonic': return <MnemonicBlock key={block.id} title={block.title!} content={block.content as string} />;

@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שכבת הרשת - OSI Layer 3 | שיעור אינטראקטיבי</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/layer3.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="pulse-ring"></div>
+            <i class="fas fa-network-wired loader-icon"></i>
+            <h2>טוען שיעור שכבת הרשת...</h2>
+            <div class="loader-bar"><div class="loader-fill"></div></div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar"><div id="progress-fill"></div><span id="progress-text">0%</span></div>
+
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="nav-brand">
+            <i class="fas fa-project-diagram"></i>
+            <span>OSI Layer 3</span>
+        </div>
+        <div class="nav-sections">
+            <button class="nav-btn active" data-section="intro"><i class="fas fa-home"></i><span>מבוא</span></button>
+            <button class="nav-btn" data-section="ip"><i class="fas fa-fingerprint"></i><span>כתובות IP</span></button>
+            <button class="nav-btn" data-section="binary"><i class="fas fa-code"></i><span>המרה בינארית</span></button>
+            <button class="nav-btn" data-section="subnetting"><i class="fas fa-sitemap"></i><span>Subnetting</span></button>
+            <button class="nav-btn" data-section="routing"><i class="fas fa-route"></i><span>ניתוב</span></button>
+            <button class="nav-btn" data-section="protocols"><i class="fas fa-exchange-alt"></i><span>פרוטוקולים</span></button>
+            <button class="nav-btn" data-section="quiz"><i class="fas fa-trophy"></i><span>בוחן</span></button>
+            <a href="index.html" class="nav-btn" style="margin-top:12px;border-top:1px solid var(--border);padding-top:16px;text-decoration:none;"><i class="fas fa-layer-group"></i><span>שכבה 1</span></a>
+            <a href="layer2.html" class="nav-btn" style="text-decoration:none;"><i class="fas fa-exchange-alt"></i><span>שכבה 2</span></a>
+            <a href="glossary.html" class="nav-btn" style="text-decoration:none;"><i class="fas fa-book"></i><span>מילון מונחים</span></a>
+        </div>
+        <div class="nav-progress-dots">
+            <span class="dot active" data-section="intro"></span>
+            <span class="dot" data-section="ip"></span>
+            <span class="dot" data-section="binary"></span>
+            <span class="dot" data-section="subnetting"></span>
+            <span class="dot" data-section="routing"></span>
+            <span class="dot" data-section="protocols"></span>
+            <span class="dot" data-section="quiz"></span>
+        </div>
+    </nav>
+
+    <button id="mobile-nav-toggle"><i class="fas fa-bars"></i></button>
+
+    <main id="content">
+
+        <!-- ===================== INTRO ===================== -->
+        <section id="section-intro" class="lesson-section active">
+            <div class="section-hero">
+                <div class="hero-background"><canvas id="hero-canvas"></canvas></div>
+                <div class="hero-content">
+                    <div class="badge">שכבה 3 מתוך 7</div>
+                    <h1>שכבת הרשת<br><span class="highlight">Network Layer</span></h1>
+                    <p class="hero-subtitle">המוח של הרשת — כאן מתקבלות ההחלטות לאן כל חבילת מידע צריכה ללכת</p>
+                    <button class="cta-btn" onclick="navigateTo('ip')">
+                        <span>בואו נתחיל</span><i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- OSI Tower -->
+                <div class="osi-context">
+                    <h2 class="section-title"><i class="fas fa-layer-group"></i> היכן אנחנו במודל OSI?</h2>
+                    <p class="section-desc">שכבת הרשת יושבת בדיוק באמצע — מחברת בין התשתית הפיזית ליישומים</p>
+                    <div class="osi-mini-tower">
+                        <div class="osi-row dim" data-l="7"><span class="osi-num">7</span><span class="osi-name">Application</span><span class="osi-he">יישום</span></div>
+                        <div class="osi-row dim" data-l="6"><span class="osi-num">6</span><span class="osi-name">Presentation</span><span class="osi-he">מצג</span></div>
+                        <div class="osi-row dim" data-l="5"><span class="osi-num">5</span><span class="osi-name">Session</span><span class="osi-he">שיחה</span></div>
+                        <div class="osi-row dim" data-l="4"><span class="osi-num">4</span><span class="osi-name">Transport</span><span class="osi-he">תעבורה</span></div>
+                        <div class="osi-row active-row" data-l="3"><span class="osi-num">3</span><span class="osi-name">Network ⭐</span><span class="osi-he">רשת</span><span class="osi-indicator">אנחנו כאן!</span></div>
+                        <div class="osi-row dim" data-l="2"><span class="osi-num">2</span><span class="osi-name">Data Link</span><span class="osi-he">קישור נתונים</span></div>
+                        <div class="osi-row dim" data-l="1"><span class="osi-num">1</span><span class="osi-name">Physical</span><span class="osi-he">פיזית</span></div>
+                    </div>
+                </div>
+
+                <!-- Role Cards -->
+                <div class="info-cards-grid">
+                    <div class="info-card glow-blue">
+                        <div class="card-icon" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)"><i class="fas fa-question"></i></div>
+                        <h3>מה זו שכבת הרשת?</h3>
+                        <p>שכבת הרשת (Layer 3) אחראית על <strong>ניתוב חבילות מידע</strong> (Packets) ממקור ליעד, גם אם הם נמצאים ברשתות שונות לגמרי. היא מגדירה <strong>כתובות לוגיות</strong> (IP) ומחליטה באיזה נתיב הנתונים יעברו.</p>
+                    </div>
+                    <div class="info-card glow-purple">
+                        <div class="card-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"><i class="fas fa-tasks"></i></div>
+                        <h3>תפקידים מרכזיים</h3>
+                        <ul class="card-list">
+                            <li><i class="fas fa-check"></i> כתובות לוגיות (IP Addressing)</li>
+                            <li><i class="fas fa-check"></i> ניתוב (Routing) — מציאת הנתיב הטוב ביותר</li>
+                            <li><i class="fas fa-check"></i> חלוקת רשתות (Subnetting)</li>
+                            <li><i class="fas fa-check"></i> העברת חבילות בין רשתות (Forwarding)</li>
+                            <li><i class="fas fa-check"></i> פיצול ואיחוד חבילות (Fragmentation)</li>
+                        </ul>
+                    </div>
+                    <div class="info-card glow-green">
+                        <div class="card-icon" style="background:linear-gradient(135deg,#10b981,#059669)"><i class="fas fa-cogs"></i></div>
+                        <h3>פרוטוקולים וציוד</h3>
+                        <div class="three-ways">
+                            <div class="way"><i class="fas fa-fingerprint" style="color:#3b82f6"></i><span>IPv4 / IPv6</span></div>
+                            <div class="way"><i class="fas fa-route" style="color:#8b5cf6"></i><span>RIP / OSPF / BGP</span></div>
+                            <div class="way"><i class="fas fa-server" style="color:#f59e0b"></i><span>Router (נתב)</span></div>
+                            <div class="way"><i class="fas fa-satellite-dish" style="color:#ef4444"></i><span>ICMP (Ping)</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Packet Journey Animation -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-paper-plane"></i> מסע החבילה</h2>
+                    <p class="section-desc">לחצו "שלח חבילה" כדי לראות איך חבילת נתונים עוברת דרך נתבים ממקור ליעד</p>
+                    <div class="packet-journey-container">
+                        <canvas id="packet-journey-canvas"></canvas>
+                    </div>
+                    <div class="demo-controls">
+                        <button class="demo-btn" id="send-packet-btn" onclick="startPacketJourney()">
+                            <i class="fas fa-paper-plane"></i> שלח חבילה
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="next-btn" onclick="navigateTo('ip')"><span>כתובות IP</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== IP ADDRESSING ===================== -->
+        <section id="section-ip" class="lesson-section">
+            <div class="section-header ip-header">
+                <div class="header-bg"><canvas id="ip-header-canvas"></canvas></div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-fingerprint"></i> נושא #1</div>
+                    <h1>כתובות IP<br><span class="highlight-alt">IP Addressing</span></h1>
+                    <p>תעודת הזהות של כל מכשיר ברשת</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- What is IP -->
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-lightbulb"></i> מהי כתובת IP?</h2>
+                    <div class="explain-content-full">
+                        <div class="big-concept">
+                            <div class="concept-visual">
+                                <div class="ip-address-display" id="ip-display-animated">
+                                    <span class="octet o1">192</span><span class="dot-sep">.</span>
+                                    <span class="octet o2">168</span><span class="dot-sep">.</span>
+                                    <span class="octet o3">1</span><span class="dot-sep">.</span>
+                                    <span class="octet o4">100</span>
+                                </div>
+                                <div class="ip-labels">
+                                    <div class="ip-part network-part">
+                                        <span>Network (רשת)</span>
+                                        <div class="part-bar blue"></div>
+                                    </div>
+                                    <div class="ip-part host-part">
+                                        <span>Host (מארח)</span>
+                                        <div class="part-bar green"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="concept-text">
+                                <p>כתובת IP (Internet Protocol) היא <strong>מספר ייחודי</strong> שמזהה כל מכשיר המחובר לרשת. בדיוק כמו כתובת דואר — היא מאפשרת לנתבים לדעת <strong>לאן לשלוח</strong> את המידע.</p>
+                                <div class="key-facts">
+                                    <div class="fact"><i class="fas fa-info-circle"></i> <strong>IPv4</strong> = 32 ביטים = 4 אוקטטים (0-255 כל אחד)</div>
+                                    <div class="fact"><i class="fas fa-info-circle"></i> כל כתובת מחולקת ל<strong>חלק רשת</strong> + <strong>חלק מארח</strong></div>
+                                    <div class="fact"><i class="fas fa-info-circle"></i> מסכת רשת משנה (Subnet Mask) קובעת את החלוקה</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IPv4 Structure Interactive -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-puzzle-piece"></i> מבנה כתובת IPv4</h2>
+                    <p class="section-desc">העבירו את העכבר על כל אוקטט כדי לראות את הערך הבינארי שלו</p>
+                    <div class="ipv4-structure">
+                        <canvas id="ipv4-structure-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- IP Classes -->
+                <div class="classes-section">
+                    <h2 class="section-title"><i class="fas fa-th-list"></i> מחלקות כתובות IP (Classful)</h2>
+                    <p class="section-desc">חלוקה היסטורית — היום משתמשים ב-CIDR, אבל חשוב להכיר</p>
+                    <div class="classes-grid">
+                        <div class="class-card class-a">
+                            <div class="class-header">
+                                <span class="class-letter">A</span>
+                                <div>
+                                    <h4>Class A</h4>
+                                    <span class="class-range">1.0.0.0 — 126.255.255.255</span>
+                                </div>
+                            </div>
+                            <div class="class-body">
+                                <div class="class-bar">
+                                    <div class="bar-network" style="width:25%">N</div>
+                                    <div class="bar-host" style="width:75%">H . H . H</div>
+                                </div>
+                                <div class="class-specs">
+                                    <span>מסכה: <strong>255.0.0.0 (/8)</strong></span>
+                                    <span>רשתות: <strong>126</strong></span>
+                                    <span>מארחים/רשת: <strong>16,777,214</strong></span>
+                                </div>
+                                <p class="class-use">🏢 ארגונים ענקיים, ספקי אינטרנט</p>
+                            </div>
+                        </div>
+                        <div class="class-card class-b">
+                            <div class="class-header">
+                                <span class="class-letter">B</span>
+                                <div>
+                                    <h4>Class B</h4>
+                                    <span class="class-range">128.0.0.0 — 191.255.255.255</span>
+                                </div>
+                            </div>
+                            <div class="class-body">
+                                <div class="class-bar">
+                                    <div class="bar-network" style="width:50%">N . N</div>
+                                    <div class="bar-host" style="width:50%">H . H</div>
+                                </div>
+                                <div class="class-specs">
+                                    <span>מסכה: <strong>255.255.0.0 (/16)</strong></span>
+                                    <span>רשתות: <strong>16,384</strong></span>
+                                    <span>מארחים/רשת: <strong>65,534</strong></span>
+                                </div>
+                                <p class="class-use">🏫 אוניברסיטאות, חברות בינוניות</p>
+                            </div>
+                        </div>
+                        <div class="class-card class-c">
+                            <div class="class-header">
+                                <span class="class-letter">C</span>
+                                <div>
+                                    <h4>Class C</h4>
+                                    <span class="class-range">192.0.0.0 — 223.255.255.255</span>
+                                </div>
+                            </div>
+                            <div class="class-body">
+                                <div class="class-bar">
+                                    <div class="bar-network" style="width:75%">N . N . N</div>
+                                    <div class="bar-host" style="width:25%">H</div>
+                                </div>
+                                <div class="class-specs">
+                                    <span>מסכה: <strong>255.255.255.0 (/24)</strong></span>
+                                    <span>רשתות: <strong>2,097,152</strong></span>
+                                    <span>מארחים/רשת: <strong>254</strong></span>
+                                </div>
+                                <p class="class-use">🏠 רשתות קטנות, עסקים קטנים</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Private vs Public -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-shield-alt"></i> כתובות פרטיות vs ציבוריות</h2>
+                    <div class="private-public-grid">
+                        <div class="pp-card private-card">
+                            <div class="pp-header"><i class="fas fa-lock"></i><h4>כתובות פרטיות (Private)</h4></div>
+                            <p>משמשות <strong>ברשת הפנימית</strong> בלבד. לא ניתנות לניתוב באינטרנט.</p>
+                            <div class="pp-ranges">
+                                <div class="range-row"><span class="range-class">A</span><code>10.0.0.0 — 10.255.255.255</code><span class="range-cidr">/8</span></div>
+                                <div class="range-row"><span class="range-class">B</span><code>172.16.0.0 — 172.31.255.255</code><span class="range-cidr">/12</span></div>
+                                <div class="range-row"><span class="range-class">C</span><code>192.168.0.0 — 192.168.255.255</code><span class="range-cidr">/16</span></div>
+                            </div>
+                        </div>
+                        <div class="pp-card public-card">
+                            <div class="pp-header"><i class="fas fa-globe"></i><h4>כתובות ציבוריות (Public)</h4></div>
+                            <p>ניתנות על ידי ספקי אינטרנט (ISP). ניתנות <strong>לניתוב באינטרנט</strong> וייחודיות בעולם.</p>
+                            <div class="pp-example">
+                                <div class="nat-flow">
+                                    <div class="nat-box private-box">
+                                        <i class="fas fa-laptop"></i>
+                                        <span>192.168.1.10</span>
+                                    </div>
+                                    <div class="nat-arrow">
+                                        <i class="fas fa-arrow-left"></i>
+                                        <span>NAT</span>
+                                    </div>
+                                    <div class="nat-box router-box">
+                                        <i class="fas fa-server"></i>
+                                        <span>נתב</span>
+                                    </div>
+                                    <div class="nat-arrow">
+                                        <i class="fas fa-arrow-left"></i>
+                                    </div>
+                                    <div class="nat-box public-box">
+                                        <i class="fas fa-globe"></i>
+                                        <span>84.229.x.x</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Addresses -->
+                <div class="special-addresses">
+                    <h2 class="section-title"><i class="fas fa-star"></i> כתובות מיוחדות</h2>
+                    <div class="special-grid">
+                        <div class="special-item"><code>127.0.0.1</code><span>Loopback — המכשיר עצמו</span></div>
+                        <div class="special-item"><code>0.0.0.0</code><span>כל הרשתות / ברירת מחדל</span></div>
+                        <div class="special-item"><code>255.255.255.255</code><span>Broadcast — שידור לכולם</span></div>
+                        <div class="special-item"><code>169.254.x.x</code><span>APIPA — כשאין DHCP</span></div>
+                    </div>
+                </div>
+
+                <div class="fun-fact"><i class="fas fa-star"></i><div><h4>עובדה מעניינת!</h4><p>ב-IPv4 יש בסך הכל 4,294,967,296 כתובות אפשריות (2³²). נשמע הרבה? כבר ב-2011 נגמרו הכתובות! לכן פותח <strong>IPv6</strong> עם 2¹²⁸ כתובות — מספר כה ענק שניתן להקצות כתובת ייחודית לכל אטום על פני כדור הארץ.</p></div></div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('intro')"><i class="fas fa-arrow-right"></i><span>מבוא</span></button>
+                <button class="next-btn" onclick="navigateTo('binary')"><span>המרה בינארית</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== BINARY CONVERSION ===================== -->
+        <section id="section-binary" class="lesson-section">
+            <div class="section-header binary-header">
+                <div class="header-bg"><canvas id="binary-header-canvas"></canvas></div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-code"></i> נושא #2</div>
+                    <h1>המרה בינארית<br><span class="highlight-alt">Binary Conversion</span></h1>
+                    <p>השפה שהמחשב מבין — 0 ו-1</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- Why Binary -->
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-lightbulb"></i> למה בינארי?</h2>
+                    <div class="explain-content-full">
+                        <p class="big-text">מחשבים עובדים עם <strong>ביטים</strong> — 0 ו-1. כתובת IPv4 מורכבת מ-<strong>32 ביטים</strong>, המחולקים ל-4 אוקטטים (כל אוקטט = 8 ביטים = ערך 0-255).</p>
+                        <div class="binary-breakdown-visual">
+                            <div class="bb-row header-row">
+                                <span class="bb-label">עמדה</span>
+                                <span class="bb-bit">128</span>
+                                <span class="bb-bit">64</span>
+                                <span class="bb-bit">32</span>
+                                <span class="bb-bit">16</span>
+                                <span class="bb-bit">8</span>
+                                <span class="bb-bit">4</span>
+                                <span class="bb-bit">2</span>
+                                <span class="bb-bit">1</span>
+                                <span class="bb-result">=</span>
+                            </div>
+                            <div class="bb-row header-row">
+                                <span class="bb-label">חזקה</span>
+                                <span class="bb-bit sm">2⁷</span>
+                                <span class="bb-bit sm">2⁶</span>
+                                <span class="bb-bit sm">2⁵</span>
+                                <span class="bb-bit sm">2⁴</span>
+                                <span class="bb-bit sm">2³</span>
+                                <span class="bb-bit sm">2²</span>
+                                <span class="bb-bit sm">2¹</span>
+                                <span class="bb-bit sm">2⁰</span>
+                                <span class="bb-result"></span>
+                            </div>
+                            <div class="bb-row example-row">
+                                <span class="bb-label">דוגמה</span>
+                                <span class="bb-bit active-bit">1</span>
+                                <span class="bb-bit active-bit">1</span>
+                                <span class="bb-bit">0</span>
+                                <span class="bb-bit">0</span>
+                                <span class="bb-bit">0</span>
+                                <span class="bb-bit">0</span>
+                                <span class="bb-bit">0</span>
+                                <span class="bb-bit">0</span>
+                                <span class="bb-result">=192</span>
+                            </div>
+                            <div class="bb-explain">128 + 64 = <strong>192</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Binary Converter -->
+                <div class="interactive-demo converter-demo">
+                    <h2 class="section-title"><i class="fas fa-exchange-alt"></i> ממיר אינטראקטיבי: Decimal ↔ Binary</h2>
+                    <p class="section-desc">לחצו על הביטים כדי להפעיל/לכבות (1/0) ותראו את ההמרה בזמן אמת</p>
+                    <div class="converter-container">
+                        <div class="bit-toggles" id="bit-toggles">
+                            <div class="bit-col" data-pos="7">
+                                <span class="bit-weight">128</span>
+                                <button class="bit-toggle" data-bit="7" data-state="0">0</button>
+                            </div>
+                            <div class="bit-col" data-pos="6">
+                                <span class="bit-weight">64</span>
+                                <button class="bit-toggle" data-bit="6" data-state="0">0</button>
+                            </div>
+                            <div class="bit-col" data-pos="5">
+                                <span class="bit-weight">32</span>
+                                <button class="bit-toggle" data-bit="5" data-state="0">0</button>
+                            </div>
+                            <div class="bit-col" data-pos="4">
+                                <span class="bit-weight">16</span>
+                                <button class="bit-toggle" data-bit="4" data-state="0">0</button>
+                            </div>
+                            <div class="bit-col" data-pos="3">
+                                <span class="bit-weight">8</span>
+                                <button class="bit-toggle" data-bit="3" data-state="0">0</button>
+                            </div>
+                            <div class="bit-col" data-pos="2">
+                                <span class="bit-weight">4</span>
+                                <button class="bit-toggle" data-bit="2" data-state="0">0</button>
+                            </div>
+                            <div class="bit-col" data-pos="1">
+                                <span class="bit-weight">2</span>
+                                <button class="bit-toggle" data-bit="1" data-state="0">0</button>
+                            </div>
+                            <div class="bit-col" data-pos="0">
+                                <span class="bit-weight">1</span>
+                                <button class="bit-toggle" data-bit="0" data-state="0">0</button>
+                            </div>
+                        </div>
+                        <div class="converter-result">
+                            <div class="result-binary">
+                                <span class="result-label">בינארי:</span>
+                                <span class="result-value" id="binary-result">00000000</span>
+                            </div>
+                            <div class="result-decimal">
+                                <span class="result-label">עשרוני:</span>
+                                <span class="result-value big" id="decimal-result">0</span>
+                            </div>
+                            <div class="result-calc" id="calc-display">
+                                <span class="calc-parts"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full IP Converter -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-network-wired"></i> ממיר כתובת IP מלאה</h2>
+                    <p class="section-desc">הקלידו כתובת IP ותראו את ההמרה המלאה לבינארי</p>
+                    <div class="full-ip-converter">
+                        <div class="ip-input-group">
+                            <input type="number" class="ip-octet-input" id="oc1" min="0" max="255" value="192" placeholder="0-255">
+                            <span class="ip-dot">.</span>
+                            <input type="number" class="ip-octet-input" id="oc2" min="0" max="255" value="168" placeholder="0-255">
+                            <span class="ip-dot">.</span>
+                            <input type="number" class="ip-octet-input" id="oc3" min="0" max="255" value="1" placeholder="0-255">
+                            <span class="ip-dot">.</span>
+                            <input type="number" class="ip-octet-input" id="oc4" min="0" max="255" value="100" placeholder="0-255">
+                        </div>
+                        <div class="ip-conversion-display" id="ip-conversion-display">
+                            <!-- Filled by JS -->
+                        </div>
+                        <button class="demo-btn" onclick="convertFullIP()"><i class="fas fa-sync-alt"></i> המר</button>
+                    </div>
+                </div>
+
+                <!-- Step-by-step method -->
+                <div class="method-section">
+                    <h2 class="section-title"><i class="fas fa-list-ol"></i> שיטת ההמרה — צעד אחר צעד</h2>
+                    <div class="method-grid">
+                        <div class="method-card">
+                            <h4><span class="method-dir">עשרוני → בינארי</span></h4>
+                            <div class="method-steps">
+                                <div class="ms"><span class="ms-num">1</span><span>התחל מהערך הגבוה ביותר: <strong>128</strong></span></div>
+                                <div class="ms"><span class="ms-num">2</span><span>אם המספר ≥ 128, כתוב <strong>1</strong> וחסר 128</span></div>
+                                <div class="ms"><span class="ms-num">3</span><span>אם המספר &lt; 128, כתוב <strong>0</strong></span></div>
+                                <div class="ms"><span class="ms-num">4</span><span>המשך עם 64, 32, 16, 8, 4, 2, 1</span></div>
+                            </div>
+                            <div class="method-example">
+                                <div class="me-title">דוגמה: המרת <strong>200</strong></div>
+                                <div class="me-step">200 ≥ 128? ✅ → <strong>1</strong>, נשאר: 72</div>
+                                <div class="me-step">72 ≥ 64? ✅ → <strong>1</strong>, נשאר: 8</div>
+                                <div class="me-step">8 ≥ 32? ❌ → <strong>0</strong></div>
+                                <div class="me-step">8 ≥ 16? ❌ → <strong>0</strong></div>
+                                <div class="me-step">8 ≥ 8? ✅ → <strong>1</strong>, נשאר: 0</div>
+                                <div class="me-step">0 ≥ 4? ❌ → <strong>0</strong></div>
+                                <div class="me-step">0 ≥ 2? ❌ → <strong>0</strong></div>
+                                <div class="me-step">0 ≥ 1? ❌ → <strong>0</strong></div>
+                                <div class="me-result">200 = <strong>11001000</strong></div>
+                            </div>
+                        </div>
+                        <div class="method-card">
+                            <h4><span class="method-dir">בינארי → עשרוני</span></h4>
+                            <div class="method-steps">
+                                <div class="ms"><span class="ms-num">1</span><span>כתוב את משקל כל עמדה: 128,64,32,16,8,4,2,1</span></div>
+                                <div class="ms"><span class="ms-num">2</span><span>לכל ביט שערכו <strong>1</strong>, חבר את המשקל</span></div>
+                                <div class="ms"><span class="ms-num">3</span><span>סכום כל המשקולות = המספר העשרוני</span></div>
+                            </div>
+                            <div class="method-example">
+                                <div class="me-title">דוגמה: המרת <strong>10101100</strong></div>
+                                <div class="me-step"><strong>1</strong>×128 + <strong>0</strong>×64 + <strong>1</strong>×32 + <strong>0</strong>×16</div>
+                                <div class="me-step">+ <strong>1</strong>×8 + <strong>1</strong>×4 + <strong>0</strong>×2 + <strong>0</strong>×1</div>
+                                <div class="me-step">= 128 + 32 + 8 + 4</div>
+                                <div class="me-result">10101100 = <strong>172</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('ip')"><i class="fas fa-arrow-right"></i><span>כתובות IP</span></button>
+                <button class="next-btn" onclick="navigateTo('subnetting')"><span>Subnetting</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== SUBNETTING ===================== -->
+        <section id="section-subnetting" class="lesson-section">
+            <div class="section-header subnet-header">
+                <div class="header-bg"><canvas id="subnet-header-canvas"></canvas></div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-sitemap"></i> נושא #3</div>
+                    <h1>חלוקת רשתות משנה<br><span class="highlight-alt">Subnetting</span></h1>
+                    <p>האומנות של ניהול כתובות IP כמו מקצוען</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- What is Subnetting -->
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-lightbulb"></i> מה זה Subnetting ולמה צריך את זה?</h2>
+                    <div class="explain-content-full">
+                        <p class="big-text">Subnetting הוא תהליך של חלוקת <strong>רשת גדולה לרשתות משנה קטנות יותר</strong>. זה כמו לחלק בניין ענק לקומות ודירות — כל חלק מנוהל בנפרד.</p>
+                        <div class="subnet-reasons">
+                            <div class="reason"><i class="fas fa-chart-pie"></i><h4>ניצול יעיל</h4><p>מניעת בזבוז כתובות IP</p></div>
+                            <div class="reason"><i class="fas fa-shield-alt"></i><h4>אבטחה</h4><p>בידוד בין מחלקות ורשתות</p></div>
+                            <div class="reason"><i class="fas fa-tachometer-alt"></i><h4>ביצועים</h4><p>הקטנת Broadcast Domain</p></div>
+                            <div class="reason"><i class="fas fa-cog"></i><h4>ניהול</h4><p>ניהול קל יותר של רשת גדולה</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subnet Mask Explanation -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-mask"></i> מסכת רשת משנה (Subnet Mask)</h2>
+                    <p class="section-desc">מסכת הרשת קובעת אילו ביטים שייכים לרשת ואילו למארח — גררו את הסליידר כדי לראות את השינויים</p>
+                    <div class="subnet-mask-visual" id="subnet-mask-visual">
+                        <div class="mask-ip-row">
+                            <span class="mask-label">IP Address:</span>
+                            <div class="mask-bits" id="mask-ip-bits">
+                                <!-- Filled by JS -->
+                            </div>
+                        </div>
+                        <div class="mask-ip-row">
+                            <span class="mask-label">Subnet Mask:</span>
+                            <div class="mask-bits" id="mask-subnet-bits">
+                                <!-- Filled by JS -->
+                            </div>
+                        </div>
+                        <div class="mask-ip-row result-row">
+                            <span class="mask-label">Network ID:</span>
+                            <div class="mask-bits" id="mask-network-bits">
+                                <!-- Filled by JS -->
+                            </div>
+                        </div>
+                        <div class="mask-slider-container">
+                            <label>CIDR Prefix: <strong id="cidr-val">/24</strong></label>
+                            <input type="range" id="cidr-slider" min="8" max="30" value="24" class="custom-slider">
+                            <div class="mask-info-row" id="mask-info">
+                                <!-- Filled by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How to Calculate — Step by Step -->
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-list-ol"></i> איך מחשבים רשת לפי Subnet Mask?</h2>
+                    <div class="explain-content-full">
+                        <p class="big-text">בהינתן כתובת IP ומסכת רשת, אפשר לחשב את <strong>כתובת הרשת</strong>, <strong>כתובת ה-Broadcast</strong>, <strong>טווח המארחים</strong> ואת <strong>מספר המארחים</strong> הזמינים.</p>
+                        
+                        <div class="calc-steps-guide">
+                            <div class="calc-step-card">
+                                <div class="calc-step-num">1</div>
+                                <div class="calc-step-content">
+                                    <h4>כתובת הרשת (Network Address)</h4>
+                                    <p>מבצעים פעולת <strong>AND</strong> בין ה-IP לבין ה-Subnet Mask. כל ביט שהמסכה שלו הוא 1 — נשמר. כל ביט שהמסכה 0 — הופך ל-0.</p>
+                                    <div class="calc-step-example" dir="ltr">
+                                        <code>IP:   192.168.10.50  = 11000000.10101000.00001010.00110010</code><br>
+                                        <code>Mask: 255.255.255.192 = 11111111.11111111.11111111.11000000</code><br>
+                                        <code>AND → 192.168.10.0   = 11000000.10101000.00001010.00<strong>000000</strong></code>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="calc-step-card">
+                                <div class="calc-step-num">2</div>
+                                <div class="calc-step-content">
+                                    <h4>כתובת ה-Broadcast (הכתובת האחרונה ברשת)</h4>
+                                    <p>לוקחים את כתובת הרשת ומשנים את <strong>כל ביטי ה-Host ל-1</strong>.</p>
+                                    <div class="calc-step-example" dir="ltr">
+                                        <code>Network: 192.168.10.0  = 11000000.10101000.00001010.00<strong>000000</strong></code><br>
+                                        <code>Broadcast: 192.168.10.63 = 11000000.10101000.00001010.00<strong>111111</strong></code>
+                                    </div>
+                                    <p class="calc-tip">💡 <strong>טיפ מהיר:</strong> אם ה-CIDR הוא /26 אז ה-Block Size = 2^(32-26) = 64. כתובת הרשת + 64 - 1 = כתובת ה-Broadcast. (0 + 63 = 63)</p>
+                                </div>
+                            </div>
+
+                            <div class="calc-step-card">
+                                <div class="calc-step-num">3</div>
+                                <div class="calc-step-content">
+                                    <h4>טווח מארחים זמינים</h4>
+                                    <p>מארח ראשון = <strong>כתובת הרשת + 1</strong>. מארח אחרון = <strong>Broadcast - 1</strong>.</p>
+                                    <div class="calc-step-example" dir="ltr">
+                                        <code>First Host: 192.168.10.<strong>1</strong></code><br>
+                                        <code>Last Host:  192.168.10.<strong>62</strong></code>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="calc-step-card">
+                                <div class="calc-step-num">4</div>
+                                <div class="calc-step-content">
+                                    <h4>מספר מארחים</h4>
+                                    <p>הנוסחה: <strong>2^(ביטים למארח) - 2</strong>. מחסירים 2 כי כתובת הרשת וכתובת ה-Broadcast לא נספרות.</p>
+                                    <div class="calc-step-example" dir="ltr">
+                                        <code>/26 → Host bits = 32-26 = 6</code><br>
+                                        <code>Hosts = 2^6 - 2 = <strong>62</strong> usable hosts</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subnetting Calculator -->
+                <div class="interactive-demo subnet-calc-demo">
+                    <h2 class="section-title"><i class="fas fa-calculator"></i> מחשבון Subnetting</h2>
+                    <p class="section-desc">הכניסו כתובת IP ו-CIDR — ותקבלו את כל הפרטים של הרשת</p>
+                    <div class="subnet-calculator">
+                        <div class="calc-input-row">
+                            <div class="calc-input-group">
+                                <label>כתובת IP:</label>
+                                <input type="text" id="calc-ip" value="192.168.10.50" placeholder="192.168.1.0" class="calc-input">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>CIDR (/):</label>
+                                <input type="number" id="calc-cidr" value="26" min="1" max="32" class="calc-input small">
+                            </div>
+                            <button class="demo-btn" onclick="calculateSubnet()"><i class="fas fa-calculator"></i> חשב</button>
+                        </div>
+                        <div class="calc-results" id="calc-results">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subnetting Cheat Sheet -->
+                <div class="cheat-sheet">
+                    <h2 class="section-title"><i class="fas fa-table"></i> טבלת Subnetting — שליפה מהירה</h2>
+                    <div class="table-wrapper">
+                        <table class="spec-table subnet-table">
+                            <thead>
+                                <tr>
+                                    <th>CIDR</th>
+                                    <th>Subnet Mask</th>
+                                    <th>Wildcard</th>
+                                    <th>רשתות משנה</th>
+                                    <th>מארחים/רשת</th>
+                                    <th>Block Size</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><span class="cidr-badge">/24</span></td><td class="mono">255.255.255.0</td><td class="mono dim-text">0.0.0.255</td><td>1</td><td>254</td><td>256</td></tr>
+                                <tr><td><span class="cidr-badge">/25</span></td><td class="mono">255.255.255.128</td><td class="mono dim-text">0.0.0.127</td><td>2</td><td>126</td><td>128</td></tr>
+                                <tr><td><span class="cidr-badge">/26</span></td><td class="mono">255.255.255.192</td><td class="mono dim-text">0.0.0.63</td><td>4</td><td>62</td><td>64</td></tr>
+                                <tr><td><span class="cidr-badge">/27</span></td><td class="mono">255.255.255.224</td><td class="mono dim-text">0.0.0.31</td><td>8</td><td>30</td><td>32</td></tr>
+                                <tr><td><span class="cidr-badge">/28</span></td><td class="mono">255.255.255.240</td><td class="mono dim-text">0.0.0.15</td><td>16</td><td>14</td><td>16</td></tr>
+                                <tr><td><span class="cidr-badge">/29</span></td><td class="mono">255.255.255.248</td><td class="mono dim-text">0.0.0.7</td><td>32</td><td>6</td><td>8</td></tr>
+                                <tr><td><span class="cidr-badge">/30</span></td><td class="mono">255.255.255.252</td><td class="mono dim-text">0.0.0.3</td><td>64</td><td>2</td><td>4</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="fun-fact" style="--accent:#8b5cf6"><i class="fas fa-star"></i><div><h4>טיפ למקצוענים!</h4><p>נוסחה מהירה: מספר מארחים = <strong>2^(32-CIDR) - 2</strong>. מחסירים 2 כי כתובת הרשת וכתובת ה-Broadcast לא ניתנות להקצאה למארחים. לדוגמה: /26 → 2^6-2 = <strong>62 מארחים</strong>.</p></div></div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('binary')"><i class="fas fa-arrow-right"></i><span>המרה בינארית</span></button>
+                <button class="next-btn" onclick="navigateTo('routing')"><span>ניתוב</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== ROUTING ===================== -->
+        <section id="section-routing" class="lesson-section">
+            <div class="section-header routing-header">
+                <div class="header-bg"><canvas id="routing-header-canvas"></canvas></div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-route"></i> נושא #4</div>
+                    <h1>ניתוב וטבלאות ניתוב<br><span class="highlight-alt">Routing</span></h1>
+                    <p>איך הנתבים יודעים לאן לשלוח כל חבילה?</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <div class="explanation-block">
+                    <h2 class="section-title"><i class="fas fa-lightbulb"></i> מהו ניתוב?</h2>
+                    <div class="explain-content-full">
+                        <p class="big-text">ניתוב (Routing) הוא התהליך שבו <strong>נתב (Router)</strong> מחליט לאן לשלוח חבילת מידע בדרכה מהמקור ליעד. כל נתב שומר <strong>טבלת ניתוב</strong> — מעין "מפה" שאומרת לו לאן כל רשת נמצאת.</p>
+                        <p>כשחבילת מידע (Packet) מגיעה לנתב, הוא מסתכל ב-<strong>כתובת IP היעד</strong>, בודק את טבלת הניתוב שלו, ומחליט דרך איזה ממשק (Interface) לשלוח את החבילה הלאה.</p>
+                    </div>
+                </div>
+
+                <!-- ============ ROUTING TYPES — EXPANDED ============ -->
+                <div class="routing-types-section routing-types-expanded">
+                    <h2 class="section-title"><i class="fas fa-code-branch"></i> סוגי ניתוב — הסבר מקיף</h2>
+                    <p class="section-desc">לפני שנצלול לטבלאות ניתוב, בואו נבין את שלושת סוגי הניתוב הבסיסיים</p>
+
+                    <!-- === DIRECT (Connected) Routing === -->
+                    <div class="routing-type-detail">
+                        <div class="rtd-header direct-rtd">
+                            <div class="rtd-icon"><i class="fas fa-link"></i></div>
+                            <div class="rtd-title">
+                                <h3>ניתוב ישיר (Direct / Connected)</h3>
+                                <span class="rtd-subtitle">כשנתב מחובר ישירות לרשת — הוא כבר "יודע" עליה!</span>
+                            </div>
+                        </div>
+                        <div class="rtd-body">
+                            <div class="rtd-explain">
+                                <p>כשנתב מחובר <strong>פיזית</strong> לרשת מסוימת (באמצעות כבל רשת או חיבור אחר), הוא <strong>מזהה אוטומטית</strong> את הרשת הזו ומוסיף אותה לטבלת הניתוב שלו. זה נקרא <strong>Connected Route</strong>.</p>
+                                <div class="rtd-key-points">
+                                    <div class="rtd-point"><i class="fas fa-check-circle"></i><span>לא צריך הגדרה — זה קורה אוטומטית</span></div>
+                                    <div class="rtd-point"><i class="fas fa-check-circle"></i><span>החבילה לא צריכה לעבור דרך נתב אחר — ישירות ליעד</span></div>
+                                    <div class="rtd-point"><i class="fas fa-check-circle"></i><span>Next Hop = "Direct" (מחובר ישירות)</span></div>
+                                    <div class="rtd-point"><i class="fas fa-info-circle"></i><span>Metric = 0 (מרחק אפס — הרשת "כאן"!)</span></div>
+                                </div>
+                                <div class="rtd-example">
+                                    <h5><i class="fas fa-terminal"></i> דוגמה:</h5>
+                                    <div class="rtd-code" dir="ltr">
+                                        <code>Router# show ip route connected</code><br>
+                                        <code>C 192.168.1.0/24 is directly connected, eth0</code><br>
+                                        <code>C 10.0.0.0/8 is directly connected, eth1</code>
+                                    </div>
+                                    <p class="rtd-code-explain">ה-<strong>C</strong> מציין שזה Connected Route — הנתב מחובר ישירות לרשת הזו</p>
+                                </div>
+                            </div>
+                            <div class="rtd-canvas-wrap">
+                                <h5 class="rtd-canvas-title"><i class="fas fa-play-circle"></i> סימולטור — חיבור ישיר בין שני נתבים</h5>
+                                <canvas id="direct-routing-canvas"></canvas>
+                                <div class="rtd-canvas-controls">
+                                    <button class="demo-btn sm" onclick="startDirectRoutingSim()"><i class="fas fa-play"></i> שלח חבילה</button>
+                                    <button class="demo-btn sm outline" onclick="resetDirectRoutingSim()"><i class="fas fa-undo"></i> אפס</button>
+                                </div>
+                                <p class="rtd-canvas-desc">צפו איך חבילה עוברת <strong>ישירות</strong> מנתב לנתב בלי צורך בתיווך — כי הם מחוברים פיזית!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- === STATIC Routing === -->
+                    <div class="routing-type-detail">
+                        <div class="rtd-header static-rtd">
+                            <div class="rtd-icon"><i class="fas fa-pencil-alt"></i></div>
+                            <div class="rtd-title">
+                                <h3>ניתוב סטטי (Static Routing)</h3>
+                                <span class="rtd-subtitle">מנהל הרשת מגדיר ידנית לאן כל נתיב מוביל</span>
+                            </div>
+                        </div>
+                        <div class="rtd-body">
+                            <div class="rtd-explain">
+                                <p>בניתוב סטטי, <strong>מנהל הרשת מכניס ידנית</strong> את הנתיבים לטבלת הניתוב. הנתב <strong>לא לומד</strong> נתיבים מנתבים אחרים — הוא רק יודע מה שאמרו לו.</p>
+                                <div class="rtd-key-points">
+                                    <div class="rtd-point success"><i class="fas fa-check-circle"></i><span>פשוט — קל להבין ולנהל ברשתות קטנות</span></div>
+                                    <div class="rtd-point success"><i class="fas fa-check-circle"></i><span>מאובטח — אין החלפת מידע ניתוב עם נתבים אחרים</span></div>
+                                    <div class="rtd-point success"><i class="fas fa-check-circle"></i><span>לא צורך משאבי מעבד/רשת</span></div>
+                                    <div class="rtd-point danger"><i class="fas fa-times-circle"></i><span>לא גמיש — שינויים דורשים עדכון ידני</span></div>
+                                    <div class="rtd-point danger"><i class="fas fa-times-circle"></i><span>לא מתאושש מתקלות — אם נתיב נופל, צריך לתקן ידנית</span></div>
+                                    <div class="rtd-point danger"><i class="fas fa-times-circle"></i><span>לא סקלאבילי — בלתי אפשרי לנהל ברשתות גדולות</span></div>
+                                </div>
+                                <div class="rtd-example">
+                                    <h5><i class="fas fa-terminal"></i> הגדרת נתיב סטטי:</h5>
+                                    <div class="rtd-code" dir="ltr">
+                                        <code>Router(config)# ip route 10.20.0.0 255.255.0.0 192.168.1.2</code><br>
+                                        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↑ רשת יעד &nbsp;&nbsp;↑ Mask &nbsp;&nbsp;&nbsp;&nbsp;↑ Next Hop</code>
+                                    </div>
+                                    <p class="rtd-code-explain">הפקודה אומרת: "כדי להגיע ל-<strong>10.20.0.0/16</strong>, שלח דרך <strong>192.168.1.2</strong>"</p>
+                                </div>
+                            </div>
+                            <div class="rtd-canvas-wrap">
+                                <h5 class="rtd-canvas-title"><i class="fas fa-play-circle"></i> סימולטור — ניתוב סטטי</h5>
+                                <canvas id="static-routing-canvas"></canvas>
+                                <div class="rtd-canvas-controls">
+                                    <button class="demo-btn sm" onclick="startStaticRoutingSim()"><i class="fas fa-play"></i> שלח חבילה</button>
+                                    <button class="demo-btn sm outline" onclick="resetStaticRoutingSim()"><i class="fas fa-undo"></i> אפס</button>
+                                </div>
+                                <p class="rtd-canvas-desc">הנתב יודע לאן לשלוח <strong>רק בגלל שהמנהל הגדיר את הנתיב ידנית</strong>. שימו לב לטבלת הניתוב הסטטית.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- === DYNAMIC Routing === -->
+                    <div class="routing-type-detail">
+                        <div class="rtd-header dynamic-rtd">
+                            <div class="rtd-icon"><i class="fas fa-robot"></i></div>
+                            <div class="rtd-title">
+                                <h3>ניתוב דינמי (Dynamic Routing)</h3>
+                                <span class="rtd-subtitle">נתבים לומדים נתיבים אוטומטית מהשכנים שלהם</span>
+                            </div>
+                        </div>
+                        <div class="rtd-body">
+                            <div class="rtd-explain">
+                                <p>בניתוב דינמי, הנתבים משתמשים ב<strong>פרוטוקולי ניתוב</strong> (כמו RIP, OSPF, BGP) כדי <strong>ללמוד אוטומטית</strong> על רשתות חדשות משכניהם. כשרשת חדשה מתווספת או נופלת — הנתבים <strong>מעדכנים זה את זה</strong>.</p>
+                                <div class="rtd-key-points">
+                                    <div class="rtd-point success"><i class="fas fa-check-circle"></i><span>אוטומטי — לא צריך הגדרה ידנית לכל נתיב</span></div>
+                                    <div class="rtd-point success"><i class="fas fa-check-circle"></i><span>מתאושש מתקלות — מוצא נתיב חלופי אוטומטית</span></div>
+                                    <div class="rtd-point success"><i class="fas fa-check-circle"></i><span>סקלאבילי — מתאים לרשתות גדולות ומורכבות</span></div>
+                                    <div class="rtd-point danger"><i class="fas fa-times-circle"></i><span>צורך משאבים — רוחב פס, זיכרון ומעבד</span></div>
+                                    <div class="rtd-point danger"><i class="fas fa-times-circle"></i><span>מורכב יותר להגדרה ולניטור</span></div>
+                                    <div class="rtd-point danger"><i class="fas fa-times-circle"></i><span>זמן התכנסות — לוקח זמן עד שכולם מעודכנים</span></div>
+                                </div>
+                                <div class="rtd-example">
+                                    <h5><i class="fas fa-terminal"></i> הפעלת OSPF:</h5>
+                                    <div class="rtd-code" dir="ltr">
+                                        <code>Router(config)# router ospf 1</code><br>
+                                        <code>Router(config-router)# network 192.168.1.0 0.0.0.255 area 0</code><br>
+                                        <code>&nbsp;→ הנתב ילמד נתיבים אוטומטית משכניו!</code>
+                                    </div>
+                                    <p class="rtd-code-explain">ברגע שמפעילים OSPF, הנתב <strong>מתחיל לשתף ולקבל</strong> מידע ניתוב עם כל השכנים שלו</p>
+                                </div>
+                            </div>
+                            <div class="rtd-canvas-wrap">
+                                <h5 class="rtd-canvas-title"><i class="fas fa-play-circle"></i> סימולטור — ניתוב דינמי</h5>
+                                <canvas id="dynamic-routing-canvas"></canvas>
+                                <div class="rtd-canvas-controls">
+                                    <button class="demo-btn sm" onclick="startDynamicRoutingSim()"><i class="fas fa-play"></i> הפעל סימולציה</button>
+                                    <button class="demo-btn sm outline" onclick="resetDynamicRoutingSim()"><i class="fas fa-undo"></i> אפס</button>
+                                </div>
+                                <p class="rtd-canvas-desc">צפו איך הנתבים <strong>מחליפים מידע ניתוב אוטומטית</strong> ולומדים על רשתות חדשות. כשנתיב נופל — הם מוצאים חלופה!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Default Route -->
+                    <div class="routing-type-detail">
+                        <div class="rtd-header default-rtd">
+                            <div class="rtd-icon"><i class="fas fa-door-open"></i></div>
+                            <div class="rtd-title">
+                                <h3>נתיב ברירת מחדל (Default Route)</h3>
+                                <span class="rtd-subtitle">0.0.0.0/0 — "אם אתה לא יודע לאן, לך לפה!"</span>
+                            </div>
+                        </div>
+                        <div class="rtd-body">
+                            <div class="rtd-explain">
+                                <p>נתיב ברירת מחדל הוא <strong>"שער החירום"</strong> — כשחבילה מגיעה לנתב ואף נתיב ספציפי לא מתאים לכתובת היעד, הנתב שולח את החבילה דרך ה-<strong>Default Gateway</strong>.</p>
+                                <div class="rtd-key-points">
+                                    <div class="rtd-point"><i class="fas fa-info-circle"></i><span>הכתובת 0.0.0.0/0 מתאימה לכל כתובת IP</span></div>
+                                    <div class="rtd-point"><i class="fas fa-info-circle"></i><span>נבחר רק כשאין התאמה ספציפית יותר (Longest Prefix Match)</span></div>
+                                    <div class="rtd-point"><i class="fas fa-info-circle"></i><span>בדרך כלל מצביע על נתב הגישה לאינטרנט</span></div>
+                                </div>
+                                <div class="rtd-example">
+                                    <h5><i class="fas fa-terminal"></i> הגדרת Default Route:</h5>
+                                    <div class="rtd-code" dir="ltr">
+                                        <code>Router(config)# ip route 0.0.0.0 0.0.0.0 192.168.1.254</code><br>
+                                        <code>&nbsp;→ "כל מה שלא מכיר — שלח ל-192.168.1.254"</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary comparison mini-cards -->
+                    <div class="routing-types-summary">
+                        <h3 class="section-subtitle"><i class="fas fa-balance-scale"></i> סיכום מהיר — השוואה</h3>
+                        <div class="rts-grid">
+                            <div class="rts-card direct-card">
+                                <div class="rts-badge">Connected</div>
+                                <div class="rts-content">
+                                    <strong>אוטומטי</strong>
+                                    <span>Metric: 0</span>
+                                    <span>AD: 0</span>
+                                    <span class="rts-use">מחובר פיזית</span>
+                                </div>
+                            </div>
+                            <div class="rts-card static-card">
+                                <div class="rts-badge">Static</div>
+                                <div class="rts-content">
+                                    <strong>ידני</strong>
+                                    <span>Metric: 0</span>
+                                    <span>AD: 1</span>
+                                    <span class="rts-use">רשתות קטנות</span>
+                                </div>
+                            </div>
+                            <div class="rts-card dynamic-card">
+                                <div class="rts-badge">Dynamic</div>
+                                <div class="rts-content">
+                                    <strong>אוטומטי</strong>
+                                    <span>Metric: משתנה</span>
+                                    <span>AD: 110-200</span>
+                                    <span class="rts-use">רשתות גדולות</span>
+                                </div>
+                            </div>
+                            <div class="rts-card default-card">
+                                <div class="rts-badge">Default</div>
+                                <div class="rts-content">
+                                    <strong>מוגדר ידנית</strong>
+                                    <span>0.0.0.0/0</span>
+                                    <span>AD: 1</span>
+                                    <span class="rts-use">שער לאינטרנט</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Routing Table Interactive -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-table"></i> טבלת ניתוב אינטראקטיבית</h2>
+                    <p class="section-desc">הקלידו כתובת IP יעד ותראו איך הנתב מחליט לאן לשלוח</p>
+                    <div class="routing-table-demo">
+                        <div class="rt-input-row">
+                            <label>כתובת יעד:</label>
+                            <input type="text" id="rt-dest-ip" value="10.20.30.40" class="calc-input" placeholder="10.20.30.40">
+                            <button class="demo-btn" onclick="lookupRoute()"><i class="fas fa-search"></i> חפש נתיב</button>
+                        </div>
+                        <div class="rt-table-container">
+                            <table class="spec-table routing-table-display">
+                                <thead>
+                                    <tr>
+                                        <th>רשת יעד</th>
+                                        <th>Subnet Mask</th>
+                                        <th>Next Hop</th>
+                                        <th>Interface</th>
+                                        <th>Metric</th>
+                                        <th>מצב</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="routing-table-body">
+                                    <tr data-network="10.0.0.0" data-mask="8"><td class="mono">10.0.0.0/8</td><td class="mono">255.0.0.0</td><td class="mono">192.168.1.1</td><td>eth0</td><td>10</td><td id="rt-match-0"></td></tr>
+                                    <tr data-network="10.20.0.0" data-mask="16"><td class="mono">10.20.0.0/16</td><td class="mono">255.255.0.0</td><td class="mono">192.168.1.2</td><td>eth1</td><td>5</td><td id="rt-match-1"></td></tr>
+                                    <tr data-network="10.20.30.0" data-mask="24"><td class="mono">10.20.30.0/24</td><td class="mono">255.255.255.0</td><td class="mono">192.168.1.3</td><td>eth2</td><td>1</td><td id="rt-match-2"></td></tr>
+                                    <tr data-network="172.16.0.0" data-mask="12"><td class="mono">172.16.0.0/12</td><td class="mono">255.240.0.0</td><td class="mono">192.168.1.4</td><td>eth1</td><td>20</td><td id="rt-match-3"></td></tr>
+                                    <tr data-network="192.168.0.0" data-mask="16"><td class="mono">192.168.0.0/16</td><td class="mono">255.255.0.0</td><td class="mono">Direct</td><td>eth0</td><td>0</td><td id="rt-match-4"></td></tr>
+                                    <tr data-network="0.0.0.0" data-mask="0"><td class="mono">0.0.0.0/0</td><td class="mono">0.0.0.0</td><td class="mono">192.168.1.254</td><td>eth0</td><td>100</td><td id="rt-match-5"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="rt-result" id="rt-result"></div>
+                    </div>
+                </div>
+
+                <!-- Longest Prefix Match -->
+                <div class="interactive-demo">
+                    <h2 class="section-title"><i class="fas fa-crosshairs"></i> Longest Prefix Match</h2>
+                    <p class="section-desc">הנתב תמיד בוחר את הנתיב הספציפי ביותר (המסכה הארוכה ביותר)</p>
+                    <div class="lpm-visual">
+                        <canvas id="lpm-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('subnetting')"><i class="fas fa-arrow-right"></i><span>Subnetting</span></button>
+                <button class="next-btn" onclick="navigateTo('protocols')"><span>פרוטוקולי ניתוב</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== ROUTING PROTOCOLS ===================== -->
+        <section id="section-protocols" class="lesson-section">
+            <div class="section-header protocols-header">
+                <div class="header-bg"><canvas id="protocols-header-canvas"></canvas></div>
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-exchange-alt"></i> נושא #5</div>
+                    <h1>פרוטוקולי ניתוב<br><span class="highlight-alt">RIP · OSPF · BGP</span></h1>
+                    <p>השפות שנתבים מדברים ביניהם</p>
+                </div>
+            </div>
+
+            <div class="content-container">
+                <!-- RIP -->
+                <div class="protocol-block rip-block">
+                    <div class="protocol-header">
+                        <div class="protocol-badge rip-badge">RIP</div>
+                        <div><h3>Routing Information Protocol</h3><span class="protocol-type">Distance Vector · IGP</span></div>
+                    </div>
+                    <div class="protocol-body">
+                        <div class="protocol-explain">
+                            <p>RIP הוא אחד מפרוטוקולי הניתוב <strong>הוותיקים והפשוטים ביותר</strong>. הוא עובד בשיטת <strong>Distance Vector</strong> — כל נתב שולח את טבלת הניתוב שלו לשכניו כל 30 שניות.</p>
+                            <div class="protocol-metrics">
+                                <div class="metric"><span class="metric-label">מדד (Metric)</span><span class="metric-value">Hop Count (ספירת קפיצות)</span></div>
+                                <div class="metric"><span class="metric-label">מקסימום</span><span class="metric-value">15 Hops (16 = אינסוף)</span></div>
+                                <div class="metric"><span class="metric-label">עדכון</span><span class="metric-value">כל 30 שניות (Broadcast)</span></div>
+                                <div class="metric"><span class="metric-label">אלגוריתם</span><span class="metric-value">Bellman-Ford</span></div>
+                                <div class="metric"><span class="metric-label">AD</span><span class="metric-value">120</span></div>
+                            </div>
+                        </div>
+                        <div class="protocol-visual">
+                            <canvas id="rip-canvas" width="450" height="280"></canvas>
+                            <button class="demo-btn sm" onclick="animateRIP()"><i class="fas fa-play"></i> הפעל סימולציה</button>
+                        </div>
+                    </div>
+                    <div class="protocol-verdict">
+                        <span class="verdict-pro">✅ פשוט להגדרה</span>
+                        <span class="verdict-pro">✅ נתמך בכל מקום</span>
+                        <span class="verdict-con">❌ איטי להתכנסות</span>
+                        <span class="verdict-con">❌ מוגבל ל-15 hops</span>
+                        <span class="verdict-con">❌ לא סקלאבילי</span>
+                    </div>
+                </div>
+
+                <!-- OSPF -->
+                <div class="protocol-block ospf-block">
+                    <div class="protocol-header">
+                        <div class="protocol-badge ospf-badge">OSPF</div>
+                        <div><h3>Open Shortest Path First</h3><span class="protocol-type">Link-State · IGP</span></div>
+                    </div>
+                    <div class="protocol-body">
+                        <div class="protocol-explain">
+                            <p>OSPF הוא פרוטוקול <strong>Link-State</strong> מתקדם. כל נתב בונה <strong>מפה מלאה של הרשת</strong> ומשתמש ב<strong>אלגוריתם Dijkstra</strong> למצוא את הנתיב הקצר ביותר. הרבה יותר יעיל מ-RIP.</p>
+                            <div class="protocol-metrics">
+                                <div class="metric"><span class="metric-label">מדד (Metric)</span><span class="metric-value">Cost (מבוסס רוחב פס)</span></div>
+                                <div class="metric"><span class="metric-label">מקסימום</span><span class="metric-value">אין מגבלה!</span></div>
+                                <div class="metric"><span class="metric-label">עדכון</span><span class="metric-value">רק בשינויים (Triggered)</span></div>
+                                <div class="metric"><span class="metric-label">אלגוריתם</span><span class="metric-value">Dijkstra (SPF)</span></div>
+                                <div class="metric"><span class="metric-label">AD</span><span class="metric-value">110</span></div>
+                            </div>
+                            <div class="cost-explanation">
+                                <h5><i class="fas fa-tachometer-alt"></i> מה זה Cost (עלות)?</h5>
+                                <p>בפרוטוקולי ניתוב, <strong>Cost</strong> הוא המדד שלפיו הנתב מחליט מה הנתיב הטוב ביותר. כל קישור (Link) ברשת מקבל <strong>ערך מספרי</strong> — ככל שהמספר <strong>נמוך יותר</strong>, הנתיב <strong>מועדף יותר</strong>.</p>
+                                <div class="cost-table-wrap">
+                                    <table class="spec-table cost-table">
+                                        <thead>
+                                            <tr><th>רוחב פס (Bandwidth)</th><th>OSPF Cost</th><th>הסבר</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td class="mono">10 Gbps</td><td class="mono best">1</td><td>סיב אופטי מהיר — עלות מינימלית!</td></tr>
+                                            <tr><td class="mono">1 Gbps</td><td class="mono">1</td><td>Gigabit Ethernet — נפוץ מאוד כיום</td></tr>
+                                            <tr><td class="mono">100 Mbps</td><td class="mono">1</td><td>Fast Ethernet</td></tr>
+                                            <tr><td class="mono">10 Mbps</td><td class="mono">10</td><td>Ethernet ישן — עלות גבוהה יותר</td></tr>
+                                            <tr><td class="mono">1.544 Mbps (T1)</td><td class="mono">64</td><td>קו T1 — איטי = עלות גבוהה</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="cost-formula">
+                                    <span class="cost-formula-label">📐 הנוסחה:</span>
+                                    <code dir="ltr">Cost = Reference BW ÷ Interface BW</code>
+                                    <span class="cost-formula-note">ברירת מחדל: Reference = 100 Mbps → קישור 100Mbps = Cost 1</span>
+                                </div>
+                                <p class="cost-summary">💡 <strong>בקיצור:</strong> Cost = "כמה יקר" לעבור דרך הקישור. OSPF תמיד בוחר בנתיב עם <strong>סך Cost הנמוך ביותר</strong>. אם יש שני נתיבים — אחד עם Cost 10 ואחד עם Cost 5 — OSPF יבחר ב-Cost 5.</p>
+                            </div>
+                            <div class="ospf-areas">
+                                <h5><i class="fas fa-th"></i> Areas ב-OSPF</h5>
+                                <p>OSPF מחלק את הרשת ל<strong>אזורים (Areas)</strong>. Area 0 (Backbone) הוא המרכזי — כל שאר האזורים חייבים להתחבר אליו.</p>
+                            </div>
+                        </div>
+                        <div class="protocol-visual">
+                            <canvas id="ospf-canvas" width="450" height="320"></canvas>
+                            <button class="demo-btn sm" onclick="animateOSPF()"><i class="fas fa-play"></i> הפעל Dijkstra</button>
+                        </div>
+                    </div>
+                    <div class="protocol-verdict">
+                        <span class="verdict-pro">✅ התכנסות מהירה</span>
+                        <span class="verdict-pro">✅ סקלאבילי (Areas)</span>
+                        <span class="verdict-pro">✅ ללא מגבלת Hops</span>
+                        <span class="verdict-pro">✅ מסלול אופטימלי</span>
+                        <span class="verdict-con">❌ מורכב יותר</span>
+                    </div>
+                </div>
+
+                <!-- BGP -->
+                <div class="protocol-block bgp-block">
+                    <div class="protocol-header">
+                        <div class="protocol-badge bgp-badge">BGP</div>
+                        <div><h3>Border Gateway Protocol</h3><span class="protocol-type">Path Vector · EGP</span></div>
+                    </div>
+
+                    <!-- AS Explanation Section -->
+                    <div class="as-explanation">
+                        <div class="as-header">
+                            <h4><i class="fas fa-globe-americas"></i> מה זה AS — Autonomous System?</h4>
+                        </div>
+                        <div class="as-body">
+                            <div class="as-text">
+                                <p>לפני שנבין BGP, חייבים להבין מה זה <strong>AS (Autonomous System)</strong>. 
+                                האינטרנט הוא לא רשת אחת גדולה — הוא מורכב מ<strong>אלפי רשתות נפרדות</strong>, כל אחת בניהול עצמאי. כל רשת כזו נקראת <strong>מערכת אוטונומית (AS)</strong>.</p>
+                                
+                                <div class="as-definition">
+                                    <div class="as-def-icon"><i class="fas fa-quote-right"></i></div>
+                                    <div class="as-def-text">
+                                        <strong>AS (Autonomous System)</strong> היא קבוצה של רשתות IP שנמצאת תחת <strong>ניהול אחד</strong> (ספק אינטרנט, ארגון, חברה) ומשתפת <strong>מדיניות ניתוב משותפת</strong>.
+                                    </div>
+                                </div>
+
+                                <div class="as-examples-grid">
+                                    <div class="as-example">
+                                        <div class="as-ex-num">AS 15169</div>
+                                        <div class="as-ex-name">Google</div>
+                                        <div class="as-ex-desc">מנהל את כל רשתות Google, YouTube, Gmail</div>
+                                    </div>
+                                    <div class="as-example">
+                                        <div class="as-ex-num">AS 32934</div>
+                                        <div class="as-ex-name">Meta (Facebook)</div>
+                                        <div class="as-ex-desc">Facebook, Instagram, WhatsApp</div>
+                                    </div>
+                                    <div class="as-example">
+                                        <div class="as-ex-num">AS 8551</div>
+                                        <div class="as-ex-name">Bezeq Int'l</div>
+                                        <div class="as-ex-desc">ספק אינטרנט ישראלי</div>
+                                    </div>
+                                    <div class="as-example">
+                                        <div class="as-ex-num">AS 16116</div>
+                                        <div class="as-ex-name">Partner (012)</div>
+                                        <div class="as-ex-desc">ספק אינטרנט ישראלי</div>
+                                    </div>
+                                </div>
+
+                                <div class="as-key-facts">
+                                    <div class="as-fact"><i class="fas fa-hashtag"></i><span>כל AS מזוהה ב<strong>מספר ייחודי (ASN)</strong> — מ-1 עד 4,294,967,295</span></div>
+                                    <div class="as-fact"><i class="fas fa-building"></i><span><strong>IANA</strong> מחלקת מספרי AS דרך ה-RIRs (ארגוני רישום אזוריים)</span></div>
+                                    <div class="as-fact"><i class="fas fa-handshake"></i><span>AS-ים "מדברים" ביניהם באמצעות <strong>BGP בלבד</strong></span></div>
+                                    <div class="as-fact"><i class="fas fa-route"></i><span>BGP מחליט <strong>דרך איזה AS-ים</strong> תעבור חבילה מהמקור ליעד</span></div>
+                                </div>
+                            </div>
+                            <div class="as-visual-wrap">
+                                <canvas id="as-explain-canvas"></canvas>
+                                <p class="as-visual-desc">האינטרנט = אוסף של AS-ים שמחוברים ב-BGP</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="protocol-body">
+                        <div class="protocol-explain">
+                            <p>BGP הוא <strong>פרוטוקול הניתוב של האינטרנט</strong>. הוא מנהל את הניתוב בין <strong>מערכות אוטונומיות (AS)</strong> — ארגונים, ספקי אינטרנט ומדינות. BGP הוא הפרוטוקול <strong>הקריטי ביותר</strong> לפעולת האינטרנט.</p>
+
+                            <p>כש-BGP בוחר נתיב, הוא לא מסתכל רק על "מרחק" — הוא מסתכל על <strong>מדיניות (Policy)</strong>: באיזה AS-ים החבילה תעבור, מי העדיפויות, ומה ההסכמים בין הספקים.</p>
+
+                            <div class="protocol-metrics">
+                                <div class="metric"><span class="metric-label">סוג</span><span class="metric-value">Path Vector (נתיב וקטורי)</span></div>
+                                <div class="metric"><span class="metric-label">שימוש</span><span class="metric-value">בין AS-ים (Inter-domain)</span></div>
+                                <div class="metric"><span class="metric-label">פורט</span><span class="metric-value">TCP 179</span></div>
+                                <div class="metric"><span class="metric-label">החלטה</span><span class="metric-value">מדיניות (Policy-based)</span></div>
+                                <div class="metric"><span class="metric-label">AD</span><span class="metric-value">eBGP: 20 / iBGP: 200</span></div>
+                            </div>
+                            <div class="bgp-types">
+                                <div class="bgp-type"><span class="bgp-tag ebgp">eBGP</span><span>בין מערכות אוטונומיות שונות</span></div>
+                                <div class="bgp-type"><span class="bgp-tag ibgp">iBGP</span><span>בתוך אותה מערכת אוטונומית</span></div>
+                            </div>
+                        </div>
+                        <div class="protocol-visual">
+                            <canvas id="bgp-canvas" width="450" height="300"></canvas>
+                            <button class="demo-btn sm" onclick="animateBGP()"><i class="fas fa-play"></i> הפעל AS Routing</button>
+                        </div>
+                    </div>
+                    <div class="protocol-verdict">
+                        <span class="verdict-pro">✅ מנהל את האינטרנט</span>
+                        <span class="verdict-pro">✅ מדיניות גמישה</span>
+                        <span class="verdict-pro">✅ סקלאבילי לענק</span>
+                        <span class="verdict-con">❌ מורכב מאוד</span>
+                        <span class="verdict-con">❌ התכנסות איטית</span>
+                    </div>
+                </div>
+
+                <!-- Comparison Table -->
+                <div class="comparison-section">
+                    <h2 class="section-title"><i class="fas fa-balance-scale"></i> השוואה בין פרוטוקולי הניתוב</h2>
+                    <div class="table-wrapper">
+                        <table class="spec-table compare-protocols-table">
+                            <thead>
+                                <tr>
+                                    <th>מאפיין</th>
+                                    <th class="rip-col">RIP</th>
+                                    <th class="ospf-col">OSPF</th>
+                                    <th class="bgp-col">BGP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="feature-name">סוג</td><td>Distance Vector</td><td>Link-State</td><td>Path Vector</td></tr>
+                                <tr><td class="feature-name">תחום</td><td>IGP (פנימי)</td><td>IGP (פנימי)</td><td>EGP (חיצוני)</td></tr>
+                                <tr><td class="feature-name">אלגוריתם</td><td>Bellman-Ford</td><td>Dijkstra</td><td>Best Path Selection</td></tr>
+                                <tr><td class="feature-name">מדד</td><td>Hop Count</td><td>Cost (BW)</td><td>Policy/Path</td></tr>
+                                <tr><td class="feature-name">מקסימום</td><td>15 hops</td><td class="best">ללא מגבלה ✓</td><td class="best">ללא מגבלה ✓</td></tr>
+                                <tr><td class="feature-name">התכנסות</td><td>איטית</td><td class="best">מהירה ✓</td><td>איטית-בינונית</td></tr>
+                                <tr><td class="feature-name">סקלאביליות</td><td>נמוכה</td><td>גבוהה</td><td class="best">ענקית ✓</td></tr>
+                                <tr><td class="feature-name">AD</td><td>120</td><td>110</td><td>20 (eBGP)</td></tr>
+                                <tr><td class="feature-name">שימוש טיפוסי</td><td>רשתות קטנות</td><td>ארגונים</td><td>האינטרנט!</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="fun-fact" style="--accent:#ef4444"><i class="fas fa-star"></i><div><h4>עובדה מטורפת!</h4><p>BGP מנהל את הניתוב עבור למעלה מ-<strong>900,000 נתיבים</strong> באינטרנט. כשיש תקלה ב-BGP, חלקים שלמים מהאינטרנט יכולים ליפול — כמו שקרה ב-<strong>Facebook Outage</strong> באוקטובר 2021 שהשבית את Facebook, Instagram ו-WhatsApp ל-6 שעות.</p></div></div>
+            </div>
+
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('routing')"><i class="fas fa-arrow-right"></i><span>ניתוב</span></button>
+                <button class="next-btn" onclick="navigateTo('quiz')"><span>בוחן ידע</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+        </section>
+
+        <!-- ===================== QUIZ ===================== -->
+        <section id="section-quiz" class="lesson-section">
+            <div class="section-header quiz-header">
+                <div class="header-content">
+                    <div class="tech-badge"><i class="fas fa-trophy"></i> בוחן</div>
+                    <h1>בדקו את הידע שלכם!<br><span class="highlight-alt">Layer 3 Knowledge Check</span></h1>
+                    <p>15 שאלות על שכבת הרשת, IP, Subnetting ופרוטוקולי ניתוב</p>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="quiz-container" id="quiz-container">
+                    <div class="quiz-progress">
+                        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
+                        <span class="quiz-progress-text" id="quiz-progress-text">שאלה 1 מתוך 15</span>
+                    </div>
+                    <div class="quiz-card" id="quiz-card">
+                        <div class="quiz-question" id="quiz-question">
+                            <span class="q-number" id="q-number">1</span>
+                            <p id="q-text"></p>
+                        </div>
+                        <div class="quiz-options" id="quiz-options"></div>
+                        <div class="quiz-feedback hidden" id="quiz-feedback">
+                            <div class="feedback-icon" id="feedback-icon"></div>
+                            <p id="feedback-text"></p>
+                        </div>
+                        <div class="quiz-actions">
+                            <button class="quiz-btn" id="quiz-next-btn" onclick="nextQuestion()" disabled>
+                                <span>השאלה הבאה</span><i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="quiz-results hidden" id="quiz-results">
+                        <div class="results-icon" id="results-icon"></div>
+                        <h2 id="results-title"></h2>
+                        <p id="results-text"></p>
+                        <div class="results-score">
+                            <div class="score-circle" id="score-circle">
+                                <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" class="score-bg"/><circle cx="60" cy="60" r="54" class="score-fill" id="score-fill"/></svg>
+                                <span class="score-text" id="score-text">0/15</span>
+                            </div>
+                        </div>
+                        <button class="demo-btn" onclick="resetQuiz()"><i class="fas fa-redo"></i> נסו שוב</button>
+                    </div>
+                </div>
+            </div>
+            <div class="section-nav-buttons">
+                <button class="prev-btn" onclick="navigateTo('protocols')"><i class="fas fa-arrow-right"></i><span>פרוטוקולים</span></button>
+                <button class="next-btn" onclick="navigateTo('intro')"><span>חזרה להתחלה</span><i class="fas fa-home"></i></button>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/layer3-animations.js"></script>
+    <script src="js/layer3-quiz.js"></script>
+    <script src="js/layer3-main.js"></script>
+</body>
+</html>

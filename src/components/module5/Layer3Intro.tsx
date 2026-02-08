@@ -10,23 +10,8 @@ const Layer3Intro: React.FC = () => {
 
     return (
         <div className="space-y-8">
-            {/* Hero Section */}
-            <div className="relative h-[400px] w-full layer3-canvas-container flex items-center justify-center text-center overflow-hidden mb-12">
-                <HeroCanvas />
-                <div className="relative z-10 p-6 pointer-events-none">
-                    <div className="layer3-badge mb-4">שכבה 3 מתוך 7</div>
-                    <h1 className="text-5xl font-black mb-4 text-white drop-shadow-lg">
-                        שכבת הרשת <br />
-                        <span className="layer3-gradient-text text-4xl mt-2 block">Network Layer</span>
-                    </h1>
-                    <p className="text-slate-300 max-w-xl mx-auto text-lg drop-shadow-md">
-                        המוח של הרשת — כאן מתקבלות ההחלטות לאן כל חבילת מידע צריכה ללכת
-                    </p>
-                </div>
-            </div>
-
             {/* Role Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
                 <motion.div whileHover={{ y: -5 }} className="layer3-card glow-blue">
                     <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4 text-blue-600">
                         <Globe className="w-6 h-6" />
