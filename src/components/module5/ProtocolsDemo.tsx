@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { RefreshCw, Share2, Globe, CheckCircle, XCircle, Clock, TrendingUp } from 'lucide-react';
+import { RipCanvas, OspfCanvas, BgpCanvas } from './RoutingProtocolsCanvas';
 
 const ProtocolsDemo: React.FC = () => {
     return (
@@ -32,19 +33,8 @@ const ProtocolsDemo: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="relative h-48 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-around p-4 overflow-hidden">
-                        {/* Visualization: Packets moving blindly */}
-                        <div className="flex justify-between w-full px-8 relative z-10">
-                            {[1, 2, 3].map(i => (
-                                <div key={i} className="w-12 h-12 bg-slate-800 rounded-lg flex items-center justify-center text-white font-bold shadow-lg">R{i}</div>
-                            ))}
-                        </div>
-                        <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-200 dark:bg-slate-700 -translate-y-1/2 z-0"></div>
-                        <motion.div
-                            className="absolute top-1/2 left-20 w-4 h-4 bg-orange-500 rounded-full z-20"
-                            animate={{ x: [0, 80, 160], opacity: [1, 1, 0] }}
-                            transition={{ duration: 2, repeat: Infinity, times: [0, 0.5, 1] }}
-                        />
+                    <div className="relative h-48 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden">
+                        <RipCanvas />
                     </div>
                 </div>
             </div>
@@ -60,14 +50,8 @@ const ProtocolsDemo: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    <div className="relative h-48 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center p-4">
-                        {/* Visualization: Centralized / Map */}
-                        <div className="absolute w-32 h-32 border-2 border-dashed border-green-500/30 rounded-full animate-spin-slow"></div>
-                        <div className="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold z-10 shadow-lg shadow-green-500/30">Core</div>
-                        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-slate-700 rounded-full text-xs flex items-center justify-center text-white">R1</div>
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-slate-700 rounded-full text-xs flex items-center justify-center text-white">R2</div>
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-700 rounded-full text-xs flex items-center justify-center text-white">R3</div>
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-700 rounded-full text-xs flex items-center justify-center text-white">R4</div>
+                    <div className="relative h-48 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden">
+                        <OspfCanvas />
                     </div>
 
                     <div className="space-y-3">
@@ -96,12 +80,14 @@ const ProtocolsDemo: React.FC = () => {
                     </div>
                     <Globe className="w-8 h-8 text-blue-500 opacity-20" />
                 </div>
-                <div className="p-6 bg-slate-50 dark:bg-slate-900 rounded-lg border border-blue-100 dark:border-blue-900/30 text-center relative overflow-hidden">
-                    <Globe className="w-32 h-32 absolute -right-10 -bottom-10 text-blue-200 dark:text-blue-900/20" />
-                    <p className="text-lg font-bold text-blue-800 dark:text-blue-300 relative z-10">
+                <div className="p-1 bg-slate-50 dark:bg-slate-900 rounded-lg border border-blue-100 dark:border-blue-900/30 text-center relative overflow-hidden">
+                    <BgpCanvas />
+                </div>
+                <div className="mt-4 text-center">
+                    <p className="text-lg font-bold text-blue-800 dark:text-blue-300">
                         "האינטרנט הוא פשוט המון רשתות עצמאיות שמדברות BGP"
                     </p>
-                    <p className="text-sm text-slate-500 mt-2 relative z-10">
+                    <p className="text-sm text-slate-500 mt-2">
                         זהו הפרוטוקול היחיד שמסוגל להתמודד עם גודל האינטרנט העולמי (מעל מיליון נתיבים).
                     </p>
                 </div>

@@ -1,115 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Play, Server, Laptop, Share2, Layers, Shield, Globe, Cpu } from 'lucide-react';
+import { ArrowLeft, Play, Globe, Cpu, Share2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import HeroCanvas from './HeroCanvas';
+import { LpmCanvas } from './LpmCanvas';
+import './Layer3Styles.css';
 
 const Layer3Intro: React.FC = () => {
-    const heroCanvasRef = useRef<HTMLCanvasElement>(null);
     const packetCanvasRef = useRef<HTMLCanvasElement>(null);
     const [isAnimating, setIsAnimating] = useState(false);
 
-    // Hero Animation
-    useEffect(() => {
-        const canvas = heroCanvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
 
-        const resize = () => {
-            const parent = canvas.parentElement;
-            if (parent) {
-                canvas.width = parent.clientWidth;
-                canvas.height = parent.clientHeight;
-            }
-        };
-        window.addEventListener('resize', resize);
-        resize();
-
-        const nodes: any[] = [];
-        for (let i = 0; i < 30; i++) {
-            nodes.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.6,
-                vy: (Math.random() - 0.5) * 0.6,
-                r: 3 + Math.random() * 4
-            });
-        }
-
-        const packets: any[] = [];
-        let frame = 0;
-
-        const animate = () => {
-            if (!canvas || !ctx) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            frame++;
-
-            if (frame % 30 === 0 && packets.length < 15) {
-                const a = nodes[Math.floor(Math.random() * nodes.length)];
-                const b = nodes[Math.floor(Math.random() * nodes.length)];
-                if (a !== b) {
-                    packets.push({
-                        fromX: a.x, fromY: a.y,
-                        toX: b.x, toY: b.y,
-                        progress: 0,
-                        speed: 0.005 + Math.random() * 0.01,
-                        color: ['#3b82f6', '#8b5cf6', '#22c55e'][Math.floor(Math.random() * 3)]
-                    });
-                }
-            }
-
-            // Draw connections
-            ctx.strokeStyle = 'rgba(59, 130, 246, 0.1)';
-            for (let i = 0; i < nodes.length; i++) {
-                for (let j = i + 1; j < nodes.length; j++) {
-                    const dx = nodes[i].x - nodes[j].x;
-                    const dy = nodes[i].y - nodes[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 150) {
-                        ctx.beginPath();
-                        ctx.moveTo(nodes[i].x, nodes[i].y);
-                        ctx.lineTo(nodes[j].x, nodes[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            // Draw Nodes
-            nodes.forEach(n => {
-                n.x += n.vx;
-                n.y += n.vy;
-                if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
-                if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
-                ctx.beginPath();
-                ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(59, 130, 246, 0.6)';
-                ctx.fill();
-            });
-
-            // Draw Packets
-            for (let i = packets.length - 1; i >= 0; i--) {
-                const p = packets[i];
-                p.progress += p.speed;
-                if (p.progress >= 1) {
-                    packets.splice(i, 1);
-                    continue;
-                }
-                const x = p.fromX + (p.toX - p.fromX) * p.progress;
-                const y = p.fromY + (p.toY - p.fromY) * p.progress;
-                ctx.beginPath();
-                ctx.arc(x, y, 4, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                ctx.fill();
-            }
-
-            requestAnimationFrame(animate);
-        };
-        const animId = requestAnimationFrame(animate);
-
-        return () => {
-            cancelAnimationFrame(animId);
-            window.removeEventListener('resize', resize);
-        };
-    }, []);
 
     // Packet Journey Animation
     const startJourney = () => {
@@ -238,18 +138,23 @@ const Layer3Intro: React.FC = () => {
     return (
         <div className="space-y-8">
             {/* Hero Section */}
-            <div className="relative h-64 bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl overflow-hidden text-white flex items-center justify-center text-center p-6 shadow-xl">
-                <canvas ref={heroCanvasRef} className="absolute inset-0 w-full h-full opacity-30" />
-                <div className="relative z-10">
-                    <div className="inline-block px-3 py-1 bg-blue-600 rounded-full text-xs font-bold mb-3">שכבה 3 מתוך 7</div>
-                    <h1 className="text-4xl font-black mb-2">שכבת הרשת <span className="text-blue-400 block text-2xl mt-1">Network Layer</span></h1>
-                    <p className="text-slate-300 max-w-lg mx-auto">המוח של הרשת — כאן מתקבלות ההחלטות לאן כל חבילת מידע צריכה ללכת</p>
+            <div className="relative h-[400px] w-full layer3-canvas-container flex items-center justify-center text-center overflow-hidden mb-12">
+                <HeroCanvas />
+                <div className="relative z-10 p-6 pointer-events-none">
+                    <div className="layer3-badge mb-4">שכבה 3 מתוך 7</div>
+                    <h1 className="text-5xl font-black mb-4 text-white drop-shadow-lg">
+                        שכבת הרשת <br />
+                        <span className="layer3-gradient-text text-4xl mt-2 block">Network Layer</span>
+                    </h1>
+                    <p className="text-slate-300 max-w-xl mx-auto text-lg drop-shadow-md">
+                        המוח של הרשת — כאן מתקבלות ההחלטות לאן כל חבילת מידע צריכה ללכת
+                    </p>
                 </div>
             </div>
 
             {/* Role Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <motion.div whileHover={{ y: -5 }} className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border-t-4 border-blue-500">
+                <motion.div whileHover={{ y: -5 }} className="layer3-card glow-blue">
                     <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4 text-blue-600">
                         <Globe className="w-6 h-6" />
                     </div>
@@ -257,7 +162,7 @@ const Layer3Intro: React.FC = () => {
                     <p className="text-slate-600 dark:text-slate-300">שכבת הרשת אחראית על ניתוב חבילות מידע (Packets) בין רשתות שונות באמצעות כתובות לוגיות (IP).</p>
                 </motion.div>
 
-                <motion.div whileHover={{ y: -5 }} className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border-t-4 border-purple-500">
+                <motion.div whileHover={{ y: -5 }} className="layer3-card glow-purple">
                     <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 text-purple-600">
                         <Cpu className="w-6 h-6" />
                     </div>
@@ -269,7 +174,7 @@ const Layer3Intro: React.FC = () => {
                     </ul>
                 </motion.div>
 
-                <motion.div whileHover={{ y: -5 }} className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border-t-4 border-green-500">
+                <motion.div whileHover={{ y: -5 }} className="layer3-card glow-green">
                     <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mb-4 text-green-600">
                         <Share2 className="w-6 h-6" />
                     </div>
@@ -306,6 +211,9 @@ const Layer3Intro: React.FC = () => {
                     </button>
                 </div>
             </div>
+
+            {/* Deep Dive: LPM Logic */}
+            <LpmCanvas />
         </div>
     );
 };
