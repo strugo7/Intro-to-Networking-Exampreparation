@@ -3,8 +3,6 @@ import { Network, Database, Globe, Key, AlertTriangle } from 'lucide-react';
 
 const IPAddressing: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [hoveredOctet, setHoveredOctet] = useState<number | null>(null);
-
     // IPv4 Structure Visualizer
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -18,8 +16,9 @@ const IPAddressing: React.FC = () => {
 
         const octets = [192, 168, 1, 100];
         const binaries = octets.map(o => o.toString(2).padStart(8, '0'));
+        let currentHover = -1;
 
-        const draw = () => {
+        const draw = (hover: number) => {
             const w = canvas.width;
             const h = canvas.height;
             ctx.clearRect(0, 0, w, h);
@@ -45,7 +44,7 @@ const IPAddressing: React.FC = () => {
 
             for (let i = 0; i < 4; i++) {
                 const x = startX + i * octetWidth;
-                const isHovered = hoveredOctet === i;
+                const isHovered = hover === i;
                 const isNetwork = i < 3; // Simplified /24 view
 
                 // Box
@@ -81,7 +80,7 @@ const IPAddressing: React.FC = () => {
             }
         };
 
-        draw();
+        draw(-1);
 
         // Mouse handler
         const handleMouseMove = (e: MouseEvent) => {
@@ -90,16 +89,25 @@ const IPAddressing: React.FC = () => {
             const octetWidth = (canvas.width - 80) / 4;
             const startX = 40;
 
-            let found = null;
+            let found = -1;
             for (let i = 0; i < 4; i++) {
                 if (mouseX >= startX + i * octetWidth && mouseX < startX + (i + 1) * octetWidth) {
                     found = i;
                 }
             }
-            setHoveredOctet(found);
+
+            if (found !== currentHover) {
+                currentHover = found;
+                draw(currentHover);
+            }
         };
 
-        const handleMouseLeave = () => setHoveredOctet(null);
+        const handleMouseLeave = () => {
+            if (currentHover !== -1) {
+                currentHover = -1;
+                draw(-1);
+            }
+        };
 
         canvas.addEventListener('mousemove', handleMouseMove);
         canvas.addEventListener('mouseleave', handleMouseLeave);
@@ -109,7 +117,7 @@ const IPAddressing: React.FC = () => {
             canvas.removeEventListener('mouseleave', handleMouseLeave);
         };
 
-    }, [hoveredOctet]);
+    }, []);
 
     return (
         <div className="space-y-8">

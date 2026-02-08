@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SubnetGlossary from '../components/module5/SubnetGlossary';
 
 // --- ICONS ---
 const IconBase = ({ children, size = 24, className = "" }: { children: React.ReactNode, size?: number, className?: string }) => (
@@ -424,6 +425,8 @@ const SubnetAcademyPage = () => {
                 <MagicCalculator />
 
                 <PracticeGym />
+
+                <SubnetGlossary />
 
             </div>
 
