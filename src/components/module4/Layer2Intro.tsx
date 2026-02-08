@@ -1,6 +1,6 @@
 import React from 'react';
 import HeroCanvas from './HeroCanvas';
-import { Layers, ArrowDown } from 'lucide-react';
+import { Layers, ArrowDown, ArrowRight } from 'lucide-react';
 
 const Layer2Intro: React.FC = () => {
     return (
