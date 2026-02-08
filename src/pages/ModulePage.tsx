@@ -197,25 +197,30 @@ export const ModulePage = () => {
                     {activeTab === 'quiz' ? (
                         <Quiz questions={activeModule.questions} onComplete={handleQuizComplete} language={lang} />
                     ) : (
-                        <div className="max-w-4xl mx-auto">
-                            <div className="mb-10">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                                        {activeModule.difficulty}
-                                    </span>
-                                    <span className="text-slate-400 text-sm font-medium flex items-center gap-1">
-                                        <Icons.Clock size={14} /> {activeModule.estimatedTime}
-                                    </span>
+                        <div className="w-full">
+                            <div className="mb-20 hero-section relative">
+                                <div className="max-w-7xl mx-auto px-4 w-full relative z-10">
+                                    <div className="flex items-center gap-3 mb-6 justify-center">
+                                        <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
+                                            {activeModule.difficulty}
+                                        </span>
+                                        <span className="text-slate-400 text-sm font-medium flex items-center gap-2 bg-slate-800/50 px-4 py-1.5 rounded-full border border-slate-700/50 backdrop-blur-sm">
+                                            <Icons.Clock size={14} /> {activeModule.estimatedTime}
+                                        </span>
+                                    </div>
+                                    <h1 className="text-5xl md:text-7xl font-black text-white mb-8 leading-tight text-center drop-shadow-2xl tracking-tight">
+                                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient-x">
+                                            {activeModule.title}
+                                        </span>
+                                    </h1>
+                                    <p className="text-xl md:text-2xl text-slate-300 leading-relaxed max-w-3xl mx-auto text-center font-light">
+                                        {activeModule.description}
+                                    </p>
                                 </div>
-                                <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight">
-                                    {activeModule.title}
-                                </h1>
-                                <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed border-l-4 border-primary pl-6">
-                                    {activeModule.description}
-                                </p>
+                                <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 to-transparent pointer-events-none" />
                             </div>
 
-                            <div className="space-y-12">
+                            <div className="space-y-24 max-w-7xl mx-auto px-4 md:px-8">
                                 {activeModule.blocks?.map(renderBlock)}
                             </div>
 

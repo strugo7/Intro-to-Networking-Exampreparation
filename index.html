@@ -1,51 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>NetAcademy - Computer Networks Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;700&family=Fira+Code&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'Heebo', 'sans-serif'],
-              mono: ['Fira Code', 'monospace'],
-              display: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              primary: '#135bec',
-              "primary-dark": "#0c42b0",
-              "background-light": "#f6f6f8",
-              "background-dark": "#101622",
-              "card-dark": "#1a2230",
-              "card-border": "#282e39",
-              secondary: '#7C3AED', 
-              accent: '#06B6D4', 
-              success: '#10B981',
-              warning: '#F59E0B',
-              error: '#EF4444',
-            }
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NetAcademy - Computer Networks Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;700&family=Fira+Code&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Heebo', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'Fira Code', 'monospace'],
+            display: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            primary: '#135bec',
+            "primary-dark": "#0c42b0",
+            "background-light": "#f8fafc",
+            "background-dark": "#0a0e17",
+            "card-dark": "#111827",
+            "card-border": "#1e293b",
+            secondary: '#7C3AED',
+            accent: '#06B6D4',
+            success: '#10B981',
+            warning: '#F59E0B',
+            error: '#EF4444',
           }
         }
       }
-    </script>
-    <style>
-      body {
-        font-family: 'Inter', sans-serif;
-      }
-      /* Hide scrollbar for clean UI in specific areas */
-      .no-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-    </style>
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Hide scrollbar for clean UI in specific areas */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
   <script type="importmap">
 {
   "imports": {
@@ -59,8 +64,10 @@
 }
 </script>
 </head>
-  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white">
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
