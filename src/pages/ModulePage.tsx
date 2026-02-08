@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronRight, ArrowLeft, ArrowRight, Menu, CheckCircle } from 'lucide-react';
+import GlobalHero from '../components/GlobalHero';
 import * as Icons from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { getModules } from '../data';
@@ -208,6 +209,19 @@ export const ModulePage = () => {
                                             <Icons.Clock size={14} /> {activeModule.estimatedTime}
                                         </span>
                                     </div>
+                                    <div className="flex flex-wrap gap-4 pt-4">
+                                        <div className="flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-full text-blue-400 text-sm">
+                                            <span className="relative flex h-2 w-2">
+                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                            </span>
+                                            Active Learning
+                                        </div>
+                                        <div className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 px-3 py-1.5 rounded-full text-purple-400 text-sm">
+                                            <Icons.BookOpen className="w-4 h-4" />
+                                            {activeModule.id === 'intro' ? 'Overview' : 'Deep Dive'}
+                                        </div>
+                                    </div>
                                     <h1 className="text-5xl md:text-7xl font-black text-white mb-8 leading-tight text-center drop-shadow-2xl tracking-tight">
                                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient-x">
                                             {activeModule.title}
@@ -218,6 +232,8 @@ export const ModulePage = () => {
                                     </p>
                                 </div>
                                 <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 to-transparent pointer-events-none" />
+                                {/* Global Interactive Hero Background */}
+                                <GlobalHero />
                             </div>
 
                             <div className="space-y-24 max-w-7xl mx-auto px-4 md:px-8">
