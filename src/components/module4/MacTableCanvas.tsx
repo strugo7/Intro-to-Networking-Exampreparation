@@ -540,8 +540,8 @@ const MacTableCanvas: React.FC = () => {
                         {logs.length === 0 && <div className="text-slate-600 italic p-2 text-center">Waiting for events...</div>}
                         {logs.map((log, i) => (
                             <div key={i} className={`mb-1.5 px-2 py-1 rounded border-l-2 ${log.type === 'learn' ? 'border-green-500 bg-green-500/10 text-green-300' :
-                                    log.type === 'forward' ? 'border-blue-500 bg-blue-500/10 text-blue-300' :
-                                        'border-amber-500 bg-amber-500/10 text-amber-300'
+                                log.type === 'forward' ? 'border-blue-500 bg-blue-500/10 text-blue-300' :
+                                    'border-amber-500 bg-amber-500/10 text-amber-300'
                                 }`}>
                                 <span className="opacity-50 mr-2">[{new Date().toLocaleTimeString().split(' ')[0]}]</span>
                                 {log.msg}

@@ -14,7 +14,8 @@ export interface Question {
 export type ContentBlockType = 'text' | 'video' | 'image' | 'code' | 'info' | 'table' | 'router-diagram' | 'encapsulation-diagram' | 'list' | 'osi-table' | 'mnemonic' | 'scenario' | 'transmission-visualizer' | 'topology-explorer' | 'osi-intro' | 'architecture-demo' | 'protocol-explorer' | 'dns-simulator' | 'multiplexing-simulator' | 'three-way-handshake' | 'packet-journey' | 'ip-header-visualizer' | 'router-simulator' | 'fragmentation-demo' | 'frame-visualizer' | 'switch-simulator' | 'arp-explainer' | 'vlan-visualizer'
   | 'routing-protocols' | 'protocol-comparison' | 'bit-demo' | 'fiber-demo' | 'copper-demo' | 'wifi-demo' | 'media-comparison'
   | 'layer3-intro' | 'ip-addressing' | 'binary-converter' | 'subnet-calculator' | 'routing-types' | 'protocols-demo' | 'layer3-quiz'
-  | 'layer2-intro' | 'ethernet-lesson' | 'switching-lesson' | 'stp-lesson' | 'vlan-lesson' | 'layer2-quiz';
+  | 'layer2-intro' | 'ethernet-lesson' | 'switching-lesson' | 'stp-lesson' | 'vlan-lesson' | 'layer2-quiz'
+  | 'security-intro' | 'mitre-stages' | 'common-attacks' | 'nmap-simulator' | 'security-quiz';
 
 export interface ContentBlock {
   type: ContentBlockType;

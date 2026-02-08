@@ -156,8 +156,8 @@ const FrameJourneyCanvas: React.FC = () => {
                     onClick={() => !isRunning && setIsRunning(true)}
                     disabled={isRunning}
                     className={`flex items-center gap-2 px-6 py-2 rounded-full font-bold transition-all ${isRunning
-                            ? 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-50'
-                            : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg hover:shadow-blue-500/25 active:scale-95'
+                        ? 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-50'
+                        : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg hover:shadow-blue-500/25 active:scale-95'
                         }`}
                 >
                     <Play size={18} fill={isRunning ? 'currentColor' : 'white'} />

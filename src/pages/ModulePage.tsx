@@ -50,6 +50,13 @@ import StpLesson from '../components/module4/StpLesson';
 import VlanLesson from '../components/module4/VlanLesson';
 import Layer2Quiz from '../components/module4/Layer2Quiz';
 
+// Module 6: Information Security
+import SecurityIntro from '../components/module6/SecurityIntro';
+import MitreStages from '../components/module6/MitreStages';
+import CommonAttacks from '../components/module6/CommonAttacks';
+import NmapSimulator from '../components/module6/NmapSimulator';
+import SecurityQuiz from '../components/module6/SecurityQuiz';
+
 import ReactMarkdown from 'react-markdown';
 
 
@@ -160,6 +167,13 @@ export const ModulePage = () => {
             case 'protocol-comparison': return <ProtocolComparison key={block.id} />;
             case 'mnemonic': return <MnemonicBlock key={block.id} title={block.title!} content={block.content as string} />;
             case 'scenario': return <ScenarioBlock key={block.id} />;
+
+            // Module 6: Security
+            case 'security-intro': return <SecurityIntro key={block.id} />;
+            case 'mitre-stages': return <MitreStages key={block.id} />;
+            case 'common-attacks': return <CommonAttacks key={block.id} />;
+            case 'nmap-simulator': return <NmapSimulator key={block.id} />;
+            case 'security-quiz': return <SecurityQuiz key={block.id} />;
             default: return null;
         }
     };

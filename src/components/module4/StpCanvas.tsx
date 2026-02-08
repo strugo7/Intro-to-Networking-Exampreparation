@@ -243,8 +243,8 @@ const StpCanvas: React.FC = () => {
                     <button
                         onClick={() => setStpEnabled(!stpEnabled)}
                         className={`px-6 py-2 rounded-full font-bold shadow-lg transition-all flex items-center gap-2 ${stpEnabled
-                                ? 'bg-red-500 hover:bg-red-600 text-white hover:shadow-red-500/25'
-                                : 'bg-green-500 hover:bg-green-600 text-white hover:shadow-green-500/25'
+                            ? 'bg-red-500 hover:bg-red-600 text-white hover:shadow-red-500/25'
+                            : 'bg-green-500 hover:bg-green-600 text-white hover:shadow-green-500/25'
                             }`}
                     >
                         {stpEnabled ? 'בטל STP (צור לולאה)' : 'הפעל STP (חסום לולאה)'}

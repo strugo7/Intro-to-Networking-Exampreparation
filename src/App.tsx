@@ -8,6 +8,7 @@ import { BinaryPracticePage } from './pages/BinaryPracticePage';
 import { SubnettingPage } from './pages/SubnettingPage';
 import SubnetAcademyPage from './pages/SubnetAcademyPage';
 import { ExamSimulatorPage } from './pages/ExamSimulatorPage';
+import FileUpload from './components/FileUpload';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
             <Route path="practice/subnetting" element={<SubnettingPage />} />
             <Route path="practice/subnet-academy" element={<SubnetAcademyPage />} />
             <Route path="practice/exam" element={<ExamSimulatorPage />} />
+            <Route path="upload" element={<FileUpload />} />
             {/* Fallback */}
             <Route path="*" element={<div className="p-10 text-center">404 - Not Found</div>} />
         </Route>

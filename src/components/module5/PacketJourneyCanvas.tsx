@@ -185,8 +185,8 @@ export const PacketJourneyCanvas: React.FC = () => {
                 onClick={handleStart}
                 disabled={isAnimating}
                 className={`flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-lg shadow-lg transition-all ${isAnimating
-                        ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
-                        : 'bg-blue-600 hover:bg-blue-500 text-white hover:scale-105 shadow-blue-500/30'
+                    ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
+                    : 'bg-blue-600 hover:bg-blue-500 text-white hover:scale-105 shadow-blue-500/30'
                     }`}
             >
                 {isAnimating ? (
