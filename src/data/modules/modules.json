@@ -620,18 +620,76 @@
         "estimatedTime": "50 min",
         "type": "content",
         "en": {
-            "title": "Cloud",
-            "description": "Cloud models.",
-            "blocks": [],
+            "title": "Cloud Computing",
+            "description": "Learn about cloud computing models, service types (SaaS, PaaS, IaaS), deployment models, and cloud capabilities.",
+            "blocks": [
+                {
+                    "type": "cloud-intro",
+                    "id": "cloud_intro",
+                    "title": "Introduction to Cloud Computing"
+                },
+                {
+                    "type": "service-models",
+                    "id": "cloud_service",
+                    "title": "Service Models"
+                },
+                {
+                    "type": "deployment-models",
+                    "id": "cloud_deploy",
+                    "title": "Deployment Models"
+                },
+                {
+                    "type": "cloud-capabilities",
+                    "id": "cloud_caps",
+                    "title": "Cloud Capabilities"
+                },
+                {
+                    "type": "cloud-quiz",
+                    "id": "cloud_quiz",
+                    "title": "Cloud Quiz"
+                }
+            ],
             "questions": [],
             "resources": []
         },
         "he": {
-            "title": "ענן",
-            "description": "מודלי מחשוב ענן ו-SaaS/PaaS/IaaS.",
-            "blocks": [],
+            "title": "עולמות הענן",
+            "description": "מחשוב ענן, מודלי שירות (SaaS, PaaS, IaaS), סוגי עננים (Public, Private, Hybrid) ויכולות הענן.",
+            "blocks": [
+                {
+                    "type": "cloud-intro",
+                    "id": "cloud_intro",
+                    "title": "מבוא לענן: Cloud vs On-Premise"
+                },
+                {
+                    "type": "service-models",
+                    "id": "cloud_service",
+                    "title": "מודלי שירות: מי אחראי על מה?"
+                },
+                {
+                    "type": "deployment-models",
+                    "id": "cloud_deploy",
+                    "title": "סוגי עננים: Public, Private, Hybrid"
+                },
+                {
+                    "type": "cloud-capabilities",
+                    "id": "cloud_caps",
+                    "title": "יכולות וחששות אבטחה"
+                },
+                {
+                    "type": "cloud-quiz",
+                    "id": "cloud_quiz",
+                    "title": "מבחן מסכם"
+                }
+            ],
             "questions": [],
-            "resources": []
+            "resources": [
+                {
+                    "type": "pdf",
+                    "title": "Cloud_11_01_slides.pdf",
+                    "size": "2.1 MB"
+                }
+            ]
         }
     }
 ]

@@ -197,5 +197,132 @@
         "tags": [
             "Application"
         ]
+    },
+    {
+        "term": "Cloud Computing",
+        "definition": "A computing model where IT resources (servers, storage, networking, applications) are delivered over the internet by a third-party provider on a pay-as-you-go basis.",
+        "hebrewDefinition": "מודל מחשוב שבו משאבי IT (שרתים, אחסון, רשתות, אפליקציות) מסופקים דרך האינטרנט על ידי ספק צד שלישי, במודל תשלום לפי שימוש.",
+        "category": "Concept",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "IaaS",
+        "definition": "Infrastructure as a Service. A cloud service model where the provider manages physical infrastructure (servers, storage, networking), while the customer manages OS, middleware, and applications.",
+        "hebrewDefinition": "תשתית כשירות. מודל ענן שבו הספק מנהל את התשתית הפיזית (שרתים, אחסון, רשתות), והלקוח מנהל מערכת הפעלה, Middleware ואפליקציות.",
+        "category": "Cloud Model",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "PaaS",
+        "definition": "Platform as a Service. A cloud service model where the provider manages infrastructure and platform (runtime, middleware, OS), while the customer focuses on applications and data.",
+        "hebrewDefinition": "פלטפורמה כשירות. מודל ענן שבו הספק מנהל תשתית ופלטפורמה (סביבת הרצה, Middleware, מערכת הפעלה), והלקוח מתמקד באפליקציות ונתונים.",
+        "category": "Cloud Model",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "SaaS",
+        "definition": "Software as a Service. A cloud service model where the provider manages everything (infrastructure, platform, application). The customer only uses the software.",
+        "hebrewDefinition": "תוכנה כשירות. מודל ענן שבו הספק מנהל הכל (תשתית, פלטפורמה, אפליקציה). הלקוח רק משתמש בתוכנה המוכנה.",
+        "category": "Cloud Model",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "On-Premise",
+        "definition": "A traditional computing model where all IT infrastructure is physically located, owned, and managed within the organization's facilities.",
+        "hebrewDefinition": "מודל מחשוב מסורתי שבו כל תשתית ה-IT ממוקמת, נרכשת ומנוהלת בתוך מתקני הארגון עצמו.",
+        "category": "Concept",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "Public Cloud",
+        "definition": "A cloud deployment model where resources are shared among multiple organizations and accessed over the public internet (e.g., AWS, Azure, GCP).",
+        "hebrewDefinition": "מודל פריסת ענן ציבורי שבו המשאבים משותפים בין ארגונים רבים ונגישים דרך האינטרנט הציבורי.",
+        "category": "Cloud Model",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "Private Cloud",
+        "definition": "A cloud deployment model where resources are dedicated exclusively to a single organization, offering greater control and security.",
+        "hebrewDefinition": "מודל פריסת ענן פרטי שבו המשאבים מוקדשים אך ורק לארגון אחד, ומציע שליטה ואבטחה מירביים.",
+        "category": "Cloud Model",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "Hybrid Cloud",
+        "definition": "A cloud deployment model that combines public and private clouds, allowing data and applications to move between them for flexibility and optimization.",
+        "hebrewDefinition": "מודל פריסת ענן היברידי המשלב בין ענן ציבורי ופרטי, מאפשר גמישות והעברת נתונים ואפליקציות ביניהם.",
+        "category": "Cloud Model",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "Scalability",
+        "definition": "The ability of a system to handle growing workloads by adding resources (scaling up/out) without performance degradation.",
+        "hebrewDefinition": "היכולת של מערכת להתמודד עם עומסים גדלים על ידי הוספת משאבים (הגדלה אנכית/אופקית) ללא פגיעה בביצועים.",
+        "category": "Concept",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "Elasticity",
+        "definition": "The ability to automatically and dynamically allocate resources in real-time based on current demand, scaling up or down as needed.",
+        "hebrewDefinition": "היכולת להקצות משאבים באופן אוטומטי ודינמי בזמן אמת בהתאם לביקוש הנוכחי, הגדלה או הקטנה לפי הצורך.",
+        "category": "Concept",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "High Availability",
+        "definition": "A system design approach that ensures continuous operation with minimal downtime, typically through redundancy and failover mechanisms.",
+        "hebrewDefinition": "גישת תכנון מערכת שמבטיחה פעילות רציפה עם זמני השבתה מינימליים, בדרך כלל באמצעות יתירות ומנגנוני Failover.",
+        "category": "Concept",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "Disaster Recovery",
+        "definition": "Strategies and procedures to restore critical systems and data after a disaster (natural, cyber attack, etc.) to minimize downtime.",
+        "hebrewDefinition": "אסטרטגיות ונהלים לשחזור מערכות ונתונים קריטיים לאחר אסון (טבעי, מתקפת סייבר וכו') כדי למזער זמני השבתה.",
+        "category": "Concept",
+        "tags": [
+            "Cloud"
+        ]
+    },
+    {
+        "term": "Multi-tenancy",
+        "definition": "A cloud architecture where multiple customers (tenants) share the same physical infrastructure while their data remains isolated and secure.",
+        "hebrewDefinition": "ארכיטקטורת ענן שבה מספר לקוחות (דיירים) חולקים את אותה תשתית פיזית בעוד הנתונים שלהם נשארים מבודדים ומאובטחים.",
+        "category": "Concept",
+        "tags": [
+            "Cloud",
+            "Security"
+        ]
+    },
+    {
+        "term": "Pay-as-you-go",
+        "definition": "A pricing model where customers pay only for the resources they actually consume, rather than upfront capital investment.",
+        "hebrewDefinition": "מודל תמחור שבו הלקוחות משלמים רק על המשאבים שהם צורכים בפועל, במקום השקעה הונית מראש.",
+        "category": "Concept",
+        "tags": [
+            "Cloud"
+        ]
     }
 ]

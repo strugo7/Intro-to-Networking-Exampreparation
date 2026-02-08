@@ -57,6 +57,13 @@ import CommonAttacks from '../components/module6/CommonAttacks';
 import NmapSimulator from '../components/module6/NmapSimulator';
 import SecurityQuiz from '../components/module6/SecurityQuiz';
 
+// Module 9: Cloud Computing
+import CloudIntro from '../components/module9/CloudIntro';
+import ServiceModelsCompare from '../components/module9/ServiceModelsCompare';
+import DeploymentModels from '../components/module9/DeploymentModels';
+import CloudCapabilities from '../components/module9/CloudCapabilities';
+import CloudQuiz from '../components/module9/CloudQuiz';
+
 import ReactMarkdown from 'react-markdown';
 
 
@@ -174,6 +181,14 @@ export const ModulePage = () => {
             case 'common-attacks': return <CommonAttacks key={block.id} />;
             case 'nmap-simulator': return <NmapSimulator key={block.id} />;
             case 'security-quiz': return <SecurityQuiz key={block.id} />;
+
+            // Module 9: Cloud Computing
+            case 'cloud-intro': return <CloudIntro key={block.id} />;
+            case 'service-models': return <ServiceModelsCompare key={block.id} />;
+            case 'deployment-models': return <DeploymentModels key={block.id} />;
+            case 'cloud-capabilities': return <CloudCapabilities key={block.id} />;
+            case 'cloud-quiz': return <CloudQuiz key={block.id} />;
+
             default: return null;
         }
     };
