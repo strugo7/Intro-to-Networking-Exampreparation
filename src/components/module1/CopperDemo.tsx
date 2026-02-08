@@ -1,58 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Plug, Zap, CheckCircle, XCircle } from 'lucide-react';
+import CopperSignalCanvas from './CopperSignalCanvas';
+import CopperCableCanvas from './CopperCableCanvas';
 
 const CopperDemo: React.FC = () => {
-    const [voltage, setVoltage] = useState(5);
-    const [frequency, setFrequency] = useState(3);
     const [activeTab, setActiveTab] = useState<'utp' | 'stp' | 'coaxial'>('utp');
-    const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    // Signal Animation
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        let animationFrameId: number;
-        let time = 0;
-
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Grid lines
-            ctx.strokeStyle = '#e2e8f0';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height / 2);
-            ctx.lineTo(canvas.width, canvas.height / 2);
-            ctx.stroke();
-
-            // Signal
-            ctx.beginPath();
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = '#f59e0b'; // amber-500
-
-            for (let x = 0; x < canvas.width; x++) {
-                // Square wave approx
-                const freqVal = frequency * 0.05;
-                const ampVal = (voltage / 10) * (canvas.height / 3);
-
-                // Let's draw a square-ish wave mixed with sine to look like an electric signal
-                const y = canvas.height / 2 + Math.sin((x + time) * freqVal) * ampVal;
-
-                if (x === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-
-            time += 2;
-            animationFrameId = requestAnimationFrame(animate);
-        };
-
-        animate();
-        return () => cancelAnimationFrame(animationFrameId);
-    }, [voltage, frequency]);
+    // Signal Animation removed - using CopperSignalCanvas
+    // useEffect removed
 
     const cableTypes = {
         utp: { name: 'UTP', full: 'Unshielded Twisted Pair', desc: 'הכבל הנפוץ ביותר. זוגות שזורים ללא סיכוך נוסף.', icon: '🔌' },
@@ -78,42 +33,7 @@ const CopperDemo: React.FC = () => {
                     <Zap size={20} className="text-amber-500" /> סימולטור אות חשמלי
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div className="md:col-span-2 bg-slate-50 dark:bg-slate-950 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800">
-                        <canvas ref={canvasRef} width={500} height={250} className="w-full h-[250px]" />
-                    </div>
-
-                    <div className="space-y-6 flex flex-col justify-center">
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                מתח (Voltage): {voltage}V
-                            </label>
-                            <input
-                                type="range"
-                                min="1" max="10"
-                                value={voltage}
-                                onChange={(e) => setVoltage(Number(e.target.value))}
-                                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                תדירות: {frequency}Hz
-                            </label>
-                            <input
-                                type="range"
-                                min="1" max="10"
-                                value={frequency}
-                                onChange={(e) => setFrequency(Number(e.target.value))}
-                                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500"
-                            />
-                        </div>
-                        <div className="p-4 bg-amber-50 dark:bg-amber-900/10 rounded-lg text-sm text-amber-800 dark:text-amber-200">
-                            <strong>איך זה עובד?</strong><br />
-                            המידע עובר כשינויי מתח. מתח גבוה מייצג 1, מתח נמוך 0. התדירות קובעת כמה ביטים עוברים בשנייה.
-                        </div>
-                    </div>
-                </div>
+                <CopperSignalCanvas />
             </div>
 
             {/* Cable Types */}
@@ -126,8 +46,8 @@ const CopperDemo: React.FC = () => {
                             key={type}
                             onClick={() => setActiveTab(type)}
                             className={`px-6 py-3 rounded-xl font-bold whitespace-nowrap transition-all ${activeTab === type
-                                    ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/30'
-                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                                ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/30'
+                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
                                 }`}
                         >
                             {cableTypes[type].name}
@@ -135,11 +55,11 @@ const CopperDemo: React.FC = () => {
                     ))}
                 </div>
 
-                <div className="bg-slate-50 dark:bg-slate-950 p-8 rounded-2xl flex flex-col md:flex-row items-center gap-8 border border-slate-200 dark:border-slate-800 min-h-[200px]">
-                    <div className="text-6xl animate-bounce-slow">
-                        {cableTypes[activeTab].icon}
+                <div className="bg-slate-50 dark:bg-slate-950 p-8 rounded-2xl flex flex-col md:flex-row items-center gap-8 border border-slate-200 dark:border-slate-800 min-h-[350px]">
+                    <div className="flex-1 w-full max-w-md">
+                        <CopperCableCanvas type={activeTab} />
                     </div>
-                    <div>
+                    <div className="flex-1">
                         <h4 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{cableTypes[activeTab].full}</h4>
                         <p className="text-lg text-slate-600 dark:text-slate-400">{cableTypes[activeTab].desc}</p>
                     </div>

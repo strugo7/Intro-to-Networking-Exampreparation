@@ -1,73 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Zap, CheckCircle, XCircle, Info, Maximize2, Minimize2 } from 'lucide-react';
+import FiberStructureCanvas from './FiberStructureCanvas';
+import FiberLightCanvas from './FiberLightCanvas';
 
 const FiberDemo: React.FC = () => {
     const [mode, setMode] = useState<'single' | 'multi'>('single');
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-
-    // Animation for light reflection
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        let animationFrameId: number;
-        let offset = 0;
-
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Draw Core
-            const coreHeight = mode === 'single' ? 20 : 60;
-            const coreY = (canvas.height - coreHeight) / 2;
-
-            ctx.fillStyle = '#e2e8f0'; // slate-200
-            ctx.fillRect(0, coreY - 10, canvas.width, coreHeight + 20); // Cladding
-
-            ctx.fillStyle = '#3b82f6'; // blue-500 (Core)
-            ctx.fillRect(0, coreY, canvas.width, coreHeight);
-
-            // Draw Light Path
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-
-            if (mode === 'single') {
-                // Straight line
-                ctx.beginPath();
-                ctx.moveTo(0, canvas.height / 2);
-                ctx.lineTo(canvas.width, canvas.height / 2);
-                ctx.strokeStyle = '#fbbf24'; // amber-400
-                ctx.shadowColor = '#fbbf24';
-                ctx.shadowBlur = 10;
-                ctx.stroke();
-                ctx.shadowBlur = 0;
-            } else {
-                // Bouncing lines (Multi-mode)
-                const animateLight = (startOffset: number, color: string) => {
-                    ctx.beginPath();
-                    ctx.moveTo(0, canvas.height / 2);
-                    for (let x = 0; x <= canvas.width; x += 10) {
-                        const y = canvas.height / 2 + Math.sin((x + offset + startOffset) * 0.05) * (coreHeight / 2 - 2);
-                        ctx.lineTo(x, y);
-                    }
-                    ctx.strokeStyle = color;
-                    ctx.stroke();
-                };
-
-                animateLight(0, '#fbbf24'); // amber
-                animateLight(20, '#f87171'); // red
-                animateLight(40, '#34d399'); // green
-            }
-
-            offset += 2;
-            animationFrameId = requestAnimationFrame(animate);
-        };
-
-        animate();
-
-        return () => cancelAnimationFrame(animationFrameId);
-    }, [mode]);
+    // Simplified animation removed - using FiberLightCanvas instead
 
     return (
         <div className="space-y-8 my-8">
@@ -95,7 +33,7 @@ const FiberDemo: React.FC = () => {
                     </h3>
 
                     <div className="bg-slate-100 dark:bg-slate-950 rounded-xl overflow-hidden mb-4 relative">
-                        <canvas ref={canvasRef} width={500} height={200} className="w-full h-[200px]" />
+                        <FiberLightCanvas mode={mode} />
                         <div className="absolute bottom-4 left-4 flex gap-2">
                             <button
                                 onClick={() => setMode('single')}
@@ -131,42 +69,48 @@ const FiberDemo: React.FC = () => {
                         ))}
                     </div>
                 </div>
+                {/* Fiber Structure Cross-Section */}
+                <div className="mt-6">
+                    <h4 className="font-bold mb-2 text-slate-800 dark:text-slate-200">מבנה הסיב:</h4>
+                    <FiberStructureCanvas />
+                </div>
+            </div>
 
-                {/* Types */}
-                <div className="space-y-6">
-                    <div className={`p-6 rounded-2xl border-2 transition-all cursor-pointer ${mode === 'single' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-300'}`} onClick={() => setMode('single')}>
-                        <div className="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Single Mode</h3>
-                                <span className="text-xs font-medium px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded text-slate-600 dark:text-slate-400">מצב יחיד</span>
-                            </div>
-                            <Maximize2 size={20} className="text-blue-500" />
+            {/* Types */}
+            <div className="space-y-6">
+                <div className={`p-6 rounded-2xl border-2 transition-all cursor-pointer ${mode === 'single' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-300'}`} onClick={() => setMode('single')}>
+                    <div className="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Single Mode</h3>
+                            <span className="text-xs font-medium px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded text-slate-600 dark:text-slate-400">מצב יחיד</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-y-2 text-sm text-slate-600 dark:text-slate-300">
-                            <div>קוטר ליבה: <span className="font-bold text-slate-900 dark:text-white">8-10 μm</span></div>
-                            <div>מרחק: <span className="font-bold text-slate-900 dark:text-white">100+ ק"מ</span></div>
-                            <div>מקור אור: <span className="font-bold text-slate-900 dark:text-white">לייזר</span></div>
-                            <div>עלות: <span className="font-bold text-red-500">גבוהה 💰💰💰</span></div>
-                        </div>
+                        <Maximize2 size={20} className="text-blue-500" />
                     </div>
+                    <div className="grid grid-cols-2 gap-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <div>קוטר ליבה: <span className="font-bold text-slate-900 dark:text-white">8-10 μm</span></div>
+                        <div>מרחק: <span className="font-bold text-slate-900 dark:text-white">100+ ק"מ</span></div>
+                        <div>מקור אור: <span className="font-bold text-slate-900 dark:text-white">לייזר</span></div>
+                        <div>עלות: <span className="font-bold text-red-500">גבוהה 💰💰💰</span></div>
+                    </div>
+                </div>
 
-                    <div className={`p-6 rounded-2xl border-2 transition-all cursor-pointer ${mode === 'multi' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-300'}`} onClick={() => setMode('multi')}>
-                        <div className="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Multi Mode</h3>
-                                <span className="text-xs font-medium px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded text-slate-600 dark:text-slate-400">רב מצבי</span>
-                            </div>
-                            <Minimize2 size={20} className="text-blue-500" />
+                <div className={`p-6 rounded-2xl border-2 transition-all cursor-pointer ${mode === 'multi' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-300'}`} onClick={() => setMode('multi')}>
+                    <div className="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Multi Mode</h3>
+                            <span className="text-xs font-medium px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded text-slate-600 dark:text-slate-400">רב מצבי</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-y-2 text-sm text-slate-600 dark:text-slate-300">
-                            <div>קוטר ליבה: <span className="font-bold text-slate-900 dark:text-white">50-62.5 μm</span></div>
-                            <div>מרחק: <span className="font-bold text-slate-900 dark:text-white">עד 2 ק"מ</span></div>
-                            <div>מקור אור: <span className="font-bold text-slate-900 dark:text-white">LED</span></div>
-                            <div>עלות: <span className="font-bold text-green-600">בינונית 💰💰</span></div>
-                        </div>
+                        <Minimize2 size={20} className="text-blue-500" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <div>קוטר ליבה: <span className="font-bold text-slate-900 dark:text-white">50-62.5 μm</span></div>
+                        <div>מרחק: <span className="font-bold text-slate-900 dark:text-white">עד 2 ק"מ</span></div>
+                        <div>מקור אור: <span className="font-bold text-slate-900 dark:text-white">LED</span></div>
+                        <div>עלות: <span className="font-bold text-green-600">בינונית 💰💰</span></div>
                     </div>
                 </div>
             </div>
+
 
             {/* Pros & Cons */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -208,7 +152,7 @@ const FiberDemo: React.FC = () => {
                     </ul>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

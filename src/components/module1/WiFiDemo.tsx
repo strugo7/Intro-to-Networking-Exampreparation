@@ -1,26 +1,10 @@
 import React, { useState } from 'react';
 import { Wifi, Signal, Globe, CheckCircle, XCircle } from 'lucide-react';
+import WiFiSignalCanvas from './WiFiSignalCanvas';
 
 const WiFiDemo: React.FC = () => {
-    const [distance, setDistance] = useState(5);
+    // Old implementation state removed - managed internally by WiFiSignalCanvas
 
-    const getSignalStrength = (dist: number) => {
-        // Simple mock calc: RSSI drops with distance
-        // Max (0m) = -30, Min (50m) = -90
-        return Math.max(-90, -30 - dist * 1.2);
-    };
-
-    const rssi = getSignalStrength(distance);
-
-    const getSignalQuality = (rssi: number) => {
-        if (rssi > -50) return { text: 'מצוין 🚀', color: 'text-green-500', bars: 4 };
-        if (rssi > -65) return { text: 'טוב 👍', color: 'text-green-400', bars: 3 };
-        if (rssi > -75) return { text: 'בינוני 😐', color: 'text-yellow-500', bars: 2 };
-        if (rssi > -85) return { text: 'חלש ⚠️', color: 'text-orange-500', bars: 1 };
-        return { text: 'אין קליטה ❌', color: 'text-red-500', bars: 0 };
-    };
-
-    const quality = getSignalQuality(rssi);
 
     return (
         <div className="space-y-8 my-8">
@@ -40,56 +24,7 @@ const WiFiDemo: React.FC = () => {
                     <Signal size={20} className="text-indigo-500" /> סימולטור עוצמת קליטה
                 </h3>
 
-                <div className="flex flex-col md:flex-row gap-8 items-center">
-                    <div className="relative w-full max-w-sm h-64 bg-slate-100 dark:bg-slate-950 rounded-full flex items-center justify-center border border-slate-200 dark:border-slate-800 overflow-hidden">
-                        {/* Router Center */}
-                        <div className="absolute w-4 h-4 bg-indigo-500 rounded-full z-10 shadow-[0_0_20px_rgba(99,102,241,0.5)]"></div>
-
-                        {/* Waves */}
-                        <div className="absolute w-full h-full flex items-center justify-center animate-ping-slow opacity-20 bg-indigo-500 rounded-full"></div>
-                        <div className="absolute w-3/4 h-3/4 flex items-center justify-center border border-indigo-200 dark:border-indigo-900/30 rounded-full"></div>
-                        <div className="absolute w-1/2 h-1/2 flex items-center justify-center border border-indigo-300 dark:border-indigo-900/50 rounded-full"></div>
-
-                        {/* Device Dot - Positioned based on distance */}
-                        <div
-                            className="absolute w-6 h-6 bg-white border-2 border-slate-800 rounded-full shadow-lg z-20 transition-all duration-300 transform -translate-y-1/2"
-                            style={{
-                                left: `50%`,
-                                transform: `translate(${distance * 4}px, -50%)` // Simply move right
-                            }}
-                        >
-                            <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold whitespace-nowrap bg-slate-800 text-white px-2 py-0.5 rounded opacity-80">
-                                אתה
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex-1 w-full space-y-6">
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                מרחק מהראוטר: {distance} מטר
-                            </label>
-                            <input
-                                type="range"
-                                min="1" max="50"
-                                value={distance}
-                                onChange={(e) => setDistance(Number(e.target.value))}
-                                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-500"
-                            />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl text-center">
-                                <div className="text-xs text-slate-500 uppercase font-bold">RSSI (Signal)</div>
-                                <div className="text-2xl font-mono text-slate-900 dark:text-white">{Math.round(rssi)} dBm</div>
-                            </div>
-                            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl text-center">
-                                <div className="text-xs text-slate-500 uppercase font-bold">איכות</div>
-                                <div className={`text-2xl font-bold ${quality.color}`}>{quality.text}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <WiFiSignalCanvas />
             </div>
 
             {/* Bands */}
