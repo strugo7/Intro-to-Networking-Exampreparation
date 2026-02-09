@@ -5,6 +5,7 @@ import { useAppContext } from '../context/AppContext';
 import { getModules } from '../data';
 import Quiz from '../components/Quiz';
 import { EXAMS, Exam } from '../data/exams';
+import { Language } from '../types';
 
 export const ExamSimulatorPage = () => {
     const { lang } = useAppContext();
@@ -15,6 +16,7 @@ export const ExamSimulatorPage = () => {
     const [timeLeft, setTimeLeft] = useState(30 * 60); // Default 30 minutes
     const [questions, setQuestions] = useState<any[]>([]);
     const [currentExamTitle, setCurrentExamTitle] = useState("");
+    const [quizLanguage, setQuizLanguage] = useState(lang);
 
     useEffect(() => {
         if (isStarted && timeLeft > 0) {
@@ -37,6 +39,7 @@ export const ExamSimulatorPage = () => {
             // Adjust time based on question count? Let's say 1.5 min per question or just 1 hour for 40 questions
             // Standard exam time: 40 questions -> 60 minutes maybe?
             setTimeLeft(60 * 60);
+            setQuizLanguage(Language.EN);
         } else {
             // Random Mix (old behavior)
             const modules = getModules(lang);
@@ -51,6 +54,7 @@ export const ExamSimulatorPage = () => {
             }
             setCurrentExamTitle("Random Practice Exam");
             setTimeLeft(30 * 60);
+            setQuizLanguage(lang as Language);
         }
 
         setIsStarted(true);
@@ -156,7 +160,7 @@ export const ExamSimulatorPage = () => {
                 <Quiz
                     questions={questions}
                     onComplete={handleComplete}
-                    language={lang}
+                    language={quizLanguage}
                     isExamMode={true}
                 />
             </div>
